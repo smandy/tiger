@@ -1,0 +1,7 @@
+env = Environment(CPPFLAGS = ['--std=c++11'])
+
+env.Program('simpleCppApp.cpp',
+            LIBS = ['Ice','IceUtil'])
+
+
+

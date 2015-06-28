@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file was written by IceGrid Admin -->
+<icegrid>
+   <application name="SimpleJavaApp">
+      <node name="raffles">
+         <server id="SimpleJavaApp" activation="manual" activation-timeout="1" deactivation-timeout="1" exe="java">
+            <option>-cp</option>
+            <option>/home/andy/repos/tiger/java/icetest/target/icetest-0.1.0-SNAPSHOT-jar-with-dependencies.jar</option>
+            <option>argo.tiger.Experiment</option>
+            <properties>
+               <property name="Ice.StdOut" value="/tmp/simpleJavaApp.txt"/>
+               <property name="Ice.StdErr" value="/tmp/simpleJavaApp.txt"/>
+            </properties>
+            <adapter name="SimpleJavaApp" id="SimpleJavaApp" endpoints="tcp -h raffles" />
+         </server>
+      </node>
+   </application>
+</icegrid>

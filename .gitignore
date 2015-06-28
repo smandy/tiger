@@ -2,3 +2,7 @@
 /cpp/.sconsign.dblite
 /cpp/simpleCppApp
 /cpp/simpleCppApp.o
+*.iml
+java/.idea/**
+java/icetest/target/**
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file was written by IceGrid Admin -->
+<icegrid>
+   <application name="SimpleApp">
+      <node name="raffles">
+         <server id="SimpleApp" activation="manual" exe="/home/andy/repos/tiger/python/simpleApp.py">
+            <option>foo</option>
+            <option>bar</option>
+            <properties>
+               <property name="Ice.StdOut" value="/tmp/simpleApp.txt"/>
+               <property name="Ice.StdErr" value="/tmp/simpleApp.txt"/>
+            </properties>
+            <adapter name="SimpleApp" endpoints="tcp -h raffles" id="EncoderAdapter"/>
+         </server>
+      </node>
+   </application>
+</icegrid>

@@ -10,7 +10,6 @@ int main(int argc, char *argv[]) {
   auto comm = Ice::initialize( argc, argv);
   
   // TODO get adapter name
-
   cout << "Create adapter" << endl;
   auto adapter = comm->createObjectAdapter( "SimpleCppApp");
   cout << "Activate adapter" << endl;

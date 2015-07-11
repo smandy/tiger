@@ -25,7 +25,7 @@ print "DoitAgain -> %s" % scalaFoo.begin_doitAgain()
 
 proxies = [ cppFoo, pyFoo, scalaFoo ]
 
-# asyncinvocations.
+# Phase 1 async invocations. Relatively cool
 invocations = []
 invocations += [ (x.end_doit      , x.begin_doit() )      for x in proxies ]
 invocations += [ (x.end_doitAgain , x.begin_doitAgain() ) for x in proxies ]
@@ -34,18 +34,12 @@ for getter, invocation in invocations:
     print "%s -> %s" % (getter, getter(invocation))
 
 import functools
-
 from pprint import pprint as pp
 results = []
-def receive( prx, method, resp):
-    print "Woot %s %s %s" % (prx, method, resp)
-    results.append( (prx, method, resp) )
 
-def myComplete():
-    print "All Done"
-    pp(results)
-    communicator.shutdown()
+# Phase 2 async - using receive callbacks so we can do funky batch-invocation like stuff.
 
+# Collector maybe a re-use candidate.... *maybe*
 class Collector:
     def __init__(self, onComplete):
         self.methods = {}
@@ -73,11 +67,22 @@ class Collector:
         self.allMethods[id] = ret
         return ret
 
-col   = Collector(myComplete)
-curry = col.curry
-
+# Beware - all of these are called from an ice thread.
 def myExcept(*args):
     print "Exception %s" % args
+    
+def receive( prx, method, resp):
+    print "Woot %s %s %s" % (prx, method, resp)
+    results.append( (prx, method, resp) )
+
+
+def myComplete():
+    print "All Done"
+    pp(results)
+    communicator.shutdown()
+
+col   = Collector(myComplete)
+curry = col.curry
 
 for x in proxies:
     x.begin_doit(      **curry( receive, myExcept, x, 'doit'      ) )

@@ -49,30 +49,36 @@ def myComplete():
 class Collector:
     def __init__(self, onComplete):
         self.methods = {}
+        self.allMethods = {}
         self.counter = 0
         self.onComplete = onComplete
-    
-    def curry( self, f, *argx ):
-        id = self.counter
-        self.counter += 1
+
+    def makeCaller(self, f, argx):
         def ret(*argy):
-            #print "Id is %s" % id
             del self.methods[id]
             newArgs = argx + argy
             r2 = f( *newArgs )
             if not(self.methods):
-                #print "empty?"
                 self.onComplete()
             return r2
+        
+    def curry( self, iranu, uvavu, *argx ):
+        id = self.counter
+        self.counter += 1
+        ret = {
+            '_response' : self.makeCaller( iranu, argx),
+            '_ex'       : self.makeCaller( uvavu, argx)
+            }
         self.methods[id] = ret
+        self.allMethods[id] = ret
         return ret
 
 col   = Collector(myComplete)
 curry = col.curry
 
-def myExcept(exc):
-    print "Exception"
+def myExcept(*args):
+    print "Exception %s" % args
 
 for x in proxies:
-    x.begin_doit(      _response = curry( receive, x, 'doit'      ) , _ex = myExcept )
-    x.begin_doitAgain( _response = curry( receive, x, 'doitAgain' ) , _ex = myExcept )
+    x.begin_doit(      **curry( receive, myExcept, x, 'doit'      ) )
+    x.begin_doitAgain( **curry( receive, myExcept, x, 'doitAgain' ) )

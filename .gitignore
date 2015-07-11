@@ -19,6 +19,5 @@ java/icetest/target/**
 /java/icetest/src/main/java/argo/_FooDisp.java
 /java/icetest/src/main/java/argo/_FooOperations.java
 /java/icetest/src/main/java/argo/_FooOperationsNC.java
-/python/discovery.py
 /python/locator.properties
 /python/discovery.pyc

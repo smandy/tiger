@@ -48,33 +48,35 @@ class Collector:
         self.onComplete = onComplete
 
     def makeCaller(self, f, argx):
+        myId = self.counter
         def ret(*argy):
-            del self.methods[id]
+            #print "Woot"
+            del self.methods[myId]
             newArgs = argx + argy
             r2 = f( *newArgs )
             if not(self.methods):
                 self.onComplete()
+            #print self.methods
             return r2
+        return ret
         
     def curry( self, iranu, uvavu, *argx ):
-        id = self.counter
-        self.counter += 1
         ret = {
             '_response' : self.makeCaller( iranu, argx),
             '_ex'       : self.makeCaller( uvavu, argx)
             }
-        self.methods[id] = ret
-        self.allMethods[id] = ret
+        self.methods[self.counter] = ret
+        self.allMethods[self.counter] = ret
+        self.counter += 1
         return ret
 
 # Beware - all of these are called from an ice thread.
 def myExcept(*args):
     print "Exception %s" % args
-    
+    x
 def receive( prx, method, resp):
     print "Woot %s %s %s" % (prx, method, resp)
     results.append( (prx, method, resp) )
-
 
 def myComplete():
     print "All Done"

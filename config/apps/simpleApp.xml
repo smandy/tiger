@@ -1,12 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file was written by IceGrid Admin -->
 <icegrid>
-    <application name="SimpleApp">
-        <node name="raffles">
-            <server id="SimpleApp" exe="/home/andy/repos/tiger/python/simpleApp.py" activation="manual">
-                <adapter name="SimpleApp" id="EncoderAdapter" endpoints="tcp -h raffles"/>
-                <!--<property name="Ice.Trace.Network" value="1"/> -->
-                <property name="Ice.StdOut" value="/tmp/simpleApp.txt" />
-                <property name="Ice.StdErr" value="/tmp/simpleApp.txt" />
-            </server>
-        </node>
-    </application>
+   <application name="SimpleApp">
+      <node name="raffles">
+         <server id="SimpleApp" activation="on-demand" exe="/home/andy/repos/tiger/python/simpleApp.py" pwd="/home/andy/repos/tiger/python">
+            <properties>
+               <property name="Ice.StdOut" value="/tmp/simpleApp.txt"/>
+               <property name="Ice.StdErr" value="/tmp/simpleApp.txt"/>
+            </properties>
+            <adapter name="SimpleApp" endpoints="tcp -h raffles" id="SimpleApp"/>
+         </server>
+      </node>
+   </application>
 </icegrid>

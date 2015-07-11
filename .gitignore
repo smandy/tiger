@@ -9,3 +9,15 @@ java/icetest/target/**
 /cpp/Foo.cpp
 /cpp/Foo.h
 /cpp/Foo.o
+/java/icetest/src/main/java/argo/Callback_Foo_doit.java
+/java/icetest/src/main/java/argo/Callback_Foo_doitAgain.java
+/java/icetest/src/main/java/argo/Foo.java
+/java/icetest/src/main/java/argo/FooHolder.java
+/java/icetest/src/main/java/argo/FooPrx.java
+/java/icetest/src/main/java/argo/FooPrxHelper.java
+/java/icetest/src/main/java/argo/FooPrxHolder.java
+/java/icetest/src/main/java/argo/_FooDisp.java
+/java/icetest/src/main/java/argo/_FooOperations.java
+/java/icetest/src/main/java/argo/_FooOperationsNC.java
+/python/discovery.py
+/python/locator.properties

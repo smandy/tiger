@@ -1,11 +1,9 @@
 #pragma once
 
 module argo {
+  interface Foo {
+    string doit();
 
-interface Foo {
-  void doit();
-
-  void doitAgain();
-};
-
+    string doitAgain();
+  };
 };

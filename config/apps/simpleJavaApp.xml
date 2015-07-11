@@ -3,7 +3,7 @@
 <icegrid>
    <application name="SimpleJavaApp">
       <node name="raffles">
-         <server id="SimpleJavaApp" activation="manual" activation-timeout="1" deactivation-timeout="1" exe="java">
+         <server id="SimpleJavaApp" activation="on-demand" activation-timeout="1" deactivation-timeout="1" exe="java">
             <option>-cp</option>
             <option>/home/andy/repos/tiger/java/icetest/target/icetest-0.1.0-SNAPSHOT-jar-with-dependencies.jar</option>
             <option>argo.tiger.Experiment</option>

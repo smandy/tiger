@@ -4,16 +4,19 @@
 #include "Foo.h"
 #include <iostream>
 #include <memory>
+#include <string>
 
 using namespace std;
 
 class MyFoo : public argo::Foo {
-  void doit(const ::Ice::Current&) {
-    cout << "Woohoo I've been called" << endl;
+  std::string doit(const ::Ice::Current&) {
+    cout << "Woohoo doit has been I've been called" << endl;
+    return "doit from cpp";
   };
 
-  void doitAgain(const ::Ice::Current&) {
-    cout << "Woohoo I've been called" << endl;
+  std::string doitAgain(const ::Ice::Current&) {
+    cout << "Woohoo doitAgain has been called" << endl;
+    return "doitAgain from cpp";
   };
 };
 

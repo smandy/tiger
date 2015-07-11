@@ -6,3 +6,6 @@
 java/.idea/**
 java/icetest/target/**
 
+/cpp/Foo.cpp
+/cpp/Foo.h
+/cpp/Foo.o

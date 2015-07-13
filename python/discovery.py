@@ -22,7 +22,6 @@ scalaFoo = argo.FooPrx.checkedCast(scalaPrx).ice_timeout(5000)
 print "Doit      -> %s" % scalaFoo.begin_doit()
 print "DoitAgain -> %s" % scalaFoo.begin_doitAgain()
 
-
 proxies = [ cppFoo, pyFoo, scalaFoo ]
 
 # Phase 1 async invocations. Relatively cool
@@ -38,7 +37,6 @@ from pprint import pprint as pp
 results = []
 
 # Phase 2 async - using receive callbacks so we can do funky batch-invocation like stuff.
-
 # Collector maybe a re-use candidate.... *maybe*
 class Collector:
     def __init__(self, onComplete):
@@ -48,6 +46,10 @@ class Collector:
         self.onComplete = onComplete
 
     def makeCaller(self, f, argx):
+        """
+        Convenience method used to make a wrapped call.  abstracts
+        common code from the success + failure cases
+        """
         myId = self.counter
         def ret(*argy):
             #print "Woot"
@@ -61,6 +63,14 @@ class Collector:
         return ret
         
     def curry( self, iranu, uvavu, *argx ):
+        """
+        onSuccess, onFailure, extra args to pass to the callback
+        *before* the arguments passed back by ice.
+        
+        Returns a dictionary intended to be used as kwargs to one of
+        the foo.begin_xxx methods using the **kwargs python keyword
+        expansion syntax.
+        """
         ret = {
             '_response' : self.makeCaller( iranu, argx),
             '_ex'       : self.makeCaller( uvavu, argx)
@@ -73,7 +83,7 @@ class Collector:
 # Beware - all of these are called from an ice thread.
 def myExcept(*args):
     print "Exception %s" % args
-    x
+    
 def receive( prx, method, resp):
     print "Woot %s %s %s" % (prx, method, resp)
     results.append( (prx, method, resp) )

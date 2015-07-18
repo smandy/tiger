@@ -10,12 +10,12 @@ using namespace std;
 
 class MyFoo : public argo::Foo {
   std::string doit(const ::Ice::Current&) {
-    cout << "Woohoo doit has been I've been called" << endl;
+    cout << "doit has been called" << endl;
     return "doit from cpp";
   };
 
   std::string doitAgain(const ::Ice::Current&) {
-    cout << "Woohoo doitAgain has been called" << endl;
+    cout << "doitagain has been called" << endl;
     return "doitAgain from cpp";
   };
 };

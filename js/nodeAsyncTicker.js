@@ -8,8 +8,6 @@ console.log("Communicator is " + communicator);
 
 var MyCallBackReceiver = Ice.Class( argo.TickListener, {
     onTick : function( ticks, current) {
-        //console.log("Woot got " + ticks[0]);
-        //console.log(ticks[0]);
         ticks.forEach( function(x) { console.log(x); } );
     }
 } );

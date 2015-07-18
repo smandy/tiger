@@ -18,7 +18,7 @@ class MyFoo( argo.Foo):
 
 if __name__=='__main__':
     communicator = Ice.initialize(sys.argv)
-    print "Woot I've started up"
+    print "I've started up"
     adapter = communicator.createObjectAdapter("SimpleApp")
 
     print "Create impl"

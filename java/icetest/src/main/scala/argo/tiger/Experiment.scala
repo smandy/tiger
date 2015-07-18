@@ -27,7 +27,7 @@ object Experiment {
   val log = LogManager.getLogger(Experiment.getClass)
 
   def main(args : Array[String]) : Unit = {
-    log.info("Woot " + args.mkString("[",",","]"))
+    log.info("args are " + args.mkString("[",",","]"))
     val communicator = Ice.Util.initialize(args)
     log.info("Communicator setup")
     val adapter = communicator.createObjectAdapter("SimpleJavaApp")

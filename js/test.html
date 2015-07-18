@@ -1,6 +1,6 @@
 <HTML>
 <BODY>
-  <H1>Woot</H1>
+  <H1>Bidir Example</H1>
   <script src="/bower_components/ice/lib/Ice.min.js"></script>
   <script src="/bower_components/ice/lib/Glacier2.min.js"></script>
   <script src="/bower_components/ice/lib/IceStorm.min.js"></script>
@@ -12,13 +12,9 @@
   var communicator = Ice.initialize();
   var proxy = communicator.stringToProxy("plant:tcp -h localhost -p 10003");
   var thePrx;
-  
   argo.TickerPlantPrx.checkedCast(proxy).then(
   function(prx) {
-  console.log("Woot ");
-
   thePrx = prx;
-
   setInterval( function() {
     thePrx.sayHello().then( function (s) {
     console.log("hello returned " + s );

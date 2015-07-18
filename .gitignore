@@ -5,6 +5,7 @@
 *.iml
 java/.idea/**
 java/icetest/target/**
+js/node_modules/**
 
 /cpp/Foo.cpp
 /cpp/Foo.h
@@ -21,3 +22,4 @@ java/icetest/target/**
 /java/icetest/src/main/java/argo/_FooOperationsNC.java
 /python/locator.properties
 /python/discovery.pyc
+/python/common.pyc

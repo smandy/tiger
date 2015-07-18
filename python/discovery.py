@@ -5,23 +5,22 @@ import argo
 
 communicator = Ice.initialize( [ '--Ice.Config=locator.properties'])
 cppPrx = communicator.stringToProxy('foo@SimpleCppApp')
-cppFoo = argo.FooPrx.checkedCast(cppPrx)
+cppFoo = argo.FooPrx.checkedCast(cppPrx).ice_timeout(10000)
 
 print "Doit      -> %s" % cppFoo.doit()
 print "DoitAgain -> %s" % cppFoo.doitAgain()
 
 pyPrx = communicator.stringToProxy('foo@SimpleApp')
-pyFoo = argo.FooPrx.checkedCast(pyPrx)
+pyFoo = argo.FooPrx.checkedCast(pyPrx).ice_timeout(10000)
 
 print "Doit      -> %s" % pyFoo.doit()
 print "DoitAgain -> %s" % pyFoo.doitAgain()
 
 scalaPrx = communicator.stringToProxy('foo@SimpleJavaApp')
-scalaFoo = argo.FooPrx.checkedCast(scalaPrx).ice_timeout(5000)
+scalaFoo = argo.FooPrx.checkedCast(scalaPrx).ice_timeout(10000)
 
 print "Doit      -> %s" % scalaFoo.begin_doit()
 print "DoitAgain -> %s" % scalaFoo.begin_doitAgain()
-
 proxies = [ cppFoo, pyFoo, scalaFoo ]
 
 # Phase 1 async invocations. Relatively cool

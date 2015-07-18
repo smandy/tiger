@@ -79,7 +79,8 @@
 
     Slice.defineOperations(argo.TickerPlant, argo.TickerPlantPrx,
     {
-        "subscribe": [, , , , , , [["argo.TickListenerPrx"]], , , , ]
+        "subscribe": [, , , , , , [["argo.TickListenerPrx"]], , , , ],
+        "sayHello": [, , , , , [7], , , , , ]
     });
     exports.argo = argo;
 }

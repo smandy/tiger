@@ -16,6 +16,8 @@ module argo {
   
   interface TickerPlant {
     void subscribe( TickListener *l);
+
+    string sayHello();
   };
 
 };

@@ -1,0 +1,33 @@
+<HTML>
+<BODY>
+  <H1>Woot</H1>
+  <script src="/bower_components/ice/lib/Ice.min.js"></script>
+  <script src="/bower_components/ice/lib/Glacier2.min.js"></script>
+  <script src="/bower_components/ice/lib/IceStorm.min.js"></script>
+  <script src="/bower_components/ice/lib/IceGrid.min.js"></script>
+  <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="./Ticker.js"></script>
+
+ <script type="text/javascript">
+  var communicator = Ice.initialize();
+  var proxy = communicator.stringToProxy("plant:ws -h localhost -p 10003");
+
+  argo.TickerPlantPrx.checkedCast(proxy).then(
+  function(prx) {
+  console.log("Woot ");
+  prx.sayHello().then( function (s) {
+  console.log("hello returned " + s );
+  $("#main").html( "<H1>" + s + "</H1>" );
+  } );
+  },
+  function(ex) {
+  console.log("Exception!!!");
+  console.log(ex);
+  }
+  );
+  //console.log("Computer says " + resp);
+ </script>
+
+ <div id="main"></div>
+</BODY>
+</HTML>

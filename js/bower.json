@@ -1,0 +1,23 @@
+{
+  "name": "tiger",
+  "version": "1.0.0",
+  "homepage": "https://github.com/smandy/tiger",
+  "authors": [
+    "Andy Smith <andyrsmith@googlemail.com>"
+  ],
+  "description": "JS Experiments",
+  "moduleType": [
+    "es6"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ice": "~3.6.0"
+  }
+}

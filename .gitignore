@@ -6,6 +6,7 @@
 java/.idea/**
 java/icetest/target/**
 js/node_modules/**
+js/bower_components/**
 
 /cpp/Foo.cpp
 /cpp/Foo.h
@@ -23,3 +24,4 @@ js/node_modules/**
 /python/locator.properties
 /python/discovery.pyc
 /python/common.pyc
+bower_components/**

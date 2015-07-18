@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import Ice
 import sys
 import time
@@ -62,6 +61,10 @@ class MyPlant(argo.TickerPlant):
             print "Tick..."
             self.tick()
             time.sleep(1)
+
+    def sayHello(self, current):
+        print "SayHello"
+        return "Hello from python!!"
 
     def subscribe(self, l, cur):
         print "Subscribe %s" % l

@@ -8,7 +8,9 @@
                <property name="Ice.StdOut" value="/tmp/simpleApp.txt"/>
                <property name="Ice.StdErr" value="/tmp/simpleApp.txt"/>
             </properties>
+            <adapter name="SimpleApp" endpoints="tcp -h raffles:ws -h raffles" id="SimpleApp"/>
             <adapter name="SimpleApp" endpoints="tcp -h raffles" id="SimpleApp"/>
+
          </server>
       </node>
    </application>

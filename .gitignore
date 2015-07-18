@@ -29,3 +29,4 @@ bower_components/**
 /js/.#package.json.orig
 /js/assets/**
 /java/target/**
+/config/apps/.#simpleApp.xml

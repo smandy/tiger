@@ -11,7 +11,7 @@
                <property name="Ice.StdOut" value="/tmp/simpleJavaApp.txt"/>
                <property name="Ice.StdErr" value="/tmp/simpleJavaApp.txt"/>
             </properties>
-            <adapter name="SimpleJavaApp" id="SimpleJavaApp" endpoints="tcp -h raffles" />
+            <adapter name="SimpleJavaApp" id="SimpleJavaApp" endpoints="ws -h raffles" />
          </server>
       </node>
    </application>

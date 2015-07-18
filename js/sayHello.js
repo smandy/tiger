@@ -10,13 +10,11 @@ id.properties.setProperty("Ice.Default.Locator", "IceGrid/Locator:tcp -p 4061");
 
 var communicator = Ice.initialize(myArgs, id);
 console.log("Communicator is " + communicator);
-
 var out = 3;
 
 ["foo@SimpleCppApp","foo@SimpleJavaApp","foo@SimpleApp"].forEach( function (x) {
-var proxy = communicator.stringToProxy(x);
-//console.log("About to ping " + proxy);
-var x2 = argo.FooPrx.checkedCast(proxy).then(
+    var proxy = communicator.stringToProxy(x).ice_timeout(5000);
+    var x2 = argo.FooPrx.uncheckedCast(proxy).ice_timeout(5000).then(
     function(prx) {
         //console.log("Called with x " + prx );
         prx.doit().then(

@@ -1,0 +1,42 @@
+<HTML>
+  <BODY>
+    <H1>Locator Example</H1>
+    <script src="/bower_components/ice/lib/Ice.js"></script>
+    <script src="/bower_components/ice/lib/Glacier2.min.js"></script>
+    <script src="/bower_components/ice/lib/IceStorm.min.js"></script>
+    <script src="/bower_components/ice/lib/IceGrid.min.js"></script>
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="./Foo.js"></script>
+
+    <script type="text/javascript">
+     var iid = new Ice.InitializationData();
+     iid.properties = Ice.createProperties();
+     iid.properties.setProperty("Ice.Default.Locator", "IceGrid/Locator:ws -h localhost -p 4063");
+     iid.properties.setProperty("Ice.Trace.Protocol", "1");
+     var communicator = Ice.initialize([], iid);
+     //["foo@SimpleCppApp","foo@SimpleJavaApp","foo@SimpleApp"].forEach( function (x) {
+     ["foo -p ws @ SimpleApp"].forEach( function (x) {
+     var proxy = communicator.stringToProxy(x).ice_timeout(10000);
+     console.log(proxy);
+       var x2 = argo.FooPrx.checkedCast(proxy).then(
+         function(prx) {
+           prx.doit().then(
+             function (ret) {
+               console.log("Ret is " + ret + " from " + x);
+               $("#main").append("Ret is " + ret + " from " + x);
+             },
+             function (ex) {
+               console.log(ex);
+             }
+           );
+         },
+         function(ex) {
+           console.log("Called with exception " + ex);
+           console.log(ex);
+         } );
+     });
+    </script>
+
+    <div id="main"></div>
+  </BODY>
+</HTML>

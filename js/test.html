@@ -11,15 +11,20 @@
  <script type="text/javascript">
   var communicator = Ice.initialize();
   var proxy = communicator.stringToProxy("plant:ws -h localhost -p 10003");
-
+  var thePrx;
+  
   argo.TickerPlantPrx.checkedCast(proxy).then(
   function(prx) {
   console.log("Woot ");
-  prx.sayHello().then( function (s) {
-  console.log("hello returned " + s );
-  $("#main").html( "<H1>" + s + "</H1>" );
-  } );
-  },
+
+  thePrx = prx;
+
+  setInterval( function() {
+    thePrx.sayHello().then( function (s) {
+    console.log("hello returned " + s );
+    $("#main").html( "<H1>" + s + "</H1>" );
+    } );
+  } , 1000) },
   function(ex) {
   console.log("Exception!!!");
   console.log(ex);

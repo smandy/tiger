@@ -2,6 +2,7 @@
 import Ice
 import sys
 import time
+from datetime import  datetime
 
 Ice.loadSlice('../slice/Ticker.ice')
 
@@ -64,7 +65,7 @@ class MyPlant(argo.TickerPlant):
 
     def sayHello(self, current):
         print "SayHello"
-        return "Hello from python!!"
+        return "Hello from python!! %s" % datetime.now().isoformat()
 
     def subscribe(self, l, cur):
         print "Subscribe %s" % l

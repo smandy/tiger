@@ -5,9 +5,10 @@
 *.iml
 java/.idea/**
 java/icetest/target/**
+*.orig
 js/node_modules/**
 js/bower_components/**
-
+\#*\#
 /cpp/Foo.cpp
 /cpp/Foo.h
 /cpp/Foo.o
@@ -25,3 +26,4 @@ js/bower_components/**
 /python/discovery.pyc
 /python/common.pyc
 bower_components/**
+/js/.#package.json.orig

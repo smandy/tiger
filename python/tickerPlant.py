@@ -1,13 +1,21 @@
 #!/usr/bin/env python
+import time
 import Ice
 import sys
 import time
 from datetime import  datetime
 
-Ice.loadSlice('../slice/Ticker.ice')
+## if not slice_dir:
+##     print(sys.argv[0] + ': Slice directory not found.')
+##     sys.exit(1)
+## Ice.loadSlice("'-I" + slice_dir + "' Callback.ice")
+
+slice_dir = Ice.getSliceDir()
+Ice.loadSlice('-I %(slice_dir)s ../slice/Ticker.ice' % locals() )
 
 import argo
 import random
+
 def randomPrice():
     ret = round( 100.0 + 50.0 * random.random() , 2)
     return ret
@@ -50,16 +58,18 @@ class MyPlant(argo.TickerPlant):
                                                "JNPR.O", "SOLC.O", "MFNX.O", "C.O",
                                                "A.O", "SPCS.O", "CRA.A", 
                                                "C.O", "MSFT.O", "SNWL.O", "CHINA.O"]) ]
+        self.running = True
         
     def evict( self, l):
         def ret(*args):
-            print "Evicting %s %s" % (l, args)
+            #print "Evicting %s %s" % (l, args)
+            print "Evicting ...dare not name his name"
             del self.listeners[l]
         return ret
             
     def run(self):
-        while True:
-            print "Tick..."
+        while self.running:
+            #print "Tick..."
             self.tick()
             time.sleep(1)
 
@@ -71,17 +81,20 @@ class MyPlant(argo.TickerPlant):
         print "Subscribe %s" % l
         self.listeners[l] = None
 
+    def subscribeWithIdent(self, l, cur):
+        print "Subscribe %s" % communicator.identityToString(l)
+        prx = argo.TickListenerPrx.uncheckedCast(cur.con.createProxy(l))
+        self.listeners[prx] = None
+
     def tick(self):
         tix = []
         for s in self.stocks:
             s.tick()
             tix.append( argo.Tick( s.name, s.bidPx, s.bidPx + s.spread))
-            
         for q,v in self.listeners.items():
-            print "Ticking %s %s" % (q,v)
+            #print "Ticking %s %s" % (q,v)
             q.begin_onTick( tix, _ex = self.evict(q))
-        print "Boop"
-
+        #print "Boop"
         
 if __name__=='__main__':
     communicator = Ice.initialize(['--Ice.Config=tickerplant.properties'])
@@ -98,6 +111,16 @@ if __name__=='__main__':
     
     adapter.activate()
     print "Waiting for shutdown"
-    communicator.waitForShutdown()
+
+    try:
+        while True:
+            time.sleep(1)
+    except:
+        pass
+    #adapter.close()
+    #adapter.shutdown()
+    plant.running = False
+    communicator.destroy()
+    #communicator.destroy()
     print "Shutting down"
     

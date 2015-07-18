@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Ice/Identity.ice>
+
 module argo {
 
   struct Tick {
@@ -17,6 +19,8 @@ module argo {
   interface TickerPlant {
     void subscribe( TickListener *l);
 
+    void subscribeWithIdent( Ice::Identity ident);
+    
     string sayHello();
   };
 

@@ -74,8 +74,9 @@ class MyPlant(argo.TickerPlant):
             time.sleep(1)
 
     def sayHello(self, current):
-        print "SayHello"
-        return "Hello from python!! %s" % datetime.now().isoformat()
+        noo = datetime.now().isoformat()
+        print "SayHello %s" % noo
+        return "Hello from python!! %s" % noo
 
     def subscribe(self, l, cur):
         print "Subscribe %s" % l

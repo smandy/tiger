@@ -10,14 +10,14 @@
 
  <script type="text/javascript">
   var communicator = Ice.initialize();
-  var proxy = communicator.stringToProxy("plant:tcp -h localhost -p 10003");
+  var proxy = communicator.stringToProxy("plant:ws -h localhost -p 10666");
   var thePrx;
   argo.TickerPlantPrx.checkedCast(proxy).then(
   function(prx) {
   thePrx = prx;
   setInterval( function() {
     thePrx.sayHello().then( function (s) {
-    console.log("hello returned " + s );
+    //console.log("hello returned " + s );
     $("#main").html( "<H1>" + s + "</H1>" );
     } );
   } , 1000) },

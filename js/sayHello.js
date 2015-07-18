@@ -6,21 +6,28 @@ console.log("Args is " + myArgs);
 
 var id = new Ice.InitializationData();
 id.properties = Ice.createProperties();
-
-id.properties["Ice.Default.Locator"] = "IceGrid/Locator:tcp -p 4061";
+id.properties.setProperty("Ice.Default.Locator", "IceGrid/Locator:tcp -p 4061");
 
 var communicator = Ice.initialize(myArgs, id);
 console.log("Communicator is " + communicator);
 
-var proxy = communicator.stringToProxy("sayHello@SimpleCppApp");
-console.log("About to ping " + proxy);
+var out = 3;
 
+["foo@SimpleCppApp","foo@SimpleJavaApp","foo@SimpleApp"].forEach( function (x) {
+var proxy = communicator.stringToProxy(x);
+//console.log("About to ping " + proxy);
 var x2 = argo.FooPrx.checkedCast(proxy).then(
     function(prx) {
-        console.log("Called with x " + prx );
+        //console.log("Called with x " + prx );
         prx.doit().then(
             function (ret) {
-                console.log("Ret is " + ret);
+                console.log("Ret is " + ret + " from " + x);
+                out -= 1;
+                if (out == 0 ) {
+                    console.log("Shutting down");
+                    communicator.shutdown();
+                    process.exit(0);
+                };
             },
             function (ex) {
                 console.log(ex);
@@ -30,7 +37,8 @@ var x2 = argo.FooPrx.checkedCast(proxy).then(
     function(ex) {
         console.log("Called with exception " + ex);
     } );
+});
 
-console.log("x is " + x2 );
+//console.log("x is " + x2 );
 console.log("Bong");
 

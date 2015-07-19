@@ -12,6 +12,7 @@
                <property name="Ice.StdErr" value="/tmp/simpleJavaApp.txt"/>
             </properties>
             <adapter name="SimpleJavaApp" id="SimpleJavaApp" endpoints="ws -h raffles" />
+            <!-- <adapter name="SimpleJavaApp" id="SimpleJavaApp" endpoints="tcp -h raffles:ws -h raffles" /> -->
          </server>
       </node>
    </application>

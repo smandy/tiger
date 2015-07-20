@@ -23,6 +23,9 @@ print "Doit      -> %s" % scalaFoo.begin_doit()
 print "DoitAgain -> %s" % scalaFoo.begin_doitAgain()
 proxies = [ cppFoo, pyFoo, scalaFoo ]
 
+for x in proxies:
+    print x.ice_getConnection().getInfo()
+
 # Phase 1 async invocations. Relatively cool
 invocations = []
 invocations += [ (x.end_doit      , x.begin_doit() )      for x in proxies ]

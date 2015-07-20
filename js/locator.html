@@ -7,7 +7,6 @@
     <script src="/bower_components/ice/lib/IceGrid.min.js"></script>
     <script src="/bower_components/jquery/dist/jquery.min.js"></script>
     <script src="./Foo.js"></script>
-
     <script type="text/javascript">
      var iid = new Ice.InitializationData();
      iid.properties = Ice.createProperties();
@@ -17,12 +16,11 @@
      var communicator = Ice.initialize([], iid);
      proxies.forEach( function (x) {
        var proxy = communicator.stringToProxy(x).ice_timeout(10000);
-       console.log(proxy);
+       //console.log(proxy);
        var x2 = argo.FooPrx.checkedCast(proxy).then(
          function(prx) {
            prx.ice_timeout(10000).doit().then(
              function (ret) {
-               //console.log("Ret is " + ret + " from " + x);
                $("#main").append("<H3>Ret is " + ret + " from " + x + "</H3>");
              },
              function (ex) {
@@ -36,7 +34,6 @@
          } );
      });
     </script>
-
     <div id="main"></div>
   </BODY>
 </HTML>

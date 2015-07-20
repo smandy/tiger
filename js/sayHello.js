@@ -12,13 +12,18 @@ var communicator = Ice.initialize(myArgs, id);
 console.log("Communicator is " + communicator);
 var out = 3;
 
-["foo@SimpleCppApp","foo@SimpleJavaApp","foo@SimpleApp"].forEach( function (x) {
+var proxies = ["foo@SimpleApp"];
+
+var retVal;
+
+proxies.forEach( function (x) {
     var proxy = communicator.stringToProxy(x).ice_timeout(5000);
-    var x2 = argo.FooPrx.uncheckedCast(proxy).ice_timeout(5000).then(
+    var x2 = argo.FooPrx.checkedCast(proxy).then(
     function(prx) {
         //console.log("Called with x " + prx );
         prx.doit().then(
             function (ret) {
+                retVal = ret;
                 console.log("Ret is " + ret + " from " + x);
                 out -= 1;
                 if (out == 0 ) {

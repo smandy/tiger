@@ -30,3 +30,5 @@ bower_components/**
 /js/assets/**
 /java/target/**
 /config/apps/.#simpleApp.xml
+/js/.#sayHello.js
+/npm-debug.log

@@ -16827,7 +16827,7 @@
             },
             connectable: function()
             {
-                return !this.secure(); // We don't support SSL, we can only connect with plain TCP
+                return TcpTransceiver !== null && !this.secure();
             },
             connect: function()
             {

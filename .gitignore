@@ -32,3 +32,4 @@ bower_components/**
 /config/apps/.#simpleApp.xml
 /js/.#sayHello.js
 /npm-debug.log
+/js/.#doit.js

@@ -1,9 +1,9 @@
 package argo.tiger
 
 import Ice.Current
-import argo._FooDisp
+import argo.{FooPrxHelper, _FooDisp}
 import org.apache.logging.log4j.LogManager
-
+import org.joda.time.DateTime
 
 object MyFoo {
   val log = LogManager.getLogger( MyFoo.getClass)
@@ -14,12 +14,12 @@ class MyFoo extends _FooDisp {
 
   override def doit(__current: Current): String = {
     log.info("doit from scala")
-    "Doit from scala"
+    "Doit from scala " + new DateTime();
   }
 
   override def doitAgain(__current: Current): String = {
     log.info("doitAgain from scala")
-    "doitAgain from scala"
+    "doitAgain from scala " + new DateTime();
   }
 }
 
@@ -41,6 +41,11 @@ object Experiment {
 
     log.info("Destroy adapter")
     adapter.destroy()
+
+    val x = FooPrxHelper.checkedCast( communicator.stringToProxy("foo@SimpleApp") )
+
+    val x2 = x.begin_doit()
+    val x4 = x.end_doit(x2)
 
     log.info("Destroy communicator")
     communicator.destroy()

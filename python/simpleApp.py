@@ -2,6 +2,7 @@
 
 import Ice
 import sys
+from datetime import datetime
 
 Ice.loadSlice('../slice/Foo.ice')
 
@@ -10,11 +11,11 @@ import argo
 class MyFoo( argo.Foo):
     def doit(self, current):
         print "Python doit"
-        return "doit from python"
+        return "doit from python %s" % datetime.now()
 
     def doitAgain(self, current):
         print "Python doitagain"
-        return "doitAgain from python"
+        return "doitAgain from python %s" % datetime.now()
 
 if __name__=='__main__':
     communicator = Ice.initialize(sys.argv)

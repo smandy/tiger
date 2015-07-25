@@ -33,3 +33,5 @@ bower_components/**
 /js/.#sayHello.js
 /npm-debug.log
 /js/.#doit.js
+/clj/.nrepl-port
+/clj/target/*

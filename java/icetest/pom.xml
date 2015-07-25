@@ -11,8 +11,25 @@
       <dependency>
         <groupId>com.zeroc</groupId>
         <artifactId>ice</artifactId>
+        <!--<version>3.6.0</version> -->
         <version>3.6.0</version>
         <!-- <version>3.6b</version> -->
+      </dependency>
+
+      <dependency>
+        <groupId>com.zeroc</groupId>
+        <artifactId>icediscovery</artifactId>
+        <version>3.6.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.zeroc</groupId>
+        <artifactId>icegrid</artifactId>
+        <version>3.6.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.zeroc</groupId>
+        <artifactId>icelocatordiscovery</artifactId>
+        <version>3.6.0</version>
       </dependency>
     </dependencies>
 </project>

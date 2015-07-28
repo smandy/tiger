@@ -25,16 +25,21 @@ var FooCaller = React.createClass({
         Ice.Promise.try( function() {
             outer.state.proxy.doit().then(
                 function(ret) {
-                    var newState = { status : "Success " + ret,
-                                     proxy  : outer.state.proxy ,
-                                     strProxy : outer.state.strProxy,
-                                     counter : outer.state.counter + 1,
-                                     date : new Date() };
+                    // var newState = { status : "Success " + ret,
+                    //     proxy  : outer.state.proxy ,
+                    //     strProxy : outer.state.strProxy,
+                    //     counter : outer.state.counter + 1,
+                    //     date : new Date() };
+                    var newState = outer.state;
+                    newState.counter = newState.counter + 1;
+                    newState.date = new Date();
+                    newState.status = "Success " + ret;
                     outer.mySetState(newState);
                 },
                 function (ex) {
-                    outer.mySetState( { status : "Failure" + ret,
-                                        proxy  : outer.state.proxy } );
+                    var state = outer.state;
+                    state.status = "Failure " + ret;
+                    outer.mySetState( state );
                 }
             );
         } ).exception( function (ex) {

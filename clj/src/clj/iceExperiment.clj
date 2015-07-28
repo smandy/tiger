@@ -11,6 +11,7 @@
         props (doto (Ice.Util/createProperties)
           (.setProperty
            "Ice.Plugin.IceLocatorDiscovery"  "IceLocatorDiscovery:IceLocatorDiscovery.PluginFactory")
+          (.setProperty "IceLocatorDiscovery.InstanceName" "tiger1")
           ;; (.setProperty "Ice.Trace.Network"  "2")
           ;; (.setProperty "Ice.Trace.Protocol" "3")
           (.setProperty "Ice.Default.EndpointSelection" "Ordered")

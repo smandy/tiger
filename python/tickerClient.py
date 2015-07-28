@@ -1,11 +1,10 @@
-
-
 import Ice
 import sys
 
 from common import getUUID
 
-Ice.loadSlice('../slice/Ticker.ice')
+slice_dir = Ice.getSliceDir()
+Ice.loadSlice('-I %(slice_dir)s ../slice/Ticker.ice' % locals())
 
 import argo
 

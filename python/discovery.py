@@ -54,10 +54,11 @@ class Collector:
         """
         myId = self.counter
         def ret(*argy):
-            #print "Woot"
+            print "Woot"
             del self.methods[myId]
             newArgs = argx + argy
             r2 = f( *newArgs )
+            print "Remain %s" % str(self.methods)
             if not(self.methods):
                 self.onComplete()
             #print self.methods
@@ -91,7 +92,7 @@ def receive( prx, method, resp):
     results.append( (prx, method, resp) )
 
 def myComplete():
-    print "All Done"
+    print "All Done - destroying communicator"
     pp(results)
     communicator.shutdown()
 

@@ -2,8 +2,8 @@
 
 module argo {
   interface Foo {
-    string doit();
+    ["amd"] string doit();
 
-    string doitAgain();
+    ["amd"] string doitAgain();
   };
 };

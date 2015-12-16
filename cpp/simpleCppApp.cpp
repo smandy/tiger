@@ -9,14 +9,15 @@
 using namespace std;
 
 class MyFoo : public argo::Foo {
-  std::string doit(const ::Ice::Current&) {
-    cout << "doit has been called" << endl;
-    return "doit from cpp";
+
+  void doit_async(const ::argo::AMD_Foo_doitPtr& ret, const ::Ice::Current& = ::Ice::Current()) {
+    std::cout << "doit async" << std::endl;
+    ret->ice_response("doit from cpp");
   };
 
-  std::string doitAgain(const ::Ice::Current&) {
-    cout << "doitagain has been called" << endl;
-    return "doitAgain from cpp";
+  void doitAgain_async(const ::argo::AMD_Foo_doitAgainPtr& ret, const ::Ice::Current& = ::Ice::Current()) {
+    std::cout << "doit again async" << std::endl;
+    ret->ice_response("doiit again from cpp");
   };
 };
 

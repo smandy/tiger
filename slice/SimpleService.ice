@@ -1,6 +1,5 @@
 #pragma once
 
-
 module argo {
   
   interface SimpleService { 

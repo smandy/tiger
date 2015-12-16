@@ -5,8 +5,16 @@
   <script src="/bower_components/ice/lib/Glacier2.min.js"></script>
   <script src="/bower_components/ice/lib/IceStorm.min.js"></script>
   <script src="/bower_components/ice/lib/IceGrid.min.js"></script>
-  <script src="/bower_components/jquery/dist/jquery.min.js"></script>
-  <script src="bower_components/jquery.event.drag-new/event.drag/jquery.event.drag.js"></script>
+  <!-- <script src="/bower_components/jquery/dist/jquery.min.js"></script> -->
+
+
+
+<script src="/from_repo/jquery-1.7.min.js"></script>
+<script src="/from_repo/jquery.event.drag-2.2.js"></script>
+
+<!--<script src="../slick.core.js"></script> -->
+<!--<script src="../slick.grid.js"></script> -->
+  
   <script src="/bower_components/slickgrid/slick.core.js"></script>
   <script src="/bower_components/slickgrid/slick.grid.js"></script>
   
@@ -80,7 +88,7 @@
    } );
    
    var proxy = communicator.stringToProxy("plant:ws -h localhost -p 10666 -t 2000").ice_twoway();
-   //console.log("About to ping " + proxy);
+   console.log("About to ping " + proxy);
    
    var x2 = argo.TickerPlantPrx.checkedCast(proxy).then(
      function(prx) {
@@ -88,7 +96,7 @@
 
        setInterval( function() {
          prx.sayHello().then( function (s) {
-           //console.log("hello returned " + s );
+           console.log("hello returned " + s );
            $("#greeting").html( "<H1>" + s + "</H1>" );
          } );
        } , 2000);

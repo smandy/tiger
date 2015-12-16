@@ -1785,6 +1785,7 @@
             },
             computeHash: function(v)
             {
+                var uuid;
                 if(v === 0 || v === -0)
                 {
                     return {key:0, hash:0};
@@ -1794,7 +1795,7 @@
                 {
                     if(HashMap._null === null)
                     {
-                        var uuid = Ice.generateUUID();
+                        uuid = Ice.generateUUID();
                         HashMap._null = {key:uuid, hash:StringUtil.hashCode(uuid)};
                     }
                     return HashMap._null;
@@ -1821,7 +1822,7 @@
                     {
                         if(HashMap._nan === null)
                         {
-                            var uuid = Ice.generateUUID();
+                            uuid = Ice.generateUUID();
                             HashMap._nan = {key:uuid, hash:StringUtil.hashCode(uuid)};
                         }
                         return HashMap._nan;
@@ -2248,149 +2249,195 @@
         // jshint browser: true
         //
         
-        var HashMap = Ice.HashMap;
+        /* global WorkerGlobalScope */
         
-        var MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER  || 9007199254740991;
         
-        var _timers = new HashMap();
         
-        var _SetTimeoutType = 0,
-            _SetIntervalType = 1,
-            _SetImmediateType = 2,
-            _ClearTimeoutType = 3,
-            _ClearIntervalType = 4;
-        
-        var Timer = {};
-        var worker;
-        
-        var _nextId = 0;
-        
-        function nextId()
+        //
+        // Create a timer object that uses the default browser methods. Note that we also 
+        // have to use apply with null as the first argument to workaround an issue where 
+        // IE doesn't like these functions to be called with an unknown object (it reports 
+        // an "Invalid calling object" error).
+        //
+        function createTimerObject()
         {
-            if(_nextId == MAX_SAFE_INTEGER)
-            {
-                _nextId = 0;
-            }
-            return _nextId++;
+            var Timer = {};
+            Timer.setTimeout = function () { setTimeout.apply(null, arguments); }
+            Timer.clearTimeout = function () { clearTimeout.apply(null, arguments); };
+            Timer.setInterval = function () { setInterval.apply(null, arguments); };
+            Timer.clearInterval = function () { clearInterval.apply(null, arguments); };
+            Timer.setImmediate = function () { setImmediate.apply(null, arguments); }
+            return Timer;
         }
-        Timer.setTimeout = function(cb, ms)
-        {
-            var id = nextId();
-            _timers.set(id, cb);
-            worker.postMessage({type: _SetTimeoutType, id: id, ms: ms});
-            return id;
-        };
         
-        Timer.clearTimeout = function(id)
+        if(typeof WorkerGlobalScope !== 'undefined' && this instanceof WorkerGlobalScope)
         {
-            _timers.delete(id);
-            worker.postMessage({type: _ClearTimeoutType, id: id});
-        };
+            //
+            // If running in a worker we don't need to create a separate worker for the timers
+            //
+            Ice.Timer = createTimerObject();
+        }
+        else
+        {
         
-        Timer.setInterval = function(cb, ms)
-        {
-            var id = nextId();
-            _timers.set(id, cb);
-            worker.postMessage({type: _SetIntervalType, id: id, ms: ms});
-            return id;
-        };
+            var HashMap = Ice.HashMap;
         
-        Timer.clearInterval = function(id)
-        {
-            _timers.delete(id);
-            worker.postMessage({type: _ClearIntervalType, id: id});
-        };
+            var MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER  || 9007199254740991;
         
-        Timer.setImmediate = function(cb)
-        {
-            var id = nextId();
-            _timers.set(id, cb);
-            worker.postMessage({type: _SetImmediateType, id: id});
-            return id;
-        };
+            var _timers = new HashMap();
         
-        Timer.onmessage = function(e)
-        {
-            var cb;
-            if(e.data.type === _SetIntervalType)
+            var _SetTimeoutType = 0,
+                _SetIntervalType = 1,
+                _SetImmediateType = 2,
+                _ClearTimeoutType = 3,
+                _ClearIntervalType = 4;
+        
+            var Timer = {};
+            var worker;
+        
+            var _nextId = 0;
+        
+            var nextId = function()
             {
-                cb = _timers.get(e.data.id);
-            }
-            else
-            {
-                cb = _timers.delete(e.data.id);
-            }
-            
-            if(cb !== undefined)
-            {
-                cb.call();
-            }
-        };
-        
-        
-        function workerCode()
-        {
-            return "(" +
-            function()
-            {
-                //
-                // jshint worker: true
-                //
-                var _wSetTimeoutType = 0,
-                    _wSetIntervalType = 1,
-                    _wSetImmediateType = 2,
-                    _wClearTimeoutType = 3,
-                    _wClearIntervalType = 4;
-                    
-                var timers = {};
-                
-                self.onmessage = function(e)
+                if(_nextId == MAX_SAFE_INTEGER)
                 {
-                    if(e.data.type == _wSetTimeoutType)
-                    {
-                        timers[e.data.id] = setTimeout(function()
-                            {
-                                self.postMessage(e.data);
-                            },
-                            e.data.ms);
-                    }
-                    else if(e.data.type == _wSetIntervalType)
-                    {
-                        timers[e.data.id] = setInterval(function()
-                            {
-                                self.postMessage(e.data);
-                            },
-                            e.data.ms);
-                    }
-                    else if(e.data.type == _wSetImmediateType)
-                    {
-                        self.postMessage(e.data);
-                    }
-                    else if(e.data.type == _wClearTimeoutType)
-                    {
-                        clearTimeout(timers[e.data.id]);
-                        delete timers[e.data.id];
-                    }
-                    else if(e.data.type == _wClearIntervalType)
-                    {
-                        clearInterval(timers[e.data.id]);
-                        delete timers[e.data.id];
-                    }
-                };
-                
-                //
-                // jshint worker: false
-                //
-            }.toString() + "());";
-        }
+                    _nextId = 0;
+                }
+                return _nextId++;
+            };
         
-        if(worker === undefined)
-        {
-            worker = new Worker(window.URL.createObjectURL(new Blob([workerCode()], {type : 'text/javascript'})));
-            worker.onmessage = Timer.onmessage;
-        }
+            Timer.setTimeout = function(cb, ms)
+            {
+                var id = nextId();
+                _timers.set(id, cb);
+                worker.postMessage({type: _SetTimeoutType, id: id, ms: ms});
+                return id;
+            };
         
-        Ice.Timer = Timer;
+            Timer.clearTimeout = function(id)
+            {
+                _timers.delete(id);
+                worker.postMessage({type: _ClearTimeoutType, id: id});
+            };
+        
+            Timer.setInterval = function(cb, ms)
+            {
+                var id = nextId();
+                _timers.set(id, cb);
+                worker.postMessage({type: _SetIntervalType, id: id, ms: ms});
+                return id;
+            };
+        
+            Timer.clearInterval = function(id)
+            {
+                _timers.delete(id);
+                worker.postMessage({type: _ClearIntervalType, id: id});
+            };
+        
+            Timer.setImmediate = function(cb)
+            {
+                var id = nextId();
+                _timers.set(id, cb);
+                worker.postMessage({type: _SetImmediateType, id: id});
+                return id;
+            };
+        
+            Timer.onmessage = function(e)
+            {
+                var cb;
+                if(e.data.type === _SetIntervalType)
+                {
+                    cb = _timers.get(e.data.id);
+                }
+                else
+                {
+                    cb = _timers.delete(e.data.id);
+                }
+        
+                if(cb !== undefined)
+                {
+                    cb.call();
+                }
+            };
+        
+            var workerCode = function()
+            {
+                return "(" +
+                function()
+                {
+                    //
+                    // jshint worker: true
+                    //
+                    var _wSetTimeoutType = 0,
+                        _wSetIntervalType = 1,
+                        _wSetImmediateType = 2,
+                        _wClearTimeoutType = 3,
+                        _wClearIntervalType = 4;
+        
+                    var timers = {};
+        
+                    self.onmessage = function(e)
+                    {
+                        if(e.data.type == _wSetTimeoutType)
+                        {
+                            timers[e.data.id] = setTimeout(function()
+                                {
+                                    self.postMessage(e.data);
+                                },
+                                e.data.ms);
+                        }
+                        else if(e.data.type == _wSetIntervalType)
+                        {
+                            timers[e.data.id] = setInterval(function()
+                                {
+                                    self.postMessage(e.data);
+                                },
+                                e.data.ms);
+                        }
+                        else if(e.data.type == _wSetImmediateType)
+                        {
+                            self.postMessage(e.data);
+                        }
+                        else if(e.data.type == _wClearTimeoutType)
+                        {
+                            clearTimeout(timers[e.data.id]);
+                            delete timers[e.data.id];
+                        }
+                        else if(e.data.type == _wClearIntervalType)
+                        {
+                            clearInterval(timers[e.data.id]);
+                            delete timers[e.data.id];
+                        }
+                    };
+        
+                    //
+                    // jshint worker: false
+                    //
+                }.toString() + "());";
+            };
+        
+            if(worker === undefined)
+            {
+                var url;
+                try
+                {
+                    url = window.URL.createObjectURL(new Blob([workerCode()], {type : 'text/javascript'}));
+                    worker = new Worker(url);
+                    worker.onmessage = Timer.onmessage;
+                    Ice.Timer = Timer;
+                }
+                catch(ex)
+                {
+                    window.URL.revokeObjectURL(url)
+        
+                    //
+                    // Fallback on setInterval/setTimeout if the worker creating failed. Some IE10 and IE11 don't
+                    // support creating workers from blob URLs for instance.
+                    //
+                    Ice.Timer = createTimerObject();
+                }
+            }
+        }
         
     }());
 
@@ -2966,7 +3013,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -3726,7 +3773,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -3782,7 +3829,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -3807,7 +3854,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -3958,7 +4005,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -4480,7 +4527,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -6131,7 +6178,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -6248,7 +6295,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -10779,7 +10826,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -13110,7 +13157,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -13341,7 +13388,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -14447,7 +14494,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -14499,7 +14546,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -15767,24 +15814,9 @@
             },
             connect: function(proxy)
             {
-                try
+                if(!this.initialized())
                 {
-                    if(!this.initialized())
-                    {
-                        this._proxies.push(proxy);
-                    }
-                }
-                catch(ex)
-                {
-                    //
-                    // Only throw if the connection didn't get established. If
-                    // it died after being established, we allow the caller to
-                    // retry the connection establishment by not throwing here.
-                    //
-                    if(this._connection === null)
-                    {
-                        throw ex;
-                    }
+                    this._proxies.push(proxy);
                 }
                 return this._requestHandler ? this._requestHandler : this;
             },
@@ -15925,6 +15957,16 @@
                 {
                     if(this._exception !== null)
                     {
+                        if(this._connection !== null)
+                        {
+                            //
+                            // Only throw if the connection didn't get established. If
+                            // it died after being established, we allow the caller to
+                            // retry the connection establishment by not throwing here
+                            // (the connection will throw RetryException).
+                            //
+                            return true;
+                        }
                         throw this._exception;
                     }
                     else
@@ -15969,7 +16011,7 @@
                 if(this._reference.getCacheConnection() && exception === null)
                 {
                     this._requestHandler = new ConnectionRequestHandler(this._reference, this._connection, this._compress);
-                    for(var k in this._proxies)
+                    for(var k = 0; k < this._proxies.length; ++k)
                     {
                         this._proxies[k].__updateRequestHandler(this, this._requestHandler);
                     }
@@ -16005,7 +16047,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -16065,6 +16107,7 @@
         //
         // **********************************************************************
         
+        var IceSSL = Ice.__M.module("IceSSL");
         
         var Debug = Ice.Debug;
         var ExUtil = Ice.ExUtil;
@@ -16228,9 +16271,14 @@
                 }
         
                 var transceiver = this;
+                var bytesWrittenCallback = function()
+                { 
+                    transceiver._bytesWrittenCallback(0, 0); 
+                };
+        
                 if(this._fd.bufferedAmount > 1024)
                 {
-                    Timer.setTimeout(function() { transceiver._bytesWrittenCallback(0, 0); }, 50);
+                    Timer.setTimeout(bytesWrittenCallback, 50);
                     return false;
                 }
         
@@ -16260,7 +16308,7 @@
         
                     if(this._fd.bufferedAmount > 0 && packetSize > 0)
                     {
-                        Timer.setTimeout(function() { transceiver._bytesWrittenCallback(0, 0); }, 50);
+                        Timer.setTimeout(bytesWrittenCallback, 50);
                         return false;
                     }
                 }
@@ -16342,7 +16390,7 @@
             checkSendSize: function(stream)
             {
             },
-            setBUfferSze: function(rcvSize, sndSize)
+            setBufferSize: function(rcvSize, sndSize)
             {
                 this._maxSendPacketSize = sndSize;
             },
@@ -16455,7 +16503,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -16528,7 +16576,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -16827,6 +16875,10 @@
             },
             connectable: function()
             {
+                //
+                // TCP endpoints are not connectable when running in a browser, SSL
+                // isn't currently supported.
+                //
                 return TcpTransceiver !== null && !this.secure();
             },
             connect: function()
@@ -18023,6 +18075,14 @@
                 }
                 this._asyncRequests.clear();
         
+                //
+                // Don't wait to be reaped to reclaim memory allocated by read/write streams.
+                //
+                this._readStream.clear();
+                this._readStream.buffer.clear();
+                this._writeStream.clear();
+                this._writeStream.buffer.clear();
+        
                 if(this._callback !== null)
                 {
                     try
@@ -19118,6 +19178,7 @@
         // **********************************************************************
         
         
+        var IceSSL = Ice.__M.module("IceSSL");
         
         var HashUtil = Ice.HashUtil;
         var StringUtil = Ice.StringUtil;
@@ -23973,6 +24034,7 @@
                         s.push(this._current.protocol());
                         s.push(" connection to ");
                         s.push(this._current.toString());
+                        s.push("\n");
                         s.push(ex.toString());
                         this._factory._instance.initializationData().logger.trace(traceLevels.networkCat, s.join(""));
                     }
@@ -24620,7 +24682,6 @@
             "Locator.Router",
             "MessageSizeMax",
             "PublishedEndpoints",
-            "RegisterProcess",
             "ReplicaGroupId",
             "Router",
             "Router.EncodingVersion",
@@ -24703,7 +24764,7 @@
                     ex.reason = "object adapter `" + this._name + "' requires configuration";
                     throw ex;
                 }
-                
+        
                 //
                 // Setup a reference to be used to get the default proxy options
                 // when creating new proxies. By default, create twoway proxies.
@@ -24742,7 +24803,7 @@
         
                 try
                 {
-                    
+        
                     if(router === null)
                     {
                         router = Ice.RouterPrx.uncheckedCast(
@@ -24762,7 +24823,7 @@
                                 "object adapter with router",
                                 this._instance.identityToString(router.ice_getIdentity()));
                         }
-                        
+        
                         //
                         // Add the router's server proxy endpoints to this object
                         // adapter.
@@ -24772,7 +24833,7 @@
                             function(endpoints)
                             {
                                 var i;
-                                    
+        
                                 for(i = 0; i < endpoints.length; ++i)
                                 {
                                     self._routerEndpoints.push(endpoints[i]);
@@ -24782,7 +24843,7 @@
                                     {
                                         return e1.compareTo(e2);
                                     });
-                                
+        
                                 //
                                 // Remove duplicate endpoints, so we have a list of unique
                                 // endpoints.
@@ -24800,14 +24861,14 @@
                                         ++i;
                                     }
                                 }
-                                
+        
                                 //
                                 // Associate this object adapter with the router. This way,
                                 // new outgoing connections to the router's client proxy will
                                 // use this object adapter for callbacks.
                                 //
                                 self._routerInfo.setAdapter(self);
-                                
+        
                                 //
                                 // Also modify all existing outgoing connections to the
                                 // router's client proxy to use this object adapter for
@@ -25382,7 +25443,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -25815,7 +25876,7 @@
                                                  handler.setException(ex);
                                              });
                 }
-                return proxy.__setRequestHandler(handler);
+                return proxy.__setRequestHandler(handler.connect(proxy));
             },
             removeRequestHandler: function(ref, handler)
             {
@@ -25844,7 +25905,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -25950,7 +26011,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -25985,6 +26046,145 @@
                 "getPropertiesForPrefix": [, , , , , ["Ice.PropertyDictHelper"], [[7]], , , , ],
                 "setProperties": [, , , 1, , , [["Ice.PropertyDictHelper"]], , , , ]
             });
+        
+    }());
+
+    (function()
+    {
+        // **********************************************************************
+        //
+        // Copyright (c) 2003-2015 ZeroC, Inc. All rights reserved.
+        //
+        // This copy of Ice is licensed to you under the terms described in the
+        // ICE_LICENSE file included in this distribution.
+        //
+        // **********************************************************************
+        //
+        // Ice version 3.6.1
+        //
+        // <auto-generated>
+        //
+        // Generated from file `RemoteLogger.ice'
+        //
+        // Warning: do not edit this file.
+        //
+        // </auto-generated>
+        //
+        
+        (function(module, require, exports)
+        {
+            var __M = Ice.__M;
+            var Slice = Ice.Slice;
+        
+        
+            /**
+             * An enumeration representing the different types of log messages.
+             * 
+             **/
+            Ice.LogMessageType = Slice.defineEnum([
+                ['PrintMessage', 0], ['TraceMessage', 1], ['WarningMessage', 2], ['ErrorMessage', 3]]);
+            Slice.defineSequence(Ice, "LogMessageTypeSeqHelper", "Ice.LogMessageType.__helper", false);
+        
+            /**
+             * A complete log message.
+             * 
+             **/
+            Ice.LogMessage = Slice.defineStruct(
+                function(type, timestamp, traceCategory, message)
+                {
+                    this.type = type !== undefined ? type : Ice.LogMessageType.PrintMessage;
+                    this.timestamp = timestamp !== undefined ? timestamp : 0;
+                    this.traceCategory = traceCategory !== undefined ? traceCategory : "";
+                    this.message = message !== undefined ? message : "";
+                },
+                true,
+                function(__os)
+                {
+                    Ice.LogMessageType.__write(__os, this.type);
+                    __os.writeLong(this.timestamp);
+                    __os.writeString(this.traceCategory);
+                    __os.writeString(this.message);
+                },
+                function(__is)
+                {
+                    this.type = Ice.LogMessageType.__read(__is);
+                    this.timestamp = __is.readLong();
+                    this.traceCategory = __is.readString();
+                    this.message = __is.readString();
+                },
+                11, 
+                false);
+            Slice.defineSequence(Ice, "LogMessageSeqHelper", "Ice.LogMessage", false);
+        
+            /**
+             * The Ice remote logger interface. An application can implement a
+             * RemoteLogger to receive the log messages sent to the local {@link Logger}
+             * of another Ice application.
+             * 
+             **/
+            Ice.RemoteLogger = Slice.defineObject(
+                undefined,
+                Ice.Object, undefined, 1,
+                [
+                    "::Ice::Object",
+                    "::Ice::RemoteLogger"
+                ],
+                -1, undefined, undefined, false);
+        
+            Ice.RemoteLoggerPrx = Slice.defineProxy(Ice.ObjectPrx, Ice.RemoteLogger.ice_staticId, undefined);
+        
+            Slice.defineOperations(Ice.RemoteLogger, Ice.RemoteLoggerPrx,
+            {
+                "init": [, , , , , , [[7], ["Ice.LogMessageSeqHelper"]], , , , ],
+                "log": [, , , , , , [[Ice.LogMessage]], , , , ]
+            });
+        
+            /**
+             * An exception thrown by {@link LoggerAdmin#attachRemoteLogger} to report
+             * that the provided {@link RemoteLogger} was previously attached to this
+             * {@link LoggerAdmin}.
+             * 
+             **/
+            Ice.RemoteLoggerAlreadyAttachedException = Slice.defineUserException(
+                function(_cause)
+                {
+                    Ice.UserException.call(this, _cause);
+                },
+                Ice.UserException,
+                "Ice::RemoteLoggerAlreadyAttachedException",
+                undefined, undefined,
+                false,
+                false);
+        
+            /**
+             * The interface of the admin object that allows an Ice application the attach its 
+             * {@link RemoteLogger} to the {@link Logger} of this admin object's Ice communicator.
+             * 
+             **/
+            Ice.LoggerAdmin = Slice.defineObject(
+                undefined,
+                Ice.Object, undefined, 0,
+                [
+                    "::Ice::LoggerAdmin",
+                    "::Ice::Object"
+                ],
+                -1, undefined, undefined, false);
+        
+            Ice.LoggerAdminPrx = Slice.defineProxy(Ice.ObjectPrx, Ice.LoggerAdmin.ice_staticId, undefined);
+        
+            Slice.defineOperations(Ice.LoggerAdmin, Ice.LoggerAdminPrx,
+            {
+                "attachRemoteLogger": [, , , , , , [["Ice.RemoteLoggerPrx"], ["Ice.LogMessageTypeSeqHelper"], ["Ice.StringSeqHelper"], [3]], , 
+                [
+                    Ice.RemoteLoggerAlreadyAttachedException
+                ], , ],
+                "detachRemoteLogger": [, , , , , [1], [["Ice.RemoteLoggerPrx"]], , , , ],
+                "getLog": [, , , , , ["Ice.LogMessageSeqHelper"], [["Ice.LogMessageTypeSeqHelper"], ["Ice.StringSeqHelper"], [3]], [[7]], , , ]
+            });
+        }
+        (typeof(global) !== "undefined" && typeof(global.process) !== "undefined" ? module : undefined,
+         typeof(global) !== "undefined" && typeof(global.process) !== "undefined" ? require : window.Ice.__require,
+         typeof(global) !== "undefined" && typeof(global.process) !== "undefined" ? exports : window));
         
     }());
 
@@ -26048,7 +26248,7 @@
         //
         // **********************************************************************
         //
-        // Ice version 3.6.0
+        // Ice version 3.6.1
         //
         // <auto-generated>
         //
@@ -26877,5 +27077,3 @@
     window.IceSSL = IceSSL;
 }());
 
-
-//# sourceMappingURL=../lib/Ice.js.map

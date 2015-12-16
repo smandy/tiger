@@ -35,3 +35,5 @@ bower_components/**
 /js/.#doit.js
 /clj/.nrepl-port
 /clj/target/*
+/js/lib/*
+/js/.#Foo.js

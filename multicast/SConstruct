@@ -1,0 +1,20 @@
+import builders
+
+env = Environment(CPPFLAGS = ['--std=c++14', '-I.'],
+                  LIBPATH = ['/usr/lib/x86_64-linux-gnu/c++11'])
+
+#env.Slice2cpp(target = 'Security', source = 'slice/Security.ice')
+builders.addSlice2cppBuilder(env)
+
+env.Slice2cpp(target = 'Discovery', source = './Discovery.ice')
+
+env.Slice2cpp(target = 'Hello', source = './Hello.ice')
+
+discovery = env.Object(source = 'Discovery.cpp')
+hello     = env.Object(source = 'Hello.cpp')
+
+
+
+env.Program('Client.cpp',LIBS = ['Ice', 'IceUtil', discovery, hello, 'pthread'])
+
+env.Program('Server.cpp',LIBS = ['Ice', 'IceUtil', discovery, hello, 'pthread'])

@@ -37,3 +37,11 @@ bower_components/**
 /clj/target/*
 /js/lib/*
 /js/.#Foo.js
+.*pyc
+/multicast/Client
+/multicast/Server
+*.o
+*.pyc
+.sconsign.dblite
+/discovery/Client
+/discovery/Server

@@ -5,13 +5,10 @@
 using namespace std;
 using namespace Demo;
 
-class HelloI : public Hello
-{
+class HelloI : public Hello {
 public:
-
-  virtual std::string sayHello(const std::string& name,const Ice::Current&)
-    {
-      //cout << "Hello World!" << endl;
+    virtual std::string sayHello(const std::string& name,const Ice::Current&) {
+        //cout << "Hello World!" << endl;
         std::ostringstream oss;
         oss << "Hello " << name << " !!!";
         std::cout << oss.str() << std::endl;
@@ -20,8 +17,7 @@ public:
 };
 
 int main(int argc, char *argv[]) {
-    auto communicator = Ice::initialize( argc, argv);
-    
+    auto communicator = Ice::initialize( argc, argv );
     Ice::ObjectAdapterPtr adapter = communicator->createObjectAdapter("Hello");
     Ice::ObjectPrx hello = adapter->add(new HelloI, communicator->stringToIdentity("hello"));
     adapter->activate();

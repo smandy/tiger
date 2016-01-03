@@ -24,6 +24,9 @@
 Ice.Warn.Connections=1
 
 Ice.Plugin.IceDiscovery=IceDiscovery:createIceDiscovery
+IceDiscovery.DomainId=argo
+IceDiscovery.Address=239.255.1.2
+
 #
 # Network Tracing
 #
@@ -33,7 +36,6 @@ Ice.Plugin.IceDiscovery=IceDiscovery:createIceDiscovery
 # 3 = like 2, but also trace data transfer
 #
 #Ice.Trace.Network=1
-
 #
 # Protocol Tracing
 #

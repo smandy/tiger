@@ -15,9 +15,10 @@ Hello.AdapterId=HelloAdapter
 #
 # Warn about connection exceptions
 #
-Ice.Warn.Connections=1
-
+Ice.Warn.Connections=0
 Ice.Plugin.IceDiscovery=IceDiscovery:createIceDiscovery
+IceDiscovery.DomainId=argo
+IceDiscovery.Address=239.255.1.2
 
 #
 # Network Tracing
@@ -27,7 +28,7 @@ Ice.Plugin.IceDiscovery=IceDiscovery:createIceDiscovery
 # 2 = like 1, but more detailed
 # 3 = like 2, but also trace data transfer
 #
-Ice.Trace.Network=1
+Ice.Trace.Network=0
 
 #
 # Protocol Tracing

@@ -1,7 +1,9 @@
 
 
-Quick note to self.
+# Ice Examples #
 
+
+## Slice Compilation ##
 
 javaSliceBuilder compiles the slice definitions.
 

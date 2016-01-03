@@ -17,8 +17,8 @@ Hello.AdapterId=HelloAdapter
 #
 Ice.Warn.Connections=0
 Ice.Plugin.IceDiscovery=IceDiscovery:createIceDiscovery
-IceDiscovery.DomainId=argo
-IceDiscovery.Address=239.255.1.2
+#IceDiscovery.DomainId=argo
+#IceDiscovery.Address=239.255.1.2
 
 #
 # Network Tracing

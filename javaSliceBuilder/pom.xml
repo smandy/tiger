@@ -45,7 +45,7 @@
                 <taskdef name="slice2java" classname="Slice2JavaTask" classpathref="maven.compile.classpath"/>
                 <mkdir dir="${project.build.directory}/generated-sources" />
                 <slice2java outputdir="${project.build.directory}/generated-sources">
-                  <fileset dir="${basedir}" includes="Hello.ice"/>
+                  <fileset dir="${basedir}/../slice" includes="Hello.ice"/>
                 </slice2java>
               </target>
             </configuration>

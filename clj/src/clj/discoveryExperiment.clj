@@ -26,6 +26,6 @@
 
 (def hello (getHello communicator "hello"))
 
-(def xs (map (fn [x] (.sayHello hello (format "Wayhey %s" x)) ) (range 1 10)) )
+(def xs (doall (map (fn [x] (.sayHello hello (format "banan %s" x)) ) (range 1 5)) ) )
 
 (map println xs)

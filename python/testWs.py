@@ -1,10 +1,19 @@
 import Ice
-import time
+Ice.loadSlice('../slice/Foo.ice')
 
-for i in range(10):
-    communicator = Ice.initialize( [ '--Ice.Config=locator.properties'])
-    pyPrx = communicator.stringToProxy('foo@SimpleApp')
-    x =  pyPrx.ice_getConnection().getInfo()
-    print x
-    break
-    time.sleep(1)
+import argo
+
+communicator = Ice.initialize( [ '--Ice.Config=locator.properties'])
+#pyPrx = communicator.stringToProxy('foo@SimpleApp')
+pyPrx = communicator.stringToProxy('foo@SimpleApp').ice_timeout(500)
+x =  pyPrx.ice_getConnection().getInfo()
+
+print pyPrx, x
+
+pyPrx.ice_ping()
+print pyPrx
+foo = argo.FooPrx.checkedCast( pyPrx)
+print "Woot"
+print foo
+print foo.doit()
+print "Boot"

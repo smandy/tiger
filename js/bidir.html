@@ -1,122 +1,45 @@
 <HTML>
-<BODY>
-  <H1>Woot</H1>
-  <script src="/bower_components/ice/lib/Ice.min.js"></script>
-  <script src="/bower_components/ice/lib/Glacier2.min.js"></script>
-  <script src="/bower_components/ice/lib/IceStorm.min.js"></script>
-  <script src="/bower_components/ice/lib/IceGrid.min.js"></script>
-  <!-- <script src="/bower_components/jquery/dist/jquery.min.js"></script> -->
+  <BODY>
+    <H1>Woot</H1>
+    <script src="/bower_components/ice/lib/Ice.min.js"></script>
+    <script src="/bower_components/ice/lib/Glacier2.min.js"></script>
+    <script src="/bower_components/ice/lib/IceStorm.min.js"></script>
+    <script src="/bower_components/ice/lib/IceGrid.min.js"></script>
+    <script src="/from_repo/jquery-1.7.min.js"></script>
+    <script src="/from_repo/jquery.event.drag-2.2.js"></script>
+    <script src="/bower_components/slickgrid/slick.core.js"></script>
+    <script src="/bower_components/slickgrid/slick.grid.js"></script>
+    <link rel="stylesheet" href="/bower_components/slickgrid/slick.grid.css" type="text/css"/>
+    <link rel="stylesheet" href="/bower_components/slickgrid/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css"/>
+    <script src="./Ticker.js"></script>
 
+    <div id="greeting"></div>
+    <div id="symbol"></div>
+    <div id="bid"></div>
+    <div id="ask"></div>
+    <div id="myGrid" style="width:100%;height:500px;"></div>
 
-
-<script src="/from_repo/jquery-1.7.min.js"></script>
-<script src="/from_repo/jquery.event.drag-2.2.js"></script>
-
-<!--<script src="../slick.core.js"></script> -->
-<!--<script src="../slick.grid.js"></script> -->
-  
-  <script src="/bower_components/slickgrid/slick.core.js"></script>
-  <script src="/bower_components/slickgrid/slick.grid.js"></script>
-  
-  <link rel="stylesheet" href="/bower_components/slickgrid/slick.grid.css" type="text/css"/>
-  <link rel="stylesheet" href="/bower_components/slickgrid/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css"/>
-  
-  <script src="./Ticker.js"></script>
-
-  <div id="greeting"></div>
- <div id="symbol"></div>
- <div id="bid"></div>
- <div id="ask"></div>
- <div id="myGrid" style="width:100%;height:500px;"></div>
-
-  <style>
-    .load-medium {
+    <style>
+      .load-medium {
       color: orange;
       font-weight: bold;
-    }
+      }
 
-    .load-hi {
+      .load-hi {
       color: red;
       font-weight: bold;
-    }
+      }
 
-    .changed {
+      .changed {
       background: pink;
-    }
+      }
 
-    .current-server {
+      .current-server {
       border: 1px solid black;
       background: orange;
-    }
-  </style>
-  
-  <script type="text/javascript">
-
-   var grid;
-   var data = [];
-   var options = {
-     editable: false,
-     enableAddRow: false,
-     enableCellNavigation: true,
-     enableColumnReorder : false
-   };
-   
-   var columns = [
-     {id : "symbol", name: "Symbol", field: "symbol", width: 180},
-     {id : "bidPx",  name: "Bid", field: "bidPx", width: 180},
-     {id : "askPx",  name: "Ask", field: "askPx", width: 180},
-   ];
-   
-   grid = new Slick.Grid("#myGrid", data, columns, options);
-   var communicator = Ice.initialize();
-   //console.log("Communicator is " + communicator);
-   
-   var MyCallBackReceiver = Ice.Class( argo.TickListener, {
-     onTick : function( ticks, current) {
-       $("#symbol").html("<pre>" + ticks[0]['symbol'] + "</pre>");
-       $("#bid").html("<pre>" + ticks[0]['bidPx'] + "</pre>");
-       $("#ask").html("<pre>" + ticks[0]['askPx'] + "</pre>");
-       //data.length = 0;
-
-       for (i = 0;i<ticks.length;i++) {
-         data[i] = ticks[i];
-         grid.invalidateRow(i);
-       }
-       //ticks.forEach( function(x) { data.push(x); } );
-       grid.render();
-     }
-   } );
-   
-   var proxy = communicator.stringToProxy("plant:ws -h localhost -p 10666 -t 2000").ice_twoway();
-   console.log("About to ping " + proxy);
-   
-   var x2 = argo.TickerPlantPrx.checkedCast(proxy).then(
-     function(prx) {
-       //console.log("Called with x " + prx );
-
-       setInterval( function() {
-         prx.sayHello().then( function (s) {
-           console.log("hello returned " + s );
-           $("#greeting").html( "<H1>" + s + "</H1>" );
-         } );
-       } , 2000);
-
-       return communicator.createObjectAdapter("").then(
-         function(adapter) {
-           var r = adapter.addWithUUID( new MyCallBackReceiver() );
-           proxy.ice_getCachedConnection().setAdapter(adapter);
-           //console.log("Subscribing!");
-           var x3 = prx.subscribeWithIdent(r.ice_getIdentity());
-           //console.log(x3);
-           //console.log("It worked");
-         }
-       );
-     },
-     function(ex) {
-       console.log("Called with exception " + ex);
-     } );
-
-
- </script>
-</BODY>
+      }
+    </style>
+    
+    <script src="bidir.js" type="text/javascript" />
+  </BODY>
 </HTML>

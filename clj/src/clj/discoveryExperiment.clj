@@ -8,12 +8,12 @@
 (def communicator
   (let [iid (new Ice.InitializationData)
         props (doto (Ice.Util/createProperties)
-          (.setProperty "Ice.Plugin.Discovery"  "IceLocatorDiscovery:IceDiscovery.PluginFactory")
-          ;;(.setProperty "IceLocatorDiscovery.InstanceName" "tiger1")
-          ;; (.setProperty "Ice.Default.EndpointSelection" "Ordered")
-          )]
-     (set! (. iid properties) props)
-     (Ice.Util/initialize iid)))
+                (.setProperty "Ice.Plugin.Discovery"  "IceLocatorDiscovery:IceDiscovery.PluginFactory")
+                ;;(.setProperty "IceLocatorDiscovery.InstanceName" "tiger1")
+                ;; (.setProperty "Ice.Default.EndpointSelection" "Ordered")
+                )]
+    (set! (. iid properties) props)
+    (Ice.Util/initialize iid)))
 
 (-> communicator
     (.stringToProxy "hello")
@@ -26,6 +26,7 @@
 
 (def hello (getHello communicator "hello"))
 
-(def xs (doall (map (fn [x] (.sayHello hello (format "banan %s" x)) ) (range 1 5)) ) )
+(defn xs [foo]
+  (doall (map (fn [x] (.sayHello hello foo) ) (range 1 2))))
 
-(map println xs)
+(xs "Clojure3")

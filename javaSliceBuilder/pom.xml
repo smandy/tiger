@@ -46,6 +46,7 @@
                 <mkdir dir="${project.build.directory}/generated-sources" />
                 <slice2java outputdir="${project.build.directory}/generated-sources">
                   <fileset dir="${basedir}/../slice" includes="Hello.ice"/>
+                  <fileset dir="${basedir}/../slice" includes="Foo.ice"/>
                 </slice2java>
               </target>
             </configuration>

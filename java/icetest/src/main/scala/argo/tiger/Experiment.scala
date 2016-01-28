@@ -1,7 +1,7 @@
 package argo.tiger
 
 import Ice.Current
-import argo.{FooPrxHelper, _FooDisp}
+import argo.{AMD_Foo_doit, AMD_Foo_doitAgain, FooPrxHelper, _FooDisp}
 import org.apache.logging.log4j.LogManager
 import org.joda.time.DateTime
 
@@ -12,15 +12,18 @@ object MyFoo {
 class MyFoo extends _FooDisp {
   import MyFoo._
 
-  override def doit(__current: Current): String = {
-    log.info("doit from scala")
-    "Doit from scala " + new DateTime();
+
+
+  override def doit_async(cb: AMD_Foo_doit, __current: Current): Unit = {
+    log.info("Doit from scala")
+    cb.ice_response( s"Doit from scala ${new DateTime}")
   }
 
-  override def doitAgain(__current: Current): String = {
-    log.info("doitAgain from scala")
-    "doitAgain from scala " + new DateTime();
+  override def doitAgain_async(cb: AMD_Foo_doitAgain, __current: Current): Unit = {
+    log.info("Doit again")
+    cb.ice_response( s"Doit from scala agani ${new DateTime}")
   }
+
 }
 
 object Experiment {

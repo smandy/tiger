@@ -4,8 +4,8 @@ import Ice
 import sys
 from datetime import datetime
 
+print "Starting"
 Ice.loadSlice('../slice/Foo.ice')
-
 import argo
 
 class MyFoo( argo.Foo):
@@ -21,7 +21,6 @@ if __name__=='__main__':
     communicator = Ice.initialize(sys.argv)
     print "I've started up"
     adapter = communicator.createObjectAdapter("SimpleApp")
-
     print "Create impl"
     foo = MyFoo()
     adapter.add( foo, communicator.stringToIdentity('foo'))

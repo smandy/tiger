@@ -13,7 +13,7 @@ class MyService( argo.SimpleService):
 
 adapter = communicator.createObjectAdapterWithEndpoints("SimpleServiceImpl", "tcp")
 
-adapter.add(MyService(), communicator.stringToIdentity("instance"))
+adapter.add(MyService(), communicator.stringToIdentity("hello"))
 adapter.activate()
 
 communicator.waitForShutdown()

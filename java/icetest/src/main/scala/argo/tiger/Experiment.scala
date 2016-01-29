@@ -12,8 +12,6 @@ object MyFoo {
 class MyFoo extends _FooDisp {
   import MyFoo._
 
-
-
   override def doit_async(cb: AMD_Foo_doit, __current: Current): Unit = {
     log.info("Doit from scala")
     cb.ice_response( s"Doit from scala ${new DateTime}")
@@ -23,7 +21,6 @@ class MyFoo extends _FooDisp {
     log.info("Doit again")
     cb.ice_response( s"Doit from scala agani ${new DateTime}")
   }
-
 }
 
 object Experiment {

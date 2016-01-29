@@ -9,6 +9,9 @@
   (let [iid (new Ice.InitializationData)
         props (doto (Ice.Util/createProperties)
                 (.setProperty "Ice.Plugin.Discovery"  "IceLocatorDiscovery:IceDiscovery.PluginFactory")
+                (.setProperty "Ice.Trace.Network"  "2")
+                (.setProperty "Ice.Trace.Protocol"  "2")
+
                 ;;(.setProperty "IceLocatorDiscovery.InstanceName" "tiger1")
                 ;; (.setProperty "Ice.Default.EndpointSelection" "Ordered")
                 )]
@@ -30,3 +33,7 @@
   (doall (map (fn [x] (.sayHello hello foo) ) (range 1 2))))
 
 (xs "Clojure3")
+
+(.sayHello hello "Andy")
+
+

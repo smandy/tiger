@@ -7,10 +7,11 @@ using namespace Demo;
 
 class HelloI : public Hello {
 public:
-    virtual std::string sayHello(const std::string& name,const Ice::Current&) {
+    virtual std::string sayHello(const std::string& name,
+                                 const Ice::Current&) {
         //cout << "Hello World!" << endl;
         std::ostringstream oss;
-        oss << "Hello " << name << " !!!";
+        oss << "Woot " << name << " !!!";
         std::cout << oss.str() << std::endl;
         return oss.str();
     }

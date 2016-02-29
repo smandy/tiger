@@ -11,7 +11,6 @@
                 (.setProperty "Ice.Plugin.Discovery"  "IceLocatorDiscovery:IceDiscovery.PluginFactory")
                 (.setProperty "Ice.Trace.Network"  "2")
                 (.setProperty "Ice.Trace.Protocol"  "2")
-
                 ;;(.setProperty "IceLocatorDiscovery.InstanceName" "tiger1")
                 ;; (.setProperty "Ice.Default.EndpointSelection" "Ordered")
                 )]
@@ -27,13 +26,12 @@
         ret (HelloPrxHelper/checkedCast prx)]
     ret))
 
-(def hello (getHello communicator "hello"))
+;; (defn xs [foo]
+;;   (doall (map (fn [x] (.sayHello hello foo) ) (range 1 2))))
+;; (xs "Clojure3")
 
-(defn xs [foo]
-  (doall (map (fn [x] (.sayHello hello foo) ) (range 1 2))))
+(.sayHello (getHello communicator "hello") "dude")
 
-(xs "Clojure3")
 
-(.sayHello hello "Andy")
 
 

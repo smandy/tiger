@@ -1,0 +1,31 @@
+
+A > B
+B < C
+C > D
+
+# Cycle - should reject. Uncomment 'c < a'
+# introduces a cycle
+
+a < b
+b < c
+#c < a
+
+
+G > I
+G < J
+I < I1
+I > I2
+J < J1
+J > J2
+
+X > Z
+Y < Z
+
+A1 < A2
+A2 < A3
+A3 < A4
+A4 < A5
+
+#Z < A1
+Z > A2
+

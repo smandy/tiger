@@ -1,83 +1,84 @@
+* Ice Examples
 
-* Slice Compilaton
+** Slice Compilaton
 
-javaSliceBuilder compiles the slice definitions.
+ javaSliceBuilder compiles the slice definitions.
 
-Run mvn package install to get the slice definitions converted to java
-and into your mvn repo. This makes them available to clojure.
+ Run mvn package install to get the slice definitions converted to java
+ and into your mvn repo. This makes them available to clojure.
 
-* Running Grid Node
+** Running Grid Node
 
-  `andy@raffles:~/repos/tiger$ icegridnode --Ice.Config=config/icegrid/raffles.config`
+   `andy@raffles:~/repos/tiger$ icegridnode --Ice.Config=config/icegrid/raffles.config`
 
-* Zeroc public repo
+** Zeroc public repo
     
-  Have put in the java pom for now!
+   Have put in the java pom for now!
 
-* Maven jwd experiments
+** Maven jwd experiments
 
-  http://stackoverflow.com/questions/574594/how-can-i-create-an-executable-jar-with-dependencies-using-maven
+   http://stackoverflow.com/questions/574594/how-can-i-create-an-executable-jar-with-dependencies-using-maven
 
-  mvn assembly:assembly 
+   mvn assembly:assembly 
     
-  should do the right thing. Added a bit for the mvm assembly plugin
-  into the pom.
+   should do the right thing. Added a bit for the mvm assembly plugin
+   into the pom.
 
-* TODO Java niggles still haven't got antrun tasks figured out.
+** TODO Java niggles still haven't got antrun tasks figured out.
 
-  For now...
+   For now...
 
-  andy@raffles:~/repos/tiger/java$ slice2java --output-dir icetest/src/main/java ../slice/Foo.ice
+   andy@raffles:~/repos/tiger/java$ slice2java --output-dir icetest/src/main/java ../slice/Foo.ice
 
 
-* Handy Node Stuff
+** Handy Node Stuff
 
-  | Gulp Ice Builder | https://github.com/zeroc-ice/gulp-ice-builder |
-  | Bower Ice        | https://github.com/zeroc-ice/bower-ice        |
+   | Gulp Ice Builder | https://github.com/zeroc-ice/gulp-ice-builder |
+   | Bower Ice        | https://github.com/zeroc-ice/bower-ice        |
 
-* Ice Javascript proof of principle
+** Ice Javascript proof of principle
 
-  Start webserver in tiger/js
+   Start webserver in tiger/js
 
-  andy@raffles:~/repos/tiger/js$ npm run gulp:watch
+   andy@raffles:~/repos/tiger/js$ npm run gulp:watch
 
-  | Simple Example           | http://localhost:8080/test.html          |
-  | Bidir SlickGrid          | http://localhost:8080/bidir.html         |
-  | React Example w/ Locator | http://localhost:8080/locator_react.html |
+   | Simple Example           | http://localhost:8080/test.html          |
+   | Bidir SlickGrid          | http://localhost:8080/bidir.html         |
+   | React Example w/ Locator | http://localhost:8080/locator_react.html |
 
-* Python Tickerplant
-** Killer
+** Python Tickerplant
+*** Killer
      
-   ps -auxw | grep ticker | grep -v grep | gawk '{ print $2 }' | xargs kill -9
+    ps -auxw | grep ticker | grep -v grep | gawk '{ print $2 }' | xargs kill -9
 
-** Running
+*** Running
 
-   andy@raffles:~/repos/tiger/python$ python tickerPlant.py
+    andy@raffles:~/repos/tiger/python$ python tickerPlant.py
 
-* Bidir connections
+** Bidir connections
 
-  Beware. Doing it this usual way by specifying ptr in the idl doesn't work.
+   Beware. Doing it this usual way by specifying ptr in the idl doesn't work.
 
-  Probably best to define both methods in the IDL ( by reference and
-  by identity). Should just work.
+   Probably best to define both methods in the IDL ( by reference and
+   by identity). Should just work.
 
-* Discovery SideProject
+** Discovery SideProject
 
-  In ICE 6 multicast disovery was added. Wrote a simple app in the
-  discovery subdirectory ( scons to build) that would build the two apps.
+   In ICE 6 multicast disovery was added. Wrote a simple app in the
+   discovery subdirectory ( scons to build) that would build the two apps.
 
-** Server
+*** Server
    
-   ./Server --Ice.Config=config.server
+    ./Server --Ice.Config=config.server
 
-** Client 
+*** Client 
 
-   ./Client --Ice.Config=config.client
+    ./Client --Ice.Config=config.client
 
-** Clojure Example  
+*** Clojure Example  
 
-   clj/DiscoveryExperiment.clj chats to
+    clj/DiscoveryExperiment.clj chats to
 
-   this guy NB Make sure the domain and multicast addresses sync up.
+    this guy NB Make sure the domain and multicast addresses sync up.
 
 

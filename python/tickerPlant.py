@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 import time
 import Ice
-import sys
-import time
 from datetime import  datetime
 
 ## if not slice_dir:

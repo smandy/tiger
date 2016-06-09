@@ -43,7 +43,7 @@ function slice2js(options)
     if(ICE_HOME)
     {
         defaults.exe = path.join(ICE_HOME, 'cpp', 'bin', process.platform == "win32" ? "slice2js.exe" : "slice2js");
-        defaults.args = defaults.args.concat(["-I" + path.join(ICE_HOME, 'slice')])
+        defaults.args = defaults.args.concat(["-I" + path.join(ICE_HOME, 'slice')]);
     }
     return iceBuilder.compile(defaults);
 }

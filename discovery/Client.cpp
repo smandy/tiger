@@ -1,6 +1,5 @@
 #include <Ice/Ice.h>
 #include <IceUtil/IceUtil.h>
-
 #include <Hello.h>
 
 using namespace std;
@@ -9,7 +8,7 @@ using namespace Demo;
 int main(int argc, char* argv[]) {
     auto communicator = Ice::initialize( argc, argv);
     HelloPrx hello = HelloPrx::uncheckedCast( communicator->stringToProxy("hello"));
-    
+
     if(!hello) {
         cerr << argv[0] << ": invalid reply" << endl;
         return EXIT_FAILURE;

@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 from discoverExperiment import *
 
+import argo
+
 class MyService( argo.SimpleService):
     def sayHello(self, person, current):
         return "Hello %s!" % person

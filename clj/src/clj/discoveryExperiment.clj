@@ -1,5 +1,7 @@
 (ns argo.icetest)
 
+// andy@raffles:/mnt/hdd/andy/repos/tiger/discovery$ ./Server --Ice.Config=config.server
+
 (import Ice.Util)
 (import Demo.Hello)
 (import Demo.HelloPrx)
@@ -11,6 +13,10 @@
                 (.setProperty "Ice.Plugin.Discovery"  "IceLocatorDiscovery:IceDiscovery.PluginFactory")
                 (.setProperty "Ice.Trace.Network"  "2")
                 (.setProperty "Ice.Trace.Protocol"  "2")
+
+                (.setProperty "IceDiscovery.DomainId"  "argo")
+                (.setProperty "IceDiscovery.Address"   "239.255.1.2")
+
                 ;;(.setProperty "IceLocatorDiscovery.InstanceName" "tiger1")
                 ;; (.setProperty "Ice.Default.EndpointSelection" "Ordered")
                 )]
@@ -25,6 +31,8 @@
   (let [prx (.stringToProxy communicator strPrx )
         ret (HelloPrxHelper/checkedCast prx)]
     ret))
+
+(getHello communicator "hello")
 
 ;; (defn xs [foo]
 ;;   (doall (map (fn [x] (.sayHello hello foo) ) (range 1 2))))

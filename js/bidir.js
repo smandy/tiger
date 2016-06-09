@@ -7,6 +7,8 @@ var options = {
     enableColumnReorder : false
 };
 
+console.log("Bidir loading");
+
 var columns = [
     {id : "symbol", name: "Symbol", field: "symbol", width: 180},
     {id : "bidPx",  name: "Bid", field: "bidPx", width: 180},
@@ -36,8 +38,8 @@ var x2 = argo.TickerPlantPrx.checkedCast(proxy).then(
     function(prx) {
         setInterval( function() {
             prx.sayHello().then( function (s) {
-                console.log("hello returned " + s );
-                $("#greeting").html( "<H1>" + s + "</H1>" );
+                //console.log("hello returned " + s );
+                $("#greeting").html( "<H1>" + "Got " + s + "</H1>" );
             } );
         } , 2000);
 

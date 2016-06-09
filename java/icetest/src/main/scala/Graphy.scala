@@ -26,7 +26,7 @@ object Graph {
         case Array(a, ">", b) => DirectedEdge(Right, a, b)
         case Array(a, "<", b) => DirectedEdge(Left, a, b)
         case x => { println(s"Cant match ${x.toList}"); require(false); null}
-      }
+    }
 
     val g = new Graph(directedEdges)
 

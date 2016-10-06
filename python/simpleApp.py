@@ -9,13 +9,13 @@ Ice.loadSlice('../slice/Foo.ice')
 import argo
 
 class MyFoo( argo.Foo):
-    def doit(self, current):
+    def doit_async(self, cb, current):
         print "Python doit"
-        return "doit from python %s" % datetime.now()
+        cb.ice_response("doit from python %s" % datetime.now())
 
-    def doitAgain(self, current):
+    def doitAgain_async(self, cb, current):
         print "Python doitagain"
-        return "doitAgain from python %s" % datetime.now()
+        cb.ice_respone( "doitAgain from python %s" % datetime.now())
 
 if __name__=='__main__':
     communicator = Ice.initialize(sys.argv)
@@ -28,5 +28,9 @@ if __name__=='__main__':
     adapter.activate()
     print "Waiting for shutdown"
     communicator.waitForShutdown()
-    print "Shutting down"
+
+    print "Destroy adapter"
+    adapter.destroy()
+    print "Destroy communicator"
+    communicator.destroy()
     

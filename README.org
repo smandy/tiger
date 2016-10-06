@@ -30,7 +30,6 @@
 
    andy@raffles:~/repos/tiger/java$ slice2java --output-dir icetest/src/main/java ../slice/Foo.ice
 
-
 ** Handy Node Stuff
 
    | Gulp Ice Builder | https://github.com/zeroc-ice/gulp-ice-builder |
@@ -74,6 +73,7 @@
 *** Client 
 
     ./Client --Ice.Config=config.client
+
 
 *** Clojure Example  
 

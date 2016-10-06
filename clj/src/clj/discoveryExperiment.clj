@@ -1,6 +1,6 @@
 (ns argo.icetest)
 
-// andy@raffles:/mnt/hdd/andy/repos/tiger/discovery$ ./Server --Ice.Config=config.server
+; andy@raffles:/mnt/hdd/andy/repos/tiger/discovery$ ./Server --Ice.Config=config.server
 
 (import Ice.Util)
 (import Demo.Hello)

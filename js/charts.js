@@ -1,7 +1,6 @@
 angular.module('app').controller('MainCtrl', ['$scope', '$timeout', 'gliffy', 'DataService',  function ($scope, $timeout, gliffy, DataService) {
     $scope.gliffy = gliffy;
     $scope.messages = [ { counter : 0 } ];
-    
     $scope.showRow1 = true;
     $scope.showRow2 = true;
     $scope.showRow3 = true;
@@ -24,6 +23,12 @@ angular.module('app').controller('MainCtrl', ['$scope', '$timeout', 'gliffy', 'D
         arb4: false
     };
 
+    $scope.doit = function() {
+        $scope.prx.sayHello().then( function(s) {
+            console.log("Got " + s + " back from plant");
+        });
+    };
+    
     $scope.emitterClass = function(b) {
         //console.log("Chpoink");
         var prefix = "well col-sm-3 div-150 ";
@@ -51,14 +56,14 @@ angular.module('app').controller('MainCtrl', ['$scope', '$timeout', 'gliffy', 'D
                         //yaxis: 1,
                         label: 'Woot' }];
 
-    $scope.row3Dataset = [{ data: DataService.ts3(),
-                            backgroundColor : 'black',
-                            color : 'lightgreen',
-                            steps : true,
-                            lineWidth : 3,
-                            //yaxis: 1,
-                            label: 'Woot' }];
-
+    $scope.row3Dataset = [ { data: DataService.ts3(),
+                             backgroundColor : 'black',
+                             color : 'lightgreen',
+                             steps : true,
+                             lineWidth : 3,
+                             //yaxis: 1,
+                             label: 'Woot'} ];
+    
     $scope.row3Options = {
         series: {
             lines: { show: true,
@@ -106,6 +111,8 @@ angular.module('app').controller('MainCtrl', ['$scope', '$timeout', 'gliffy', 'D
         
         var x2 = argo.TickerPlantPrx.checkedCast(proxy).then(
             function(prx) {
+                $scope.prx = prx;
+                
                 setInterval( function() {
                     prx.sayHello().then( function (s) {
                         //console.log("hello returned " + s );

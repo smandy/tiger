@@ -1,0 +1,22 @@
+.div-100 { 
+    height: 100px; }
+
+.div-150 { 
+    height: 150px; }
+
+.div-200 { 
+    height: 200px; }
+
+.bg-red {
+    background-color: red;
+    color: white;
+}
+.bg-orange {
+    background-color: orange;
+    color: black;
+}
+
+.bg-green {
+    background-color: #06fa00;
+    color: black;
+}

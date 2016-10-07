@@ -49,6 +49,7 @@
         17, 
         false);
     Slice.defineSequence(argo, "TickSeqHelper", "argo.Tick", false);
+    Slice.defineSequence(argo, "TickImageHelper", "argo.TickSeqHelper", false);
 
     argo.TickListener = Slice.defineObject(
         undefined,
@@ -63,7 +64,8 @@
 
     Slice.defineOperations(argo.TickListener, argo.TickListenerPrx,
     {
-        "onTick": [, , , , , , [["argo.TickSeqHelper"]], , , , ]
+        "onTick": [, , , , , , [["argo.TickSeqHelper"]], , , , ],
+        "onImage": [, , , , , , [["argo.TickImageHelper"]], , , , ]
     });
 
     argo.TickerPlant = Slice.defineObject(

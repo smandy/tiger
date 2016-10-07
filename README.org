@@ -54,6 +54,11 @@
 
     andy@raffles:~/repos/tiger/python$ python tickerPlant.py
 
+** TODO - SLICE2JS still not automated. ( Found out when adding onImage - doh! )
+
+   From the tiger/js directory.
+   2008  slice2js ../slice/Ticker.ice
+
 ** Bidir connections
 
    Beware. Doing it this usual way by specifying ptr in the idl doesn't work.

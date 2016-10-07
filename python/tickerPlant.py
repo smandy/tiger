@@ -30,13 +30,13 @@ class Stock:
     def tick(self):
         self.bidPx += random.choice( [0.01, -0.01, 0.0])
         self.spread = randomSpread()
-        
+
 stocks = [ Stock(x) for x in set(["CSCO.O", "MSFT.O", "VOD.O",
-                              "GLW.O", "PEB.O", 
-                              "PUMA.O", "IBM.O", "AAPL.O", "JDSU.O", 
-                              "JNPR.O", "SOLC.O", "MFNX.O", "C.O",
-                              "A.O", "SPCS.O", "CRA.A", 
-                              "C.O", "MSFT.O", "SNWL.O", "CHINA.O"]) ]
+                                  "GLW.O", "PEB.O", 
+                                  "PUMA.O", "IBM.O", "AAPL.O", "JDSU.O", 
+                                  "JNPR.O", "SOLC.O", "MFNX.O", "C.O",
+                                  "A.O", "SPCS.O", "CRA.A", 
+                                  "C.O", "MSFT.O", "SNWL.O", "CHINA.O"]) ]
 
 def tickStocks():
     ret = ["bac:%d" % (time.time() * 1000000)]
@@ -45,7 +45,7 @@ def tickStocks():
         ret.append( "%s,%s,%s" % (s.name, s.bidPx, s.bidPx + s.spread))
     m = ":".join(ret)
     print m
-    producer.send_messages( topic, m )
+    #producer.send_messages( topic, m )
 
 class MyPlant(argo.TickerPlant):
     def __init__(self):
@@ -57,6 +57,7 @@ class MyPlant(argo.TickerPlant):
                                                "A.O", "SPCS.O", "CRA.A", 
                                                "C.O", "MSFT.O", "SNWL.O", "CHINA.O"]) ]
         self.running = True
+        self.history = []
         
     def evict( self, l):
         def ret(*args):
@@ -80,9 +81,13 @@ class MyPlant(argo.TickerPlant):
         print "Subscribe %s" % l
         self.listeners[l] = None
 
+    def fail(self, *args):
+        print "Fail! %s" % str(args)
+        
     def subscribeWithIdent(self, l, cur):
-        print "Subscribe %s" % communicator.identityToString(l)
+        print "Subscribe with ident %s" % communicator.identityToString(l)
         prx = argo.TickListenerPrx.uncheckedCast(cur.con.createProxy(l))
+        prx.begin_onImage( self.history, _ex = self.fail )
         self.listeners[prx] = None
 
     def tick(self):
@@ -93,6 +98,7 @@ class MyPlant(argo.TickerPlant):
         for q,v in self.listeners.items():
             #print "Ticking %s %s" % (q,v)
             q.begin_onTick( tix, _ex = self.evict(q))
+        self.history = (self.history + [tix])[-300:]
         #print "Boop"
         
 if __name__=='__main__':

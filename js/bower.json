@@ -10,14 +10,25 @@
   },
   "license": "GPL-2.0",
   "dependencies": {
-    "foundation": "~5.5.0",
-    "jquery": "*",
+      "foundation": "~5.5.0",
+      "angular"     : "*",
+      "angular-bootstrap"     : "*",
+      "bootswatch-dist"    : "3.3.5-darkly",
+      "jquery": "*",
+      "flot": "*",
+      "jquery-flot" : "*",
       "animo.js": "~1.0.2",
-    "spin.js": "~2.0.2",
-    "nouislider": "~7.0.10",
-    "highlightjs": "~8.4.0",
-    "ice": "~3.6.1",
-    "react": "~0.13.3",
-    "slickgrid": "*"
+      "spin.js": "~2.0.2",
+      "nouislider": "~7.0.10",
+      "highlightjs": "~8.4.0",
+      "ice": "~3.6.1",
+      "react": "~0.13.3",
+      "slickgrid": "*",
+      "angular"     : "*",
+      "angular-bootstrap"     : "*",
+      "angular-grid"     : "*",
+      "angular-flot" : "*",
+      "bootswatch-dist"    : "3.3.5-darkly"
+
   }
 }

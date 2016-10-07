@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from discoverExperiment import *
+from discoverExperiment import communicator
 
 import argo
 

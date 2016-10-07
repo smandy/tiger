@@ -34,7 +34,6 @@ invocations += [ (x.end_doitAgain , x.begin_doitAgain() ) for x in proxies ]
 for getter, invocation in invocations:
     print "%s -> %s" % (getter, getter(invocation))
 
-import functools
 from pprint import pprint as pp
 results = []
 

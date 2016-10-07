@@ -1,5 +1,4 @@
 import Ice
-import sys
 
 from common import getUUID
 

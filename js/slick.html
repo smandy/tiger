@@ -92,8 +92,8 @@
       var d = (data[i] = {});
       d["title"] = "Task " + i;
       d["priority"] = "Medium";
-    }
-
+                        }
+                        
     grid = new Slick.Grid("#myGrid", data, columns, options);
 
     grid.onContextMenu.subscribe(function (e) {
@@ -105,26 +105,31 @@
           .css("left", e.pageX)
           .show();
 
-      $("body").one("click", function () {
-        $("#contextMenu").hide();
-      });
-    });
+                        $("body").one("click", function (e) {
+                        $("#contextMenu").hide();
+                        console.log("Boom");
+                        });
+                        });
 
-    grid.onClick.subscribe(function (e) {
-      var cell = grid.getCellFromEvent(e);
-      if (grid.getColumns()[cell.cell].id == "priority") {
-        if (!grid.getEditorLock().commitCurrentEdit()) {
-          return;
-        }
-
-        var states = { "Low": "Medium", "Medium": "High", "High": "Low" };
-        data[cell.row].priority = states[data[cell.row].priority];
-        grid.updateRow(cell.row);
-        e.stopPropagation();
-      }
-    });
-  });
-
+                        grid.onClick.subscribe(function (e) {
+                        console.log("onClick");
+                        var cell = grid.getCellFromEvent(e);
+                        if (grid.getColumns()[cell.cell].id == "priority") {
+                        if (!grid.getEditorLock().commitCurrentEdit()) {
+                        return;
+                        }
+                        
+                        var states = { "Low": "Medium", "Medium": "High", "High": "Low" };
+                        
+                        var newState = states[data[cell.row].priority];
+                        data[cell.row].priority = newState;
+                        console.log("New state is " + newState);
+                        grid.updateRow(cell.row);
+                        e.stopPropagation();
+                        }
+                        });
+                        });
+                        
   $("#contextMenu").click(function (e) {
     if (!$(e.target).is("li")) {
       return;

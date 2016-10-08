@@ -102,7 +102,6 @@ angular.module('app').controller('MainCtrl', ['$scope', '$timeout', 'gliffy', 'D
     };
     
     $timeout( function() {
-
         console.log("Creating communicator");
         var communicator = Ice.initialize();
 

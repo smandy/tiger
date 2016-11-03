@@ -1,6 +1,7 @@
 var iid = new Ice.InitializationData();
 iid.properties = Ice.createProperties();
 iid.properties.setProperty("Ice.Default.Locator", "IceGrid/Locator:ws -h localhost -p 4063");
+
 var communicator = Ice.initialize([], iid);
 
 var FooCaller = React.createClass({
@@ -11,7 +12,7 @@ var FooCaller = React.createClass({
                  strProxy : this.props.strProxy,
                  counter : 0 };
     },
-    componentDidMount: function(){
+    componentDidMount: function() {
         this.timer = setInterval(this.ping, 2000);
     },
     componentWillUnmount: function(){
@@ -20,31 +21,22 @@ var FooCaller = React.createClass({
     mySetState : function(x) {
         this.setState(x);
     },
-    ping : function(){
+    ping : function() {
         var outer = this;
-        Ice.Promise.try( function() {
-            outer.state.proxy.doit().then(
-                function(ret) {
-                    // var newState = { status : "Success " + ret,
-                    //     proxy  : outer.state.proxy ,
-                    //     strProxy : outer.state.strProxy,
-                    //     counter : outer.state.counter + 1,
-                    //     date : new Date() };
-                    var newState = outer.state;
-                    newState.counter = newState.counter + 1;
-                    newState.date = new Date();
-                    newState.status = "Success " + ret;
-                    outer.mySetState(newState);
-                },
-                function (ex) {
-                    var state = outer.state;
-                    state.status = "Failure " + ret;
-                    outer.mySetState( state );
-                }
-            );
-        } ).exception( function (ex) {
-            console.log(ex);
-        } );
+        outer.state.proxy.doit().then(
+            function(ret) {
+                var newState = outer.state;
+                newState.counter = newState.counter + 1;
+                newState.date = new Date();
+                newState.status = "Success " + ret;
+                outer.mySetState(newState);
+            },
+            function (ex) {
+                var state = outer.state;
+                state.status = "Failure " + ret;
+                outer.mySetState( state );
+            }
+        );
     },
     render: function() {
         var d = new Date();
@@ -71,8 +63,3 @@ React.render(
         <FooCaller strProxy="foo@SimpleJavaApp"/>,
     document.getElementById("simpleJavaApp")
 );
-
-
-
-
-

@@ -1,6 +1,5 @@
 #include "Ice/Ice.h"
 #include "IceUtil/IceUtil.h"
-
 #include "Foo.h"
 #include <iostream>
 #include <memory>
@@ -9,16 +8,15 @@
 using namespace std;
 
 class MyFoo : public argo::Foo {
-
   void doit_async(const ::argo::AMD_Foo_doitPtr& ret, const ::Ice::Current& = ::Ice::Current()) {
     std::cout << "doit async" << std::endl;
     ret->ice_response("doit from cpp");
-  };
+  }
 
   void doitAgain_async(const ::argo::AMD_Foo_doitAgainPtr& ret, const ::Ice::Current& = ::Ice::Current()) {
     std::cout << "doit again async" << std::endl;
     ret->ice_response("doiit again from cpp");
-  };
+  }
 };
 
 int main(int argc, char *argv[]) {
@@ -43,4 +41,4 @@ int main(int argc, char *argv[]) {
   
   adapter->destroy();
   comm->destroy();
-};
+}

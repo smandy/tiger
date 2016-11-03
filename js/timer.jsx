@@ -6,10 +6,8 @@ var TimerExample = React.createClass({
     },
 
     componentDidMount: function(){
-
         // componentDidMount is called by react when the component 
         // has been rendered on the page. We can set the interval here:
-
         this.timer = setInterval(this.tick, 50);
     },
 

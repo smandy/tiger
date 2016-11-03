@@ -1,5 +1,4 @@
 * Ice Examples
-
 ** Slice Compilaton
 
  javaSliceBuilder compiles the slice definitions.

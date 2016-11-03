@@ -13,12 +13,16 @@
 #include <math.h>
 #include <SDL.h>
 #include "SDL_ttf.h"
-
 #include "Ice/Ice.h"
-
 #include "Ticker.h"
+#include <spdlog/spdlog.h>
+#include <memory>
+
+#include <mutex>
 
 using namespace std;
+
+using loggerType = std::shared_ptr<spdlog::logger>;
 
 uint32_t renderCallback(uint32_t currentInterval, void *p) {
   SDL_Event event;
@@ -26,6 +30,8 @@ uint32_t renderCallback(uint32_t currentInterval, void *p) {
   /* In this example, our callback pushes a function
   into the queue, and causes our callback to be called again at the
   same interval: */
+
+  mutex m;
 
   userevent.type = SDL_USEREVENT;
   userevent.code = 0;
@@ -39,27 +45,52 @@ uint32_t renderCallback(uint32_t currentInterval, void *p) {
   return (currentInterval);
 }
 
-class MyTickerListener : public argo::TickListener {
-    virtual void onTick(const ::argo::TickSeq&, const ::Ice::Current& = ::Ice::Current()) {
-    };
-    
-    virtual void onImage(const ::argo::TickImage&, const ::Ice::Current& = ::Ice::Current()) {
-    };
-};
-
-class SDLViewer {
+class SDLViewer : public argo::TickListener {
   SDL_Window *window;
   SDL_Renderer *renderer;
   TTF_Font *font;
   ::Ice::CommunicatorPtr communicator;
-    MyTickerListener listener;
+  loggerType log;
 
+    SDL_Color WHITE { 255,255,255,255 };
+    SDL_Color RED   { 255,0,0,255 };
+    SDL_Color GREEN { 0,255,0,255 };
+    
 public:
   int width, height;
+  std::map<std::string, argo::Tick> ticks;
+  std::mutex m;
+
+  virtual void onTick(const ::argo::TickSeq &xs,
+                      const ::Ice::Current & = ::Ice::Current()) {
+      //cout << "OnTick\n";
+
+    {
+      lock_guard<mutex>{ m };
+      for (auto &x : xs) { // XXX:
+        ticks[x.symbol] = x;
+      };
+    }
+  };
+
+  virtual void onImage(const ::argo::TickImage &img,
+                       const ::Ice::Current & = ::Ice::Current()) {
+      //cout << "OnImage\n";
+    {
+      lock_guard<mutex>{ m };
+      // TODO: icks.clear();
+      for (auto &seq : img) {
+        for (auto &p : seq) {
+          ticks[p.symbol] = p;
+        };
+      };
+    }
+  }
 
   SDLViewer(::Ice::CommunicatorPtr _communicator, uint32_t _width,
             uint32_t _height)
-      : communicator(_communicator), width(_width), height(_height) {
+      : communicator(_communicator), width(_width), height(_height),
+        log(spdlog::get("log")) {
     // Initialize SDL
     // ==========================================================
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -100,6 +131,25 @@ public:
     // ==========================================================
     SDL_RenderSetLogicalSize(renderer, width, height);
     auto x = SDL_AddTimer(200, renderCallback, nullptr);
+
+    auto adapter = communicator->createObjectAdapterWithEndpoints("", "tcp");
+    adapter->activate();
+    auto myPrx =
+        argo::TickListenerPrx::uncheckedCast(adapter->addWithUUID(this));
+
+    auto tmpPrx = communicator->stringToProxy("plant");
+
+    std::cout << "Ping\n";
+    tmpPrx->ice_ping();
+    std::cout << "Pong\n";
+
+    std::cout << "Proxy is " << communicator->proxyToString(tmpPrx)
+              << std::endl;
+    auto plant = argo::TickerPlantPrx::checkedCast(tmpPrx);
+    std::cout << "Plant is " << plant << std::endl;
+
+    plant->subscribe(myPrx);
+    // plant->begin_subscribe(myPrx, [this]() { log->info("Called"); } );
   };
 
   void render() {
@@ -114,7 +164,25 @@ public:
 
     SDL_Color c{ 255, 255, 255, 255 };
 
-    auto surf2 = TTF_RenderText_Solid(font, "Woot", c);
+    std::ostringstream oss;
+    // oss << "Woot " << ticks.size() << std::endl;
+
+    {
+      lock_guard<mutex>{ m };
+      int j = 20;
+      for (auto &p : ticks) {
+          text(20, j, p.second.symbol, WHITE);
+          text(200, j, std::to_string(p.second.bidPx), RED);
+          text(400, j, std::to_string(p.second.askPx), GREEN);
+        j += 20;
+      }
+    }
+    // TODO - update ticks
+    SDL_RenderPresent(renderer);
+  };
+
+    void text(int32_t x, int32_t y, std::string s, SDL_Color c) {
+    auto surf2 = TTF_RenderText_Solid(font, s.c_str(), c);
     if (!surf2) {
       printf("TTF_RenderText: %s\n", TTF_GetError());
     }
@@ -128,12 +196,9 @@ public:
     auto w = surf2->w;
 
     SDL_FreeSurface(surf2);
-    SDL_Rect dest = { 20, 20, w, h };
+    SDL_Rect dest = { x, y, w, h };
     SDL_RenderCopy(renderer, texture, nullptr, &dest);
     SDL_DestroyTexture(texture);
-
-    // TODO - update ticks
-    SDL_RenderPresent(renderer);
   };
 
   void mainLoop() {
@@ -200,13 +265,13 @@ public:
 
 int main(int argc, char **argv) {
   int done;
-
   auto communicator = Ice::initialize(argc, argv);
-
+  auto log =
+      spdlog::rotating_logger_mt("sdlLog", "/tmp/sdlLog", 1048576 * 5, 3);
   SDLViewer app(communicator, 800, 600);
   // MyHandler eventHandler(app.renderer, 2.0f, 0.98);
-  std::cout << "Enter mainloop" << std::endl;
+  log->info("Enter mainloop\n");
   app.mainLoop();
-  std::cout << "Exit mainloop" << std::endl;
+  log->info("Exit mainloop\n");
   return 0; // This line is never reached
 }

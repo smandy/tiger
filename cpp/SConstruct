@@ -1,8 +1,12 @@
 import builders
 
+from os.path import expanduser as eu
+
 SLICE_DIR = '/usr/share/Ice-3.6.1/slice'
 
-env = Environment(CPPFLAGS = ['--std=c++14', '-I.'],
+spdlog = '-I%s' % eu('~/repos/spdlog/include')
+
+env = Environment(CPPFLAGS = ['--std=c++14', '-I.', spdlog, '-g'],
                   CPPPATH=['/usr/include/SDL2'],
                   SLICE_INCLUDES = ['/usr/share/Ice-3.6.1/slice'],
                   LIBPATH = ['/usr/lib/x86_64-linux-gnu/c++11'])

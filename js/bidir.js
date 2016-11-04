@@ -21,6 +21,15 @@ grid = new Slick.Grid("#myGrid", data, columns, options);
 var communicator = Ice.initialize();
 
 var MyCallBackReceiver = Ice.Class( argo.TickListener, {
+    onImage : function( img, currnet) {
+        if (img.lenth>0) {
+            img[0].forEach( function( tick, idx, _) {
+                data[idx] = tick;
+                grid.invalidateRow(idx);
+            });
+        };
+    },
+    
     onTick : function( ticks, current) {
         //$("#symbol").html("<pre>" + ticks[0]['symbol'] + "</pre>");
         //$("#bid").html("<pre>" + ticks[0]['bidPx'] + "</pre>");

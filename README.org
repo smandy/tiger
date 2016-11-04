@@ -56,7 +56,7 @@
 ** TODO - SLICE2JS still not automated. ( Found out when adding onImage - doh! )
 
    From the tiger/js directory.
-   2008  slice2js ../slice/Ticker.ice
+   2008  `slice2js ../slice/Ticker.ice`
 
 ** Bidir connections
 
@@ -87,4 +87,4 @@
 
 
 ** SDLViewer in CPP
-   ./sdlViewer --Ice.Config=../config/icegrid/sdl.config
+   `./sdlViewer --Ice.Config=../config/icegrid/sdl.config`

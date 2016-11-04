@@ -26,12 +26,17 @@
 
     var argo = __M.module("argo");
 
+    argo.TickDirection = Slice.defineEnum([
+        ['ZERO', 0], ['UP', 1], ['DOWN', 2]]);
+
     argo.Tick = Slice.defineStruct(
-        function(symbol, bidPx, askPx)
+        function(symbol, bidPx, askPx, bidDirection, askDirection)
         {
             this.symbol = symbol !== undefined ? symbol : "";
             this.bidPx = bidPx !== undefined ? bidPx : 0.0;
             this.askPx = askPx !== undefined ? askPx : 0.0;
+            this.bidDirection = bidDirection !== undefined ? bidDirection : argo.TickDirection.ZERO;
+            this.askDirection = askDirection !== undefined ? askDirection : argo.TickDirection.ZERO;
         },
         false,
         function(__os)
@@ -39,14 +44,18 @@
             __os.writeString(this.symbol);
             __os.writeDouble(this.bidPx);
             __os.writeDouble(this.askPx);
+            argo.TickDirection.__write(__os, this.bidDirection);
+            argo.TickDirection.__write(__os, this.askDirection);
         },
         function(__is)
         {
             this.symbol = __is.readString();
             this.bidPx = __is.readDouble();
             this.askPx = __is.readDouble();
+            this.bidDirection = argo.TickDirection.__read(__is);
+            this.askDirection = argo.TickDirection.__read(__is);
         },
-        17, 
+        19, 
         false);
     Slice.defineSequence(argo, "TickSeqHelper", "argo.Tick", false);
     Slice.defineSequence(argo, "TickImageHelper", "argo.TickSeqHelper", false);

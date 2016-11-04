@@ -86,3 +86,5 @@
     this guy NB Make sure the domain and multicast addresses sync up.
 
 
+** SDLViewer in CPP
+   ./sdlViewer --Ice.Config=../config/icegrid/sdl.config

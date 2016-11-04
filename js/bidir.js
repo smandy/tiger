@@ -13,6 +13,8 @@ var columns = [
     {id : "symbol", name: "Symbol", field: "symbol", width: 180},
     {id : "bidPx",  name: "Bid", field: "bidPx", width: 180},
     {id : "askPx",  name: "Ask", field: "askPx", width: 180},
+    {id : "bidDirection",  name: "BD", field: "bidDirection", width: 180},
+    {id : "askDirection",  name: "AD", field: "askDirection", width: 180},
 ];
 
 grid = new Slick.Grid("#myGrid", data, columns, options);
@@ -20,9 +22,9 @@ var communicator = Ice.initialize();
 
 var MyCallBackReceiver = Ice.Class( argo.TickListener, {
     onTick : function( ticks, current) {
-        $("#symbol").html("<pre>" + ticks[0]['symbol'] + "</pre>");
-        $("#bid").html("<pre>" + ticks[0]['bidPx'] + "</pre>");
-        $("#ask").html("<pre>" + ticks[0]['askPx'] + "</pre>");
+        //$("#symbol").html("<pre>" + ticks[0]['symbol'] + "</pre>");
+        //$("#bid").html("<pre>" + ticks[0]['bidPx'] + "</pre>");
+        //$("#ask").html("<pre>" + ticks[0]['askPx'] + "</pre>");
         for (i = 0;i<ticks.length;i++) {
             data[i] = ticks[i];
             grid.invalidateRow(i);

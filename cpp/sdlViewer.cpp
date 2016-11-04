@@ -127,7 +127,7 @@ SDLViewer(::Ice::CommunicatorPtr _communicator, uint32_t _width,
   // Render something
   // ==========================================================
   SDL_RenderSetLogicalSize(renderer, width, height);
-  auto x = SDL_AddTimer(200, renderCallback, nullptr);
+  auto x = SDL_AddTimer(60, renderCallback, nullptr);
 
   auto adapter = communicator->createObjectAdapterWithEndpoints("", "tcp");
   adapter->activate();

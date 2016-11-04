@@ -3,11 +3,16 @@
 #include <Ice/Identity.ice>
 
 module argo {
+
+    enum TickDirection { ZERO, UP, DOWN};
     
     struct Tick {
         string symbol;
         double bidPx;
         double askPx;
+
+        TickDirection bidDirection;
+        TickDirection askDirection;
     };
     
     sequence<Tick> TickSeq;

@@ -21,15 +21,34 @@ def randomPrice():
 def randomSpread():
     return random.choice( [0.01, 0.02] )
 
+
+def calcDirection(old, new):
+    if new>old:
+        return argo.TickDirection.UP
+    elif new<old:
+        return argo.TickDirection.DOWN
+    else:
+        return argo.TickDirection.ZERO
+
 class Stock:
     def __init__(self, name):
         self.name = name
         self.bidPx = randomPrice()
         self.spread = randomSpread()
+        self.bidDirection = argo.TickDirection.ZERO
+        self.askDirection = argo.TickDirection.ZERO
 
     def tick(self):
+        oldBid, oldAsk = self.bidPx, self.askPx
         self.bidPx += random.choice( [0.01, -0.01, 0.0])
         self.spread = randomSpread()
+
+        self.bidDirection = calcDirection(oldBid, self.bidPx)
+        self.askDirection = calcDirection(oldAsk, self.askPx)
+
+    @property
+    def askPx(self):
+        return self.bidPx + self.spread
 
 stocks = [ Stock(x) for x in set(["CSCO.O", "MSFT.O", "VOD.O",
                                   "GLW.O", "PEB.O", 
@@ -70,7 +89,7 @@ class MyPlant(argo.TickerPlant):
         while self.running:
             #print "Tick..."
             self.tick()
-            time.sleep(1)
+            time.sleep(0.1)
 
     def sayHello(self, current):
         noo = datetime.now().isoformat()
@@ -94,7 +113,7 @@ class MyPlant(argo.TickerPlant):
         tix = []
         for s in self.stocks:
             s.tick()
-            tix.append( argo.Tick( s.name, s.bidPx, s.bidPx + s.spread))
+            tix.append( argo.Tick( s.name, s.bidPx, s.bidPx + s.spread, s.bidDirection, s.askDirection))
         for q,v in self.listeners.items():
             #print "Ticking %s %s" % (q,v)
             q.begin_onTick( tix, _ex = self.evict(q))
@@ -119,7 +138,7 @@ if __name__=='__main__':
 
     try:
         while True:
-            print "Tick"
+            #print "Tick"
             plant.tick()
             time.sleep(1)
     except:

@@ -91,11 +91,20 @@ void __patch(TickerPlantPtr&, const ::Ice::ObjectPtr&);
 namespace argo
 {
 
+enum TickDirection
+{
+    ZERO,
+    UP,
+    DOWN
+};
+
 struct Tick
 {
     ::std::string symbol;
     ::Ice::Double bidPx;
     ::Ice::Double askPx;
+    ::argo::TickDirection bidDirection;
+    ::argo::TickDirection askDirection;
 };
 
 typedef ::std::vector< ::argo::Tick> TickSeq;
@@ -107,10 +116,20 @@ typedef ::std::vector< ::argo::TickSeq> TickImage;
 namespace Ice
 {
 template<>
+struct StreamableTraits< ::argo::TickDirection>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryEnum;
+    static const int minValue = 0;
+    static const int maxValue = 2;
+    static const int minWireSize = 1;
+    static const bool fixedLength = false;
+};
+
+template<>
 struct StreamableTraits< ::argo::Tick>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 17;
+    static const int minWireSize = 19;
     static const bool fixedLength = false;
 };
 
@@ -122,6 +141,8 @@ struct StreamWriter< ::argo::Tick, S>
         __os->write(v.symbol);
         __os->write(v.bidPx);
         __os->write(v.askPx);
+        __os->write(v.bidDirection);
+        __os->write(v.askDirection);
     }
 };
 
@@ -133,6 +154,8 @@ struct StreamReader< ::argo::Tick, S>
         __is->read(v.symbol);
         __is->read(v.bidPx);
         __is->read(v.askPx);
+        __is->read(v.bidDirection);
+        __is->read(v.askDirection);
     }
 };
 

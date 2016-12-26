@@ -23,7 +23,7 @@
    should do the right thing. Added a bit for the mvm assembly plugin
    into the pom.
 
-** TODO Java niggles still haven't got antrun tasks figured out.
+** DONE Java niggles still haven't got antrun tasks figured out.
 
    For now...
 

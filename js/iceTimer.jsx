@@ -1,6 +1,6 @@
 var iid = new Ice.InitializationData();
 iid.properties = Ice.createProperties();
-iid.properties.setProperty("Ice.Default.Locator", "IceGrid/Locator:ws -h localhost -p 4063");
+iid.properties.setProperty("Ice.Default.Locator", "IceGrid/Locator:ws -h ritz -p 4063");
 
 var communicator = Ice.initialize([], iid);
 

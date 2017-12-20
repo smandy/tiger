@@ -1,7 +1,9 @@
 package argo.tiger
 
-import Ice.Current
-import argo.{AMD_Foo_doit, AMD_Foo_doitAgain, FooPrxHelper, _FooDisp}
+import java.util.concurrent.{CompletableFuture, CompletionStage}
+
+import argo.{Foo, FooPrx}
+import com.zeroc.Ice.Current
 import org.apache.logging.log4j.LogManager
 import org.joda.time.DateTime
 
@@ -9,17 +11,18 @@ object MyFoo {
   val log = LogManager.getLogger( MyFoo.getClass)
 }
 
-class MyFoo extends _FooDisp {
+class MyFoo extends Foo {
   import MyFoo._
 
-  override def doit_async(cb: AMD_Foo_doit, __current: Current): Unit = {
+  override def doitAsync( __current: Current): CompletionStage[String] = {
     log.info("Doit from scala")
-    cb.ice_response( s"Doit from scala ${new DateTime}")
+    CompletableFuture.completedFuture(s"Doit from scala ${new DateTime}")
   }
 
-  override def doitAgain_async(cb: AMD_Foo_doitAgain, __current: Current): Unit = {
+  override def doitAgainAsync(__current: Current): CompletionStage[String] = {
     log.info("Doit again")
-    cb.ice_response( s"Doit from scala agani ${new DateTime}")
+    //cb.ice_response( s"Doit from scala agani ${new DateTime}")
+    CompletableFuture.completedFuture( s"Doit from scala agani ${new DateTime}")
   }
 }
 
@@ -28,7 +31,7 @@ object Experiment {
 
   def main(args : Array[String]) : Unit = {
     log.info("args are " + args.mkString("[",",","]"))
-    val communicator = Ice.Util.initialize(args)
+    val communicator = com.zeroc.Ice.Util.initialize(args)
     log.info("Communicator setup")
     val adapter = communicator.createObjectAdapter("SimpleJavaApp")
     val foo = new MyFoo()
@@ -42,10 +45,10 @@ object Experiment {
     log.info("Destroy adapter")
     adapter.destroy()
 
-    val x = FooPrxHelper.checkedCast( communicator.stringToProxy("foo@SimpleApp") )
+    val x = FooPrx.checkedCast( communicator.stringToProxy("foo@SimpleApp") )
 
-    val x2 = x.begin_doit()
-    val x4 = x.end_doit(x2)
+    val x2 = x.doitAsync()
+    val x4 = x2.get()
 
     log.info("Destroy communicator")
     communicator.destroy()

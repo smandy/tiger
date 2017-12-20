@@ -6,11 +6,9 @@
     "homepage": "https://zeroc.com",
     "repository": "https://github.com/zeroc-ice/ice-demos.git",
     "license": "GPL-2.0",
-
     "devDependencies": {
         "swank-js": ">=0.0.1"
     },
-    
     "dependencies": {
         "bower": "^1.4.1",
         "browser-sync": "^2.7.6",
@@ -34,6 +32,6 @@
         "gulp:build": "gulp",
         "gulp:watch": "gulp watch",
         "gulp:clean": "gulp clean",
-        "swank" : "node node_modules/swank-js"
+        "swank": "node node_modules/swank-js"
     }
 }

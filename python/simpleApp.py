@@ -4,33 +4,34 @@ import Ice
 import sys
 from datetime import datetime
 
-print "Starting"
+print("Starting")
 Ice.loadSlice('../slice/Foo.ice')
 import argo
 
 class MyFoo( argo.Foo):
-    def doit_async(self, cb, current):
-        print "Python doit"
-        cb.ice_response("doit from python %s" % datetime.now())
+    def doit(self, current):
+        print("Python doit")
+        #cb.ice_response("doit from python %s" % datetime.now())
+        return("doit from python %s" % datetime.now())
 
-    def doitAgain_async(self, cb, current):
-        print "Python doitagain"
-        cb.ice_respone( "doitAgain from python %s" % datetime.now())
+    def doitAgain(self, current):
+        print("Python doitagain")
+        return("doitAgain from python %s" % datetime.now())
 
 if __name__=='__main__':
     communicator = Ice.initialize(sys.argv)
-    print "I've started up"
+    print("I've started up")
     adapter = communicator.createObjectAdapter("SimpleApp")
-    print "Create impl"
+    print("Create impl")
     foo = MyFoo()
     adapter.add( foo, communicator.stringToIdentity('foo'))
-    print "Adapter is %s" % adapter
+    print("Adapter is %s" % adapter)
     adapter.activate()
-    print "Waiting for shutdown"
+    print("Waiting for shutdown")
     communicator.waitForShutdown()
 
-    print "Destroy adapter"
+    print("Destroy adapter")
     adapter.destroy()
-    print "Destroy communicator"
+    print("Destroy communicator")
     communicator.destroy()
     

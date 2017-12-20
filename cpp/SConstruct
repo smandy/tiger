@@ -2,13 +2,13 @@ import builders
 
 from os.path import expanduser as eu
 
-SLICE_DIR = '/usr/share/Ice-3.6.1/slice'
+SLICE_DIR = '/usr/share/ice/slice'
 
 spdlog = '-I%s' % eu('~/repos/spdlog/include')
 
 env = Environment(CPPFLAGS = ['--std=c++14', '-I.', spdlog, '-g'],
                   CPPPATH=['/usr/include/SDL2'],
-                  SLICE_INCLUDES = ['/usr/share/Ice-3.6.1/slice'],
+                  SLICE_INCLUDES = [SLICE_DIR],
                   LIBPATH = ['/usr/lib/x86_64-linux-gnu/c++11'])
 
 #env.Slice2cpp(target = 'Security', source = 'slice/Security.ice')
@@ -22,8 +22,8 @@ foo = env.Object(source = 'Foo.cpp')
 ticker = env.Object(source = 'Ticker.cpp')
 
 env.Program('simpleCppApp.cpp',
-            LIBS = ['Ice', 'IceUtil', foo, 'pthread'])
+            LIBS = ['Ice', foo, 'pthread'])
 
-env.Program('sdlViewer.cpp',
-            LIBS = [foo, ticker, 'SDLmain', 'SDL2', 'SDL2_mixer', 'SDL2_ttf', 'GL','GLU','glut','Ice', 'IceUtil', 'pthread'])
+#env.Program('sdlViewer.cpp',
+#            LIBS = [foo, ticker, 'SDLmain', 'SDL2', 'SDL2_mixer', 'SDL2_ttf', 'GL','GLU','glut','Ice', 'IceUtil', 'pthread'])
 

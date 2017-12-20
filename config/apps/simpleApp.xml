@@ -2,11 +2,14 @@
 <!-- This file was written by IceGrid Admin -->
 <icegrid>
    <application name="SimpleApp">
-      <node name="raffles">
+      <node name="ritz">
          <server id="SimpleApp" activation="manual" exe="/home/andy/repos/tiger/python/simpleApp.py" pwd="/home/andy/repos/tiger/python">
            <property name="Ice.StdOut" value="/tmp/simpleApp.txt"/>
            <property name="Ice.StdErr" value="/tmp/simpleApp.txt"/>
-            <adapter name="SimpleApp"  endpoints="tcp -h raffles:ws -h raffles" id="SimpleApp"/>
+              <property name="Ice.Admin.Endpoints" value="tcp -h ritz" />
+           <property name="Ice.StdErr" value="/tmp/simpleApp.txt"/>
+
+           <adapter name="SimpleApp"  endpoints="tcp -h ritz:ws -h ritz" id="SimpleApp"/>
             <!--<adapter name="SimpleApp" endpoints="tcp -h raffles" id="SimpleApp"/> -->
             <!--<adapter name="SimpleApp" endpoints="ws -h raffles" id="SimpleApp"/> -->
          </server>

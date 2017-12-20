@@ -1,11 +1,15 @@
 <icegrid>
     <application name="SimpleCppApp">
-        <node name="raffles">
+        <node name="ritz">
             <server id="SimpleCppApp" exe="/home/andy/repos/tiger/cpp/simpleCppApp" activation="manual">
               <!--<property name="Ice.Trace.Network" value="1"/> -->
+              
+              <property name="Ice.Trace.Network" value="3" />
+              <property name="Ice.Admin.Endpoints" value="tcp -h ritz" />
+              <property name="Ice.Trace.Protocol" value="3" />
               <property name="Ice.StdOut" value="/tmp/simpleCppApp.txt" />
               <property name="Ice.StdErr" value="/tmp/simpleCppApp.txt" />
-              <adapter name="SimpleCppApp" id="SimpleCppApp" endpoints="tcp -h raffles:ws -h raffles"/>
+              <adapter name="SimpleCppApp" id="SimpleCppApp" endpoints="tcp -h ritz:ws -h ritz"/>
             </server>
         </node>
     </application>

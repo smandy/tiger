@@ -63,7 +63,7 @@ def tickStocks():
         s.tick()
         ret.append( "%s,%s,%s" % (s.name, s.bidPx, s.bidPx + s.spread))
     m = ":".join(ret)
-    print m
+    print(m)
     #producer.send_messages( topic, m )
 
 class MyPlant(argo.TickerPlant):
@@ -81,7 +81,7 @@ class MyPlant(argo.TickerPlant):
     def evict( self, l):
         def ret(*args):
             #print "Evicting %s %s" % (l, args)
-            print "Evicting ...dare not name his name"
+            print("Evicting ...dare not name his name")
             del self.listeners[l]
         return ret
             
@@ -89,22 +89,22 @@ class MyPlant(argo.TickerPlant):
         while self.running:
             #print "Tick..."
             self.tick()
-            time.sleep(0.1)
+            time.sleep(0.5)
 
     def sayHello(self, current):
         noo = datetime.now().isoformat()
-        print "SayHello %s" % noo
+        print("SayHello %s" % noo)
         return "Hello from python!! %s" % noo
 
     def subscribe(self, l, cur):
-        print "Subscribe %s" % l
+        print("Subscribe %s" % l)
         self.listeners[l] = None
 
     def fail(self, *args):
-        print "Fail! %s" % str(args)
+        print("Fail! %s" % str(args))
         
     def subscribeWithIdent(self, l, cur):
-        print "Subscribe with ident %s" % communicator.identityToString(l)
+        print("Subscribe with ident %s" % communicator.identityToString(l))
         prx = argo.TickListenerPrx.uncheckedCast(cur.con.createProxy(l))
         prx.begin_onImage( self.history, _ex = self.fail )
         self.listeners[prx] = None
@@ -122,19 +122,19 @@ class MyPlant(argo.TickerPlant):
         
 if __name__=='__main__':
     communicator = Ice.initialize(['--Ice.Config=tickerplant.properties'])
-    print "Woot I've started up"
+    print("Woot I've started up")
     adapter = communicator.createObjectAdapter("TickerPlant")
     
-    print "Create impl"
+    print("Create impl")
     plant = MyPlant()
     adapter.add( plant, communicator.stringToIdentity('plant'))
-    print "Adapter is %s" % adapter
+    print("Adapter is %s" % adapter)
 
     import threading
     threading.Thread(target = plant.run).start()
     
     adapter.activate()
-    print "Waiting for shutdown"
+    print("Waiting for shutdown")
 
     try:
         while True:
@@ -148,5 +148,5 @@ if __name__=='__main__':
     plant.running = False
     communicator.destroy()
     #communicator.destroy()
-    print "Shutting down"
+    print("Shutting down")
     

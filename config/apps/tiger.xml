@@ -2,7 +2,7 @@
 <!-- This file was written by IceGrid Admin -->
 <icegrid>
    <application name="SimpleApp">
-      <node name="raffles">
+      <node name="ritz">
          <server id="SimpleApp" activation="manual" exe="/home/andy/repos/tiger/python/simpleApp.py">
             <option>foo</option>
             <option>bar</option>
@@ -10,7 +10,7 @@
                <property name="Ice.StdOut" value="/tmp/simpleApp.txt"/>
                <property name="Ice.StdErr" value="/tmp/simpleApp.txt"/>
             </properties>
-            <adapter name="SimpleApp" endpoints="tcp -h raffles" id="EncoderAdapter"/>
+            <adapter name="SimpleApp" endpoints="tcp -h ritz" id="EncoderAdapter"/>
          </server>
       </node>
    </application>

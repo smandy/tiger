@@ -1,29 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- This file was written by IceGrid Admin -->
 <icegrid>
-   <application name="IceStorm1">
-      <node name="raffles">
-        <icebox id="IceBox1" activation="manual" exe="/usr/bin/icebox">
-          <service name="IceStorm" entry="IceStormService,36:createIceStorm">
-            <properties>
-              <property name="IceStorm.Transient" value="1" />
-              <property name="IceStorm.TopicManager.AdapterId" value="IceStorm.TopicManager" />
-              <property name="IceStorm.Publish.AdapterId"      value="IceStorm.Publish" />
-              <property name="IceStorm.InstanceName" value="IceStorm" />
-            </properties>
-            <adapter name="IceStorm.TopicManager" id="IceStorm.TopicManager" endpoints="tcp -h raffles">
-              <object identity="IceStorm/TopicManager" type="::IceStorm::TopicManager"/>
-            </adapter>
-            <adapter name="IceStorm.Publish" id="IceStorm.Publish" endpoints="tcp -h raffles" />
-          </service>
-
+  <application name="IceStorm1">
+    <node name="ritz">
+      <icebox id="IceBox1" activation="manual" exe="/usr/bin/icebox">
+        <service name="IceStorm" entry="IceStormService,37:createIceStorm">
           <properties>
+              <property name="Ice.Admin.Endpoints" value="tcp -h ritz" />
+            
+            <property name="Ice.Trace.Network" value="3" />
+            <property name="Ice.Trace.Protocol" value="3" />
+            <property name="IceStorm.Transient" value="1" />
+            <property name="IceStorm.TopicManager.AdapterId" value="IceStorm.TopicManager" />
+            <property name="IceStorm.Publish.AdapterId"      value="IceStorm.Publish" />
+            <property name="Ice.StdOut" value="/tmp/storm.txt" />
+            <property name="Ice.StdErr" value="/tmp/storm.txt" />
+            <property name="IceStorm.InstanceName" value="IceStorm" />
+          </properties>
+          <adapter name="IceStorm.TopicManager" id="IceStorm.TopicManager" endpoints="tcp -h 192.168.1.85">
+            <object identity="IceStorm/TopicManager" type="::IceStorm::TopicManager"/>
+          </adapter>
+          <adapter name="IceStorm.Publish" id="IceStorm.Publish" endpoints="tcp -h 192.168.1.85" />
+        </service>
+        <properties>
+          <property name="Ice.Admin.Endpoints" value="tcp -h ritz" />
           <property name="Ice.StdOut" value="/tmp/icestorm.txt" />
           <property name="Ice.StdErr" value="/tmp/icestorm.txt" />
-          </properties>
-
-          
-         </icebox>
-      </node>
-   </application>
+        </properties>
+      </icebox>
+    </node>
+  </application>
 </icegrid>

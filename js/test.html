@@ -10,7 +10,7 @@
 
  <script type="text/javascript">
   var communicator = Ice.initialize();
-  var proxy = communicator.stringToProxy("plant:ws -h localhost -p 10666");
+  var proxy = communicator.stringToProxy("plant:ws -h ritz -p 10666");
   var thePrx;
   argo.TickerPlantPrx.checkedCast(proxy).then(
   function(prx) {

@@ -42,7 +42,7 @@ var MyCallBackReceiver = Ice.Class( argo.TickListener, {
     }
 } );
 
-var proxy = communicator.stringToProxy("plant:ws -h localhost -p 10666 -t 2000").ice_twoway();
+var proxy = communicator.stringToProxy("plant:ws -h ritz -p 10666 -t 2000").ice_twoway();
 console.log("About to ping " + proxy);
 
 var x2 = argo.TickerPlantPrx.checkedCast(proxy).then(

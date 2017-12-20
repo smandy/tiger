@@ -8,30 +8,35 @@ print("Starting")
 Ice.loadSlice('../slice/Foo.ice')
 import argo
 
+def doLog(s):
+    print(s)
+    sys.stdout.flush()
+
 class MyFoo( argo.Foo):
     def doit(self, current):
-        print("Python doit")
+        doLog("Python doit")
         #cb.ice_response("doit from python %s" % datetime.now())
         return("doit from python %s" % datetime.now())
 
     def doitAgain(self, current):
-        print("Python doitagain")
+        doLog("Python doitagain")
         return("doitAgain from python %s" % datetime.now())
 
 if __name__=='__main__':
     communicator = Ice.initialize(sys.argv)
-    print("I've started up")
+    doLog("I've started up")
     adapter = communicator.createObjectAdapter("SimpleApp")
-    print("Create impl")
+    doLog("Create impl")
     foo = MyFoo()
     adapter.add( foo, communicator.stringToIdentity('foo'))
-    print("Adapter is %s" % adapter)
+    doLog("Adapter is %s" % adapter)
     adapter.activate()
-    print("Waiting for shutdown")
+    doLog("Waiting for shutdown")
+    sys.stdout.flush()
     communicator.waitForShutdown()
 
-    print("Destroy adapter")
+    doLog("Destroy adapter")
     adapter.destroy()
-    print("Destroy communicator")
+    doLog("Destroy communicator")
     communicator.destroy()
     

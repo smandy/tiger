@@ -6,6 +6,7 @@ import argo.{Foo, FooPrx}
 import com.zeroc.Ice.Current
 import org.apache.logging.log4j.LogManager
 import org.joda.time.DateTime
+import com.zeroc.Ice
 
 object MyFoo {
   val log = LogManager.getLogger( MyFoo.getClass)
@@ -35,7 +36,7 @@ object Experiment {
     log.info("Communicator setup")
     val adapter = communicator.createObjectAdapter("SimpleJavaApp")
     val foo = new MyFoo()
-    adapter.add( foo, communicator.stringToIdentity("foo"))
+    adapter.add( foo, Ice.Util.stringToIdentity("foo"))
     log.info("Activate adapter")
     adapter.activate()
 

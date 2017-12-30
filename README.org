@@ -5,10 +5,13 @@
 
  Run mvn package install to get the slice definitions converted to java
  and into your mvn repo. This makes them available to clojure.
+** Gui
+
+java -jar /usr/share/java/zeroc-ice/icegridgui.jar
 
 ** Running Grid Node
 
-   `andy@raffles:~/repos/tiger$ icegridnode --Ice.Config=config/icegrid/raffles.config`
+   `andy@raffles:~/repos/tiger$ icegridnode --Ice.Config=config/icegrid/ritz.config`
 
 ** Zeroc public repo
     
@@ -53,7 +56,7 @@
 
     andy@raffles:~/repos/tiger/python$ python tickerPlant.py
 
-** TODO - SLICE2JS still not automated. ( Found out when adding onImage - doh! )
+** TODO - SLICE2JS still not automated. ( Found out when add*Shing onImage - doh! )
 
    From the tiger/js directory.
    2008  `slice2js ../slice/Ticker.ice`

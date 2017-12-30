@@ -31,7 +31,7 @@ bower_components/**
 /java/target/**
 /config/apps/.#simpleApp.xml
 /js/.#sayHello.js
-/npm-debug.log
+/npm-debug.lod
 /js/.#doit.js
 /clj/.nrepl-port
 /clj/target/*
@@ -48,3 +48,4 @@ bower_components/**
 **/target/**
 /js/npm-debug.log
 /cpp/sdlViewer
+react/node_modules/**

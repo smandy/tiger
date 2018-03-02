@@ -8,16 +8,16 @@
 using namespace std;
 
 class MyFoo : public argo::Foo {
-  void doit_async(const ::argo::AMD_Foo_doitPtr& ret, const ::Ice::Current& = ::Ice::Current()) {
-    std::cout << "doit async" << std::endl;
-    ret->ice_response("doit from cpp");
-  }
 
-  void doitAgain_async(const ::argo::AMD_Foo_doitAgainPtr& ret, const ::Ice::Current& = ::Ice::Current()) {
-    std::cout << "doit again async" << std::endl;
-    ret->ice_response("doiit again from cpp");
-  }
+    void doitAsync(::std::function<void(const ::std::string&)> cb, ::std::function<void(::std::exception_ptr)>, const ::Ice::Current&)  {
+        cb("Hello from ice");
+    };
+
+    void doitAgainAsync(::std::function<void(const ::std::string&)> cb, ::std::function<void(::std::exception_ptr)>, const ::Ice::Current&) {
+        cb("doit again from cpp");
+    }
 };
+
 
 int main(int argc, char *argv[]) {
   cout << "Init ice" << endl;
@@ -28,9 +28,10 @@ int main(int argc, char *argv[]) {
   auto adapter = comm->createObjectAdapter( "SimpleCppApp");
 
   cout << "Create Servant" << endl;
-  auto myHello = new MyFoo; //std::make_unique<MyFoo>();
+  //auto myHello = new MyFoo; //std::make_unique<MyFoo>();
+  auto myHello = std::make_shared<MyFoo>();
   cout << "Add Servant" << endl;
-  adapter->add(myHello, comm->stringToIdentity("foo") );
+  adapter->add(myHello, Ice::stringToIdentity("foo") );
   
   cout << "Activate adapter" << endl;
   adapter->activate();
@@ -40,5 +41,7 @@ int main(int argc, char *argv[]) {
   cout << "Destroy communicator" << endl;
   
   adapter->destroy();
+
   comm->destroy();
+
 }

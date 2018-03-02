@@ -7,8 +7,8 @@
 
 using namespace std;
 
-class MyFoo : public argo::Foo {
 
+class MyFoo : public argo::Foo {
     void doitAsync(::std::function<void(const ::std::string&)> cb, ::std::function<void(::std::exception_ptr)>, const ::Ice::Current&)  {
         cb("Hello from ice");
     };
@@ -17,7 +17,6 @@ class MyFoo : public argo::Foo {
         cb("doit again from cpp");
     }
 };
-
 
 int main(int argc, char *argv[]) {
   cout << "Init ice" << endl;

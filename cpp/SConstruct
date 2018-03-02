@@ -6,7 +6,11 @@ SLICE_DIR = '/usr/share/ice/slice'
 
 spdlog = '-I%s' % eu('~/repos/spdlog/include')
 
-env = Environment(CPPFLAGS = ['--std=c++14', '-I.', spdlog, '-g', '-DICE_CPP11_MAPPING'],
+env = Environment(CPPFLAGS = ['--std=c++14',
+                              '-I.',
+                              spdlog,
+                              '-g',
+                              '-DICE_CPP11_MAPPING'],
                   CPPPATH=['/usr/include/SDL2'],
                   SLICE_INCLUDES = [SLICE_DIR] )
 
@@ -14,14 +18,24 @@ env = Environment(CPPFLAGS = ['--std=c++14', '-I.', spdlog, '-g', '-DICE_CPP11_M
 builders.addSlice2cppBuilder(env)
 
 env.Slice2cpp(target = 'Foo',source = '../slice/Foo.ice')
-
 env.Slice2cpp(target = 'Ticker',source = '../slice/Ticker.ice')
 
 foo = env.Object(source = 'Foo.cpp')
 ticker = env.Object(source = 'Ticker.cpp')
 
 env.Program('simpleCppApp.cpp',
-            LIBS = ['Ice++11', foo, 'pthread'])
+            LIBS = ['Ice++11',
+                    foo,
+                    'pthread'])
+
+simpleDAdapter = env.Object(source = 'simpleDAdapter.cpp')
+
+env.Program('simpled.d',
+            LIBS = ['Ice++11',
+                    simpleDAdapter,
+                    foo,
+                    'pthread',
+                    'stdc++'])
 
 #env.Program('sdlViewer.cpp',
 #            LIBS = [foo, ticker, 'SDLmain', 'SDL2', 'SDL2_mixer', 'SDL2_ttf', 'GL','GLU','glut','Ice', 'IceUtil', 'pthread'])

@@ -1,7 +1,6 @@
 (ns argo.icetest)
 
 ; andy@raffles:/mnt/hdd/andy/repos/tiger/discovery$ ./Server --Ice.Config=config.server
-
 (import com.zeroc.Ice.Current)
 (import com.zeroc.Ice.Util)
 (import com.zeroc.Ice.InitializationData)
@@ -24,9 +23,9 @@
   (let [prx (.stringToProxy communicator strPrx )
         ret (FooPrx/checkedCast prx)]
     ret))
-
+f
 (getFoo communicator PROXY)
-
+gin
 ;; (defn xs [foo]
 ;;   (doall (map (fn [x] (.sayHello hello foo) ) (range 1 2))))
 ;; (xs "Clojure3")

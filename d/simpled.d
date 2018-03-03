@@ -3,22 +3,9 @@ import std.stdio;
 import std.string;
 import core.stdc.stdlib : malloc, free;
 
-enum defaultsize = 128;
-
-alias StringType = WrappedString!defaultsize;
 alias IfaceType = FooInterface!defaultsize;
 
-extern (C++) struct WrappedString(int N = 128)
-{
-    char[N] buf;
-}
-
-auto wrap(string s)
-{
-    StringType ret;
-    strncpy(ret.buf.ptr, s.ptr, defaultsize);
-    return ret;
-}
+import wrapped_string : StringType, wrap, defaultsize;
 
 extern (C++) class FooInterface(int N)
 {

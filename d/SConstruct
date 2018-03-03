@@ -25,7 +25,7 @@ simpleDAdapter = env.Object(source = 'simpleDAdapter.cpp')
 
 wrapped_string = env.Object("wrapped_string.cpp")
 
-env.Program('simpled.d',
+env.Program('simpled_server.d',
             LIBS = ['Ice++11',
                     simpleDAdapter,
                     foo,

@@ -69,6 +69,6 @@ void DAdapter::run() {
 
 DAdapter *createInstance(size_t argc, char **argv, FooInterface<> *iface) {
   return new DAdapter(argc, argv, iface);
-};
+}
 
-void deleteInstance(DAdapter *d) { delete d; };
+void deleteInstance(DAdapter *d) { delete d; }

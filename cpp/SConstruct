@@ -31,16 +31,6 @@ env.Program('simpleCppApp.cpp',
                     foo,
                     'pthread'])
 
-simpleDAdapter = env.Object(source = 'simpleDAdapter.cpp')
-
-env.Program('simpled.d',
-            LIBS = ['Ice++11',
-                    simpleDAdapter,
-                    foo,
-                    testMember,
-                    'pthread',
-                    'stdc++'])
-
 #env.Program('sdlViewer.cpp',
 #            LIBS = [foo, ticker, 'SDLmain', 'SDL2', 'SDL2_mixer', 'SDL2_ttf', 'GL','GLU','glut','Ice', 'IceUtil', 'pthread'])
 

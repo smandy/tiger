@@ -14,3 +14,5 @@ hello     = env.Object(source = 'Hello.cpp')
 env.Program('Client.cpp',LIBS = ['Ice', 'IceUtil', hello, 'pthread'])
 
 env.Program('Server.cpp',LIBS = ['Ice', 'IceUtil', hello, 'pthread'])
+
+

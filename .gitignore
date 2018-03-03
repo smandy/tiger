@@ -50,3 +50,7 @@ bower_components/**
 /cpp/sdlViewer
 react/node_modules/**
 /cpp/simpled
+/d/Foo.cpp
+/d/Foo.h
+/d/Ticker.cpp
+/d/Ticker.h

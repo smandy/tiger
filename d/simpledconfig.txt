@@ -5,3 +5,5 @@ SimpleDApp.Endpoints=tcp -p 1099
 # Warn about connection exceptions
 #
 Ice.Warn.Connections=1
+Ice.Trace.Network=3
+Ice.Trace.Connections=3

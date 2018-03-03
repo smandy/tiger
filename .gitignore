@@ -57,3 +57,6 @@ react/node_modules/**
 /d/simpleClient
 /d/simpled
 /d/simpled_server
+/d/d_client
+/d/d_server
+/d/cpp_client

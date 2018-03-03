@@ -21,13 +21,22 @@ env.Slice2cpp(target = 'Ticker',source = '../slice/Ticker.ice')
 
 foo = env.Object(source = 'Foo.cpp')
 server_adapter = env.Object(source = 'server_adapter.cpp')
-#wrapped_string = env.Object('wrapped_string.d')
+client_adapter = env.Object(source = 'client_adapter.cpp')
 
+#wrapped_string = env.Object('wrapped_string.d')
 wrapped_string = env.Object("wrapped_string.cpp")
 
-env.Program('simpled_server.d',
+env.Program('d_server.d',
             LIBS = ['Ice++11',
                     server_adapter,
+                    foo,
+                    wrapped_string,
+                    'pthread',
+                    'stdc++'])
+
+env.Program('d_client.d',
+            LIBS = ['Ice++11',
+                    client_adapter,
                     foo,
                     wrapped_string,
                     'pthread',

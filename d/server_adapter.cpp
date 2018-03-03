@@ -24,6 +24,7 @@ public:
   void doitAsync(::std::function<void(const ::std::string &)> cb,
                  ::std::function<void(::std::exception_ptr)>,
                  const ::Ice::Current &) {
+      std::cout << "impl->doit " << std::string(impl->doit()) << std::endl;
     cb(impl->doit());
   };
 

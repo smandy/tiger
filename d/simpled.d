@@ -3,22 +3,18 @@ import std.stdio;
 import std.string;
 import core.stdc.stdlib : malloc, free;
 
-alias IfaceType = FooInterface!defaultsize;
-
-import wrapped_string : StringType, wrap, defaultsize;
-
-extern (C++) class FooInterface(int N)
+extern (C++) class FooInterface
 {
-    StringType doit()
+    string doit()
     {
         writefln("doit()");
-        return "Hello from D".wrap();
+        return "Hello from D";
     }
 
-    StringType doitAgain()
+    string doitAgain()
     {
         writefln("doitagain()");
-        return "Hello again from D".wrap();
+        return "Hello again from D";
     }
 }
 
@@ -27,14 +23,14 @@ extern (C++) struct DAdapter
     void run();
 }
 
-extern (C++) DAdapter* createInstance(size_t, char**, IfaceType);
+extern (C++) DAdapter* createInstance(size_t, char**, FooInterface);
 
 extern (C++) void deleteInstance(DAdapter*);
 
 void main(string[] args)
 {
     writefln("Woot");
-    IfaceType iface;
+    FooInterface iface;
     char** tmp = cast(char**) malloc(args.length + 1);
     scope (exit)
     {

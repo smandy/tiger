@@ -21,7 +21,9 @@ env.Slice2cpp(target = 'Ticker',source = '../slice/Ticker.ice')
 
 foo = env.Object(source = 'Foo.cpp')
 simpleDAdapter = env.Object(source = 'simpleDAdapter.cpp')
-wrapped_string = env.Object('wrapped_string.d')
+#wrapped_string = env.Object('wrapped_string.d')
+
+wrapped_string = env.Object("wrapped_string.cpp")
 
 env.Program('simpled.d',
             LIBS = ['Ice++11',

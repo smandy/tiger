@@ -4,26 +4,22 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include "wrapped_string.h"
 
 using namespace std;
 using namespace Ice;
 
-template <int N = 128> struct WrappedString {
-  char buf[N];
 
-  operator std::string() { return std::string(buf); };
-};
-
-template <int N = 128> struct FooInterface {
-  WrappedString<N> doit();
-  WrappedString<N> doitAgain();
+struct FooInterface {
+  WrappedString doit();
+  WrappedString doitAgain();
 };
 
 class MyFoo : public argo::Foo {
-  FooInterface<> *impl;
+  FooInterface *impl;
 
 public:
-  MyFoo(FooInterface<> *ptr) : impl(ptr) {}
+  MyFoo(FooInterface *ptr) : impl(ptr) {}
 
   void doitAsync(::std::function<void(const ::std::string &)> cb,
                  ::std::function<void(::std::exception_ptr)>,
@@ -41,10 +37,10 @@ public:
 struct DAdapter {
   CommunicatorPtr comm;
   ObjectAdapterPtr adapter;
-  FooInterface<> *iface;
+  FooInterface* iface;
 
 public:
-  DAdapter(int argc, char **argv, FooInterface<> *iface)
+  DAdapter(int argc, char **argv, FooInterface *iface)
       : comm(Ice::initialize(argc, argv)),
         adapter(comm->createObjectAdapter("SimpleDApp")) {
     std::cout << "In ctor" << std::endl;
@@ -67,7 +63,7 @@ void DAdapter::run() {
   std::cout << "Woot I am the run method" << std::endl;
 }
 
-DAdapter *createInstance(size_t argc, char **argv, FooInterface<> *iface) {
+DAdapter *createInstance(size_t argc, char **argv, FooInterface *iface) {
   return new DAdapter(argc, argv, iface);
 }
 

@@ -5,9 +5,9 @@ print "Woot"
 import Ice
 
 Ice.loadSlice('../slice/SimpleService.ice')
-import argo
+import argoch
 
-communicator = Ice.initialize( [ '--Ice.Config=discoveryClient.properties'])
+ccommunicator = Ice.initialize( [ '--Ice.Config=discoveryClient.properties'])
 servicePrx = argo.SimpleServicePrx.checkedCast( communicator.stringToProxy('instance@SimpleServiceImpl'))
 
 print servicePrx.sayHello("Andy")

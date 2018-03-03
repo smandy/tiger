@@ -1,0 +1,7 @@
+
+SimpleDApp.Endpoints=tcp -p 1099
+
+#
+# Warn about connection exceptions
+#
+Ice.Warn.Connections=1

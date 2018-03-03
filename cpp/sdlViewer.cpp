@@ -9,15 +9,15 @@
 #include <GL/glut.h>
 #endif
 
+#include "Ice/Ice.h"
+#include "SDL_ttf.h"
+#include "Ticker.h"
+#include <SDL.h>
 #include <iostream>
 #include <math.h>
-#include <SDL.h>
-#include "SDL_ttf.h"
-#include "Ice/Ice.h"
-#include "Ticker.h"
-#include <spdlog/spdlog.h>
 #include <memory>
 #include <mutex>
+#include <spdlog/spdlog.h>
 
 using namespace std;
 
@@ -51,9 +51,9 @@ class SDLViewer : public argo::TickListener {
   ::Ice::CommunicatorPtr communicator;
   loggerType log;
 
-  SDL_Color WHITE{ 255, 255, 255, 255 };
-  SDL_Color RED{ 255, 0, 0, 255 };
-  SDL_Color GREEN{ 0, 255, 0, 255 };
+  SDL_Color WHITE{255, 255, 255, 255};
+  SDL_Color RED{255, 0, 0, 255};
+  SDL_Color GREEN{0, 255, 0, 255};
 
 public:
   int width, height;
@@ -61,9 +61,9 @@ public:
   std::mutex m;
 
   virtual void onTick(const ::argo::TickSeq &xs,
-                      const ::Ice::Current & = ::Ice::Current()) {
-    // cout << "OnTick\n";
-    { lock_guard<mutex>{ m };
+                      const ::Ice::Current & = ::Ice::Current()){
+      // cout << "OnTick\n";
+      {lock_guard<mutex>{m};
   for (auto &x : xs) { // XXX:
     ticks[x.symbol] = x;
   };
@@ -75,7 +75,7 @@ virtual void onImage(const ::argo::TickImage &img,
                      const ::Ice::Current & = ::Ice::Current()) {
   // cout << "OnImage\n";
   {
-    lock_guard<mutex>{ m };
+    lock_guard<mutex>{m};
     // TODO: icks.clear();
     for (auto &seq : img) {
       for (auto &p : seq) {
@@ -170,13 +170,13 @@ void render() {
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 128);
   SDL_RenderClear(renderer);
 
-  SDL_Color c{ 255, 255, 255, 255 };
+  SDL_Color c{255, 255, 255, 255};
 
   std::ostringstream oss;
   // oss << "Woot " << ticks.size() << std::endl;
 
   {
-    lock_guard<mutex>{ m };
+    lock_guard<mutex>{m};
     int j = 20;
     for (auto &p : ticks) {
       auto bidColor = colorForDirection(p.second.bidDirection);
@@ -206,7 +206,7 @@ void text(int32_t x, int32_t y, std::string s, SDL_Color c) {
   auto w = surf2->w;
 
   SDL_FreeSurface(surf2);
-  SDL_Rect dest = { x, y, w, h };
+  SDL_Rect dest = {x, y, w, h};
   SDL_RenderCopy(renderer, texture, nullptr, &dest);
   SDL_DestroyTexture(texture);
 };

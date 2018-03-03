@@ -1,5 +1,7 @@
 import core.stdc.string;
 import std.stdio;
+import std.string;
+import core.stdc.stdlib : malloc;
 
 enum defaultsize = 128;
 
@@ -19,8 +21,8 @@ class FooInterface(int N) {
     
     StringType doitAgain() {
         return "Hello again from D bitches".wrap();
-    };
-};
+    }
+}
 
 extern(C++)
 struct DAdapter {
@@ -28,7 +30,7 @@ struct DAdapter {
 };
 
 extern(C++)
-DAdapter* createInstance(int, char**, IfaceType);
+DAdapter* createInstance( size_t, char**, IfaceType );
 
 extern(C++)
 void deleteInstance(DAdapter*);
@@ -39,10 +41,14 @@ auto wrap(string s) {
     return ret;
 };
 
-void main() {
+void main(string[] args) {
     writefln("Woot");
     IfaceType iface;
-    DAdapter* da = createInstance(0, cast(char**)null, iface);
+    char** tmp = cast(char**) malloc( args.length + 1 );
+    foreach(i,x ; args) {
+        tmp[i] = cast(char*) args[i].toStringz();
+    }
+    DAdapter* da = createInstance(args.length, tmp, iface);
     scope(exit) { deleteInstance(da); }
     da.run();
 };

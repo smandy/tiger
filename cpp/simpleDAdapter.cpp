@@ -9,7 +9,6 @@ using namespace std;
 using namespace Ice;
 
 template <int N = 128> struct WrappedString {
-
   char buf[N];
 
   operator std::string() { return std::string(buf); };
@@ -45,17 +44,15 @@ struct DAdapter {
   FooInterface<> *iface;
 
 public:
-  DAdapter(int argc, char ** argv, FooInterface<> *iface)
+  DAdapter(int argc, char **argv, FooInterface<> *iface)
       : comm(Ice::initialize(argc, argv)),
         adapter(comm->createObjectAdapter("SimpleDApp")) {
     std::cout << "In ctor" << std::endl;
     adapter->add(std::make_shared<MyFoo>(iface), Ice::stringToIdentity("foo"));
+    adapter->activate();
   }
 
-  void run() {
-      comm->waitForShutdown();
-      std::cout << "Woot I am the run method" << std::endl;
-  }
+  void run();
 
   ~DAdapter() {
     std::cout << "In dtor" << std::endl;
@@ -64,41 +61,14 @@ public:
   }
 };
 
-DAdapter *createInstance(int argc, char **argv, FooInterface<> *iface) {
+void DAdapter::run() {
+  std::cout << "Runnign - waiting for shutdown" << std::endl;
+  comm->waitForShutdown();
+  std::cout << "Woot I am the run method" << std::endl;
+}
+
+DAdapter *createInstance(size_t argc, char **argv, FooInterface<> *iface) {
   return new DAdapter(argc, argv, iface);
 };
 
 void deleteInstance(DAdapter *d) { delete d; };
-
-// template <typename T>
-// struct TR;
-
-// int main(int argc, char *argv[]) {
-//   cout << "Init ice" << endl;
-//   auto comm = Ice::initialize(argc, argv);
-
-//   // TODO get adapter name
-//   cout << "Create adapter" << endl;
-//   auto adapter = comm->createObjectAdapter("SimpleCppApp");
-
-//   //TR<decltype(adapter)> myType;
-
-//   FooInterface<128> interface; // This is a d guy!
-
-//   cout << "Create Servant" << endl;
-//   // auto myHello = new MyFoo; //std::make_unique<MyFoo>();
-//   auto myHello = std::make_shared<MyFoo>(&interface);
-//   cout << "Add Servant" << endl;
-//   adapter->add(myHello, Ice::stringToIdentity("foo"));
-
-//   cout << "Activate adapter" << endl;
-//   adapter->activate();
-
-//   cout << "Wait for shutdown" << endl;
-//   comm->waitForShutdown();
-//   cout << "Destroy communicator" << endl;
-
-//   adapter->destroy();
-
-//   comm->destroy();
-// }

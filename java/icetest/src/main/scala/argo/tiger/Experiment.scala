@@ -47,7 +47,7 @@ object Experiment {
     log.info("Destroy adapter")
     adapter.destroy()
 
-    val x = FooPrx.checkedCast( communicator.stringToProxy("foo@SimpleApp") )
+    val x = FooPrx.checkedCast(communicator.stringToProxy("foo@SimpleApp"))
 
     val x2 = x.doitAsync()
     val x4 = x2.get()

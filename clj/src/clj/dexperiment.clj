@@ -17,21 +17,20 @@
 
 (-> communicator
     (.stringToProxy PROXY)
-    (.ice_ping) )
+    (.ice_ping))
 
 (defn getFoo [communicator strPrx]
   (let [prx (.stringToProxy communicator strPrx )
         ret (FooPrx/checkedCast prx)]
-    ret))
-f
-(getFoo communicator PROXY)
-gin
+    ret)) 
+
+(getFoo communicator PROXY) 
 ;; (defn xs [foo]
 ;;   (doall (map (fn [x] (.sayHello hello foo) ) (range 1 2))))
 ;; (xs "Clojure3")
 
-(.doit (getFoo communicator PROXY))
-(.doitAgain (getFoo communicator PROXY))
+(.doit (getFoo communicator PROXY)) 
+(.doitAgain (getFoo communicator PROXY))  
 
 
 

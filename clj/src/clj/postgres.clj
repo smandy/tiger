@@ -1,7 +1,6 @@
 (ns argo.icetest)
 
 ; andy@raffles:/mnt/hdd/andy/repos/tiger/discovery$ ./Server --Ice.Config=config.server
-
 (import java.sql.DriverManager)
 
 (let [
@@ -17,9 +16,6 @@
                                    (.getDate rs 3) ] ))))) ]
   (loop [] ))
 
-
-  
-  
   (while (.next rs)
     (printf "%s %s %s\n" (.getInt rs 1) (.getString rs 2) (.getDate rs 3)) )
   )

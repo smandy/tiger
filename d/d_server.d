@@ -24,7 +24,6 @@ extern (C++) struct DAdapter
 }
 
 extern (C++) DAdapter* createInstance(size_t, char**, FooInterface);
-
 extern (C++) void deleteInstance(DAdapter*);
 
 void main(string[] args)
@@ -36,12 +35,12 @@ void main(string[] args)
     {
         free(tmp);
     }
+
     foreach (i, x; args)
     {
         tmp[i] = cast(char*) args[i].toStringz();
     }
     tmp[args.length] = null;
-
     DAdapter* da = createInstance(args.length, tmp, iface);
     scope (exit)
     {

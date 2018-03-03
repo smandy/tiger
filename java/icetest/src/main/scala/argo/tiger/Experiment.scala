@@ -32,6 +32,7 @@ object Experiment {
 
   def main(args : Array[String]) : Unit = {
     log.info("args are " + args.mkString("[",",","]"))
+
     val communicator = com.zeroc.Ice.Util.initialize(args)
     log.info("Communicator setup")
     val adapter = communicator.createObjectAdapter("SimpleJavaApp")

@@ -31,7 +31,6 @@ env.Program('simpled.d',
 
 simpleClient = env.Program( 'simpleClient.cpp',
                             LIBS = ['Ice++11',
-                                    simpleDAdapter,
                                     foo,
                                     'pthread',
                                     'stdc++'])

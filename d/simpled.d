@@ -57,12 +57,12 @@ void main(string[] args)
     {
         tmp[i] = cast(char*) args[i].toStringz();
     }
-    tmp[args.length] = nullptr;
+    tmp[args.length] = null;
 
     DAdapter* da = createInstance(args.length, tmp, iface);
     scope (exit)
     {
         deleteInstance(da);
     }
-    da.run();Ice.Trace.Network=1
+    da.run();
 }

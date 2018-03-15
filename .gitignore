@@ -60,3 +60,5 @@ react/node_modules/**
 /d/d_client
 /d/d_server
 /d/cpp_client
+*.os
+*.so

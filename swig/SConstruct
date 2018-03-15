@@ -1,0 +1,30 @@
+import builders
+
+from os.path import expanduser as eu
+
+SLICE_DIR = '/usr/share/ice/slice'
+
+spdlog = '-I%s' % eu('~/repos/spdlog/include')
+
+env = Environment(CPPFLAGS = ['--std=c++14',
+                              '-I.',
+                              spdlog,
+                              '-g',
+],
+                  CPPPATH=['/usr/include/SDL2'],
+                  SWIGFLAGS = ['-d', '-c++'],
+                  SLICE_INCLUDES = [SLICE_DIR] )
+
+
+#env.Slice2cpp(target = 'Security', source = 'slice/Security.ice')
+builders.addSlice2cppBuilder(env)
+
+env.Slice2cpp(target = 'Foo',source = '../slice/Foo.ice')
+env.Slice2cpp(target = 'Ticker',source = '../slice/Ticker.ice')
+complex = env.SharedObject('complex.cpp')
+foo = env.Object(source = 'Foo.cpp')
+ticker = env.Object(source = 'Ticker.cpp')
+env.LoadableModule( '_complexmodule', ['complex.i', complex])
+#env.Program('sdlViewer.cpp',
+#            LIBS = [foo, ticker, 'SDLmain', 'SDL2', 'SDL2_mixer', 'SDL2_ttf', 'GL','GLU','glut','Ice', 'IceUtil', 'pthread'])
+

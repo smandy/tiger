@@ -11,7 +11,7 @@
   (let [iid (new InitializationData)
         props (Util/createProperties)]
     (set! (. iid properties) props)
-    (Util/initialize iid)))
+    (Util/initialize iid))) 
 
 (def PROXY "foo:tcp -h ritz -p 1099")
 
@@ -24,13 +24,13 @@
         ret (FooPrx/checkedCast prx)]
     ret)) 
 
-(getFoo communicator PROXY) 
+(getFoo communicator PROXY)
 ;; (defn xs [foo]
 ;;   (doall (map (fn [x] (.sayHello hello foo) ) (range 1 2))))
 ;; (xs "Clojure3")
 
-(.doit (getFoo communicator PROXY)) 
-(.doitAgain (getFoo communicator PROXY))  
+(.doit (getFoo communicator PROXY))
+(.doitAgain (getFoo communicator PROXY))
 
 
 

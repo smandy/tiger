@@ -17,11 +17,12 @@ void main(string[] args)
 {
     writefln("Woot '%s'", args[1] );
     DAdapter* da = createInstance(cast(char*)args[1].ptr);
-    writefln("Da is %s", &da);
     scope (exit)
     {
         deleteInstance(da);
     }
+    
+    writefln("Da is %s", &da);
     writefln("doit -> %s", da.doit());
     writefln("doitAgain -> %s", da.doitAgain());
 }

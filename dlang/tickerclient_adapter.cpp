@@ -19,18 +19,14 @@ using namespace Ice;
 //     TickDirection bidDirection;
 //     TickDirection askDirection;
 // };
-
-
-namespace argo {
-    struct DListener {
-        void onTick( WrappedVector<::argo::Tick> ticks );
-    };
-}
+struct DListener {
+    void onTick( WrappedVector<::argo::Tick> ticks );
+};
 
 struct MyListener : public ::argo::TickListener {
-    argo::DListener* impl;
+    DListener* impl;
 
-    MyListener( argo::DListener* _impl) : impl(_impl) {}
+    MyListener( DListener* _impl) : impl(_impl) {}
     
     void onTick(::argo::TickSeq(seq), const ::Ice::Current&) {
         std::cout << "Ontick " << sizeof(argo::Tick) << std::endl;
@@ -67,7 +63,7 @@ struct DAdapter {
     //FooInterface* iface;
 
 public:
-    DAdapter(int argc, char **argv, argo::DListener *iface)
+    DAdapter(int argc, char **argv, DListener *iface)
       : comm(Ice::initialize(argc, argv)),
         adapter(comm->createObjectAdapter("SimpleDApp")) {
     std::cout << "In ctor" << std::endl;
@@ -98,7 +94,7 @@ void DAdapter::run() {
   std::cout << "Woot I am the run method" << std::endl;
 }
 
-DAdapter *createInstance(size_t argc, char **argv, argo::DListener* iface) {
+DAdapter *createInstance(size_t argc, char **argv, DListener* iface) {
   return new DAdapter(argc, argv, iface);
 }
 

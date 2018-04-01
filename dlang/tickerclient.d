@@ -3,11 +3,10 @@ import core.stdc.stdlib : malloc, free;
 import std.string;
 
 // TODO - these are identical to slice definitions. Maybe can use these!
-
 extern(C++) struct WrappedVector(T) {
   size_t length;
   T *buf;
-};
+}
 
 extern(C++, argo) {
   enum TickDirection : byte { ZERO, UP, DOWN };
@@ -18,16 +17,6 @@ extern(C++, argo) {
     double askPx;
     TickDirection bidDirection;
     TickDirection askDirection;
-  };
-
-  struct DListener {
-    void onTick(WrappedVector!(argo.Tick)ticks) {
-        //auto ticks = cast(Tick[]) ticks1;
-        //writefln("Received ticks %s", ticks.length);
-      // writefln("Buf is %s %s", ticks.buf, ticks.buf[1]);
-      // wraitefln("Size is %s", Tick.sizeof);
-      foreach (i, tick; ticks) { writefln("Tick %s is %s", i, tick); }
-    }
   }
 }
 
@@ -35,7 +24,18 @@ extern(C++) struct DAdapter {
   void run();
 }
 
-extern(C++) DAdapter *createInstance(size_t, char **, argo.DListener *);
+extern(C++)
+struct DListener {
+    void onTick(WrappedVector!(argo.Tick)ticks1) {
+        auto ticks = cast(Tick[]) ticks1;
+        // writefln("Received ticks %s", ticks.length);
+        // writefln("Buf is %s %s", ticks.buf, ticks.buf[1]);
+        // wraitefln("Size is %s", Tick.sizeof);
+        // foreach (i, tick; ticks) { writefln("Tick %s is %s", i, tick); }
+    }
+}
+
+extern(C++) DAdapter *createInstance(size_t, char **, DListener *);
 
 extern(C++) void deleteInstance(DAdapter *);
 
@@ -51,4 +51,4 @@ void main(string[] args) {
   DAdapter *da = createInstance(args.length, tmp, &iface);
   scope(exit) { deleteInstance(da); }
   da.run();
-};
+}

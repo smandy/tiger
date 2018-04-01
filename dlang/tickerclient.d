@@ -10,7 +10,7 @@ extern(C++) struct WrappedVector(T) {
 };
 
 extern(C++, argo) {
-    enum TickDirection : byte { ZERO, UP, DOWN };
+  enum TickDirection : byte { ZERO, UP, DOWN };
 
   struct Tick {
     long symbol;
@@ -21,13 +21,12 @@ extern(C++, argo) {
   };
 
   struct DListener {
-    void onTick(WrappedVector !(argo.Tick)ticks) {
-      writefln("Received ticks %s", ticks.length);
-      writefln("Buf is %s %s", ticks.buf, ticks.buf[1]);
-      writefln("Size is %s", Tick.sizeof);
-      for (int i = 0; i < ticks.length; ++i) {
-          writefln("Tick %s is %s", i, ticks.buf[i]);
-      }
+    void onTick(WrappedVector!(argo.Tick)ticks) {
+        //auto ticks = cast(Tick[]) ticks1;
+        //writefln("Received ticks %s", ticks.length);
+      // writefln("Buf is %s %s", ticks.buf, ticks.buf[1]);
+      // wraitefln("Size is %s", Tick.sizeof);
+      foreach (i, tick; ticks) { writefln("Tick %s is %s", i, tick); }
     }
   }
 }

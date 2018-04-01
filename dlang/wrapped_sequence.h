@@ -10,10 +10,11 @@ struct WrappedVector {
 };
 
 template<typename T>
-WrappedVector<T> wrap(const std::vector<T>& v) {
+WrappedVector<T> wrap(std::vector<T>& v) {
     WrappedVector<T> ret;
-    ret.buf = new T[v.size()];
+    //ret.buf = new T[v.size()];
+    ret.buf = v.data();
     ret.length = v.size();
-    memcpy(ret.buf, v.data(), sizeof(T) * v.size());
+    //memcpy(ret.buf, v.data(), sizeof(T) * v.size());
     return ret;
 };

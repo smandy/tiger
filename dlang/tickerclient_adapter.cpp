@@ -7,6 +7,7 @@
 #include "wrapped_string.h"
 #include "wrapped_sequence.h"
 
+
 using namespace std;
 using namespace Ice;
 
@@ -32,7 +33,9 @@ struct MyListener : public ::argo::TickListener {
     MyListener( argo::DListener* _impl) : impl(_impl) {}
     
     void onTick(::argo::TickSeq(seq), const ::Ice::Current&) {
+        std::cout << "Ontick " << sizeof(argo::Tick) << std::endl;
         impl->onTick( wrap(seq) );
+        std::cout << "Ontick completed" << std::endl;
     }
     
     void onImage(::argo::TickImage, const ::Ice::Current&) {
@@ -68,9 +71,16 @@ public:
       : comm(Ice::initialize(argc, argv)),
         adapter(comm->createObjectAdapter("SimpleDApp")) {
     std::cout << "In ctor" << std::endl;
-    adapter->add(std::make_shared<MyListener>(iface), Ice::stringToIdentity("foo"));
+    auto ident = adapter->add(std::make_shared<MyListener>(iface), Ice::stringToIdentity(Ice::generateUUID()));
+    std::cout << "ident is " << *ident << std::endl;
+    auto prx = Ice::checkedCast<argo::TickerPlantPrx>( comm->stringToProxy("plant"));
+    std::cout << "Prx is " << prx << std::endl;
     adapter->activate();
-    MyListener foo(nullptr);
+    if (prx!= nullptr) {
+        prx->sayHello();
+        prx->subscribe(Ice::checkedCast<argo::TickListenerPrx>(ident));
+    }
+    //MyListener foo(iface);
   }
 
   void run();

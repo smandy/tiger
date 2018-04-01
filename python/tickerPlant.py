@@ -81,6 +81,7 @@ class MyPlant(argo.TickerPlant):
     def evict( self, l):
         def ret(*args):
             #print "Evicting %s %s" % (l, args)
+            print(args)
             print("Evicting ...dare not name his name (to_string is an rpc!!!)")
             del self.listeners[l]
         return ret

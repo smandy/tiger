@@ -6,7 +6,8 @@ template <typename T>
 struct WrappedVector {
     size_t length;
     T *buf;
-    operator std::vector<T>();
+    int i;
+    //operator std::vector<T>();
 };
 
 template<typename T>
@@ -15,6 +16,7 @@ WrappedVector<T> wrap(std::vector<T>& v) {
     //ret.buf = new T[v.size()];
     ret.buf = v.data();
     ret.length = v.size();
+    ret.i = 0;
     //memcpy(ret.buf, v.data(), sizeof(T) * v.size());
     return ret;
 };

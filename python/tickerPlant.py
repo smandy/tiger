@@ -111,9 +111,9 @@ class MyPlant(argo.TickerPlant):
 
     def tick(self):
         tix = []
-        for s in self.stocks:
+        for i,s in enumerate(self.stocks):
             s.tick()
-            tix.append( argo.Tick( s.name, s.bidPx, s.bidPx + s.spread, s.bidDirection, s.askDirection))
+            tix.append( argo.Tick( i, s.bidPx, s.bidPx + s.spread, s.bidDirection, s.askDirection))
         for q,v in self.listeners.items():
             #print "Ticking %s %s" % (q,v)
             q.begin_onTick( tix, _ex = self.evict(q))

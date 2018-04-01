@@ -9,7 +9,7 @@ import argo
 
 class MyListener(argo.TickListener):
     def onTick(self, tix, current):
-        print "onTick %s" % tix
+        print("onTick %s" % tix)
 
 if __name__=='__main__':
     communicator = Ice.initialize(['--Ice.Config=tickerplant.properties'] )

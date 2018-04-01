@@ -64,3 +64,4 @@ react/node_modules/**
 *.so
 /dlang/d_client
 /dlang/d_server
+/dlang/tickerclient

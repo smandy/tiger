@@ -7,7 +7,7 @@ module argo {
     enum TickDirection { ZERO, UP, DOWN};
     
     struct Tick {
-        string symbol;
+        long symbol;
         double bidPx;
         double askPx;
 

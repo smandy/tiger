@@ -9,7 +9,6 @@
 using namespace std;
 using namespace Ice;
 
-
 struct FooInterface {
   WrappedString doit();
   WrappedString doitAgain();

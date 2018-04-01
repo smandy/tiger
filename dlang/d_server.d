@@ -35,7 +35,6 @@ void main(string[] args)
     {
         free(tmp);
     }
-
     foreach (i, x; args)
     {
         tmp[i] = cast(char*) args[i].toStringz();

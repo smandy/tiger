@@ -24,11 +24,13 @@ ticker = env.Object(source = 'Ticker.cpp')
 server_adapter = env.Object(source = 'server_adapter.cpp')
 client_adapter = env.Object(source = 'client_adapter.cpp')
 tickerclient_adapter = env.Object(source = 'tickerclient_adapter.cpp')
+tickserver_adapter = env.Object(source = 'tickserver_adapter.cpp')
 
 #wrapped_string = env.Object('wrapped_string.d')
 wrapped_string = env.Object("wrapped_string.cpp")
 
 random_streamer = env.Object( source = 'random_streamer.d')
+convertargs = env.Object( source = 'convertargs.d')
 tick = env.Object( source = 'tick.d')
 
 env.Program('d_server.d',
@@ -61,5 +63,16 @@ env.Program( 'tickerclient.d',
                    tick,
                    'pthread',
                    'stdc++'] )
-             
+
+
+env.Program( 'tickserver.d',
+             LIBS=['Ice++11',
+                   wrapped_string,
+                   tickserver_adapter,
+                   convertargs,
+                   ticker,
+                   tick,
+                   'pthread',
+                   'stdc++'] )
+
 

@@ -65,3 +65,4 @@ react/node_modules/**
 /dlang/d_client
 /dlang/d_server
 /dlang/tickerclient
+/dlang/tickserver

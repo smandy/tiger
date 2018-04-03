@@ -14,8 +14,6 @@ env = Environment(CPPFLAGS = ['--std=c++14',
                   CPPPATH=['/usr/include/SDL2'],
                   SLICE_INCLUDES = [SLICE_DIR] )
 
-
-
 #env.Slice2cpp(target = 'Security', source = 'slice/Security.ice')
 builders.addSlice2cppBuilder(env)
 

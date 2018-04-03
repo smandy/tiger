@@ -31,7 +31,6 @@ struct MyListener : public ::argo::TickListener {
 };
 
 
-
 struct DAdapter {
   CommunicatorPtr comm;
   ObjectAdapterPtr adapter;

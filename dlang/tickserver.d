@@ -3,30 +3,26 @@ import core.stdc.stdlib : malloc, free;
 import std.string;
 import wrapped_vector;
 import tick;
+import convertargs;
 
-extern(C++) struct DAdapter {
-  void run();
+extern (C++) struct TickReceiver
+{
+    void receiveTick(WrappedVector!Tick ticks);
+
+    void stop();
+
+    void join();
 }
 
-extern(C++) struct DListener {
-    void onTick( Tic
+extern (C++) TickReceiver* createInstance(size_t, char**);
+
+void main(string[] args)
+{
+    writefln("Woot");
+    ///DListener iface;
+    // DAdapter* da = createInstance(cast(char*)args[1].ptr);
+    // scope(exit) deleteInstance(da);
+    auto a = convertArgs(args);
+    auto tickReceiver = createInstance(a.argc, a.argv);
+    tickReceiver.join();
 }
-
-extern(C++) DAdapter *createInstance(size_t, char **, DListener *);
-
-extern(C++) void deleteInstance(DAdapter *);
-
-void main(string[] args) {
-  writefln("Woot");
-  DListener iface;
-  // DAdapter* da = createInstance(cast(char*)args[1].ptr);
-  // scope(exit) deleteInstance(da);
-  char **tmp = cast(char **) malloc(args.length + 1);
-  scope(exit) { free(tmp); }
-  foreach (i, x; args) { tmp[i] = cast(char *) args[i].toStringz(); }
-  tmp[args.length] = null;
-  DAdapter *da = createInstance(args.length, tmp, &iface);
-  scope(exit) { deleteInstance(da); }
-  da.run();
-}
-

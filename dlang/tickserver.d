@@ -24,5 +24,8 @@ void main(string[] args)
     // scope(exit) deleteInstance(da);
     auto a = convertArgs(args);
     auto tickReceiver = createInstance(a.argc, a.argv);
+
+    writefln("Joining");
     tickReceiver.join();
+    writefln("Joined");
 }

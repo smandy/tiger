@@ -19,7 +19,10 @@ if __name__=='__main__':
     myListener = MyListener()
     prx = argo.TickListenerPrx.checkedCast( adapter.addWithUUID( myListener) )
     plant = argo.TickerPlantPrx.checkedCast( communicator.stringToProxy('plant'))
+    print("Have plant")
+    print( plant.sayHello())
     plant.subscribe( prx )
+    print("Subscribed")
     communicator.waitForShutdown()
     
 

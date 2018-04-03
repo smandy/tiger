@@ -7,18 +7,9 @@
 #include "wrapped_string.h"
 #include "wrapped_sequence.h"
 
-
 using namespace std;
 using namespace Ice;
 
-//enum TickDirection {ZERO, UP , DOWN};
-// struct DTick {
-//     long symbol;
-//     double bidPx;
-//     double askPx;
-//     TickDirection bidDirection;
-//     TickDirection askDirection;
-// };
 struct DListener {
     void onTick( WrappedVector<::argo::Tick> ticks );
 };
@@ -40,22 +31,6 @@ struct MyListener : public ::argo::TickListener {
 };
 
 
-// class MyFoo : public argo::Foo {
-//   FooInterface *impl;
-// public:
-//   MyFoo(FooInterface *ptr) : impl(ptr) {}
-//   void doitAsync(::std::function<void(const ::std::string &)> cb,
-//                  ::std::function<void(::std::exception_ptr)>,
-//                  const ::Ice::Current &) {
-//       std::cout << "impl->doit " << std::string(impl->doit()) << std::endl;
-//     cb(impl->doit());
-//   };
-//   void doitAgainAsync(::std::function<void(const ::std::string &)> cb,
-//                       ::std::function<void(::std::exception_ptr)>,
-//                       const ::Ice::Current &) {
-//     cb(impl->doitAgain());
-//   }
-// };
 
 struct DAdapter {
   CommunicatorPtr comm;

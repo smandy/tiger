@@ -9,13 +9,7 @@ extern(C++) struct DAdapter {
 }
 
 extern(C++) struct DListener {
-  void onTick(WrappedVector !(argo.Tick)ticks1) {
-    // auto ticks = cast(Tick[]) ticks1;
-    // writefln("Received ticks %s", ticks.length);
-    // writefln("Buf is %s %s", ticks.buf, ticks.buf[1]);
-    // wraitefln("Size is %s", Tick.sizeof);
-    foreach (ref tick; ticks1) { writefln("Tick is %s", tick); }
-  }
+    void onTick( Tic
 }
 
 extern(C++) DAdapter *createInstance(size_t, char **, DListener *);
@@ -23,11 +17,6 @@ extern(C++) DAdapter *createInstance(size_t, char **, DListener *);
 extern(C++) void deleteInstance(DAdapter *);
 
 void main(string[] args) {
-  WrappedVector !(argo.Tick)s;
-  s.front();
-  s.empty();
-  s.popFront();
-
   writefln("Woot");
   DListener iface;
   // DAdapter* da = createInstance(cast(char*)args[1].ptr);
@@ -40,3 +29,4 @@ void main(string[] args) {
   scope(exit) { deleteInstance(da); }
   da.run();
 }
+

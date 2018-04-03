@@ -3,13 +3,8 @@ import time
 import Ice
 from datetime import  datetime
 
-## if not slice_dir:
-##     print(sys.argv[0] + ': Slice directory not found.')
-##     sys.exit(1)
-## Ice.loadSlice("'-I" + slice_dir + "' Callback.ice")
-
 slice_dir = Ice.getSliceDir()
-Ice.loadSlice('-I %(slice_dir)s ../slice/Ticker.ice' % locals() )
+Ice.loadSlice('-I %(slice_dir)s ../slice/Ticker.ice' % locals())
 
 import argo
 import random
@@ -20,7 +15,6 @@ def randomPrice():
 
 def randomSpread():
     return random.choice( [0.01, 0.02] )
-
 
 def calcDirection(old, new):
     if new>old:
@@ -64,7 +58,6 @@ def tickStocks():
         ret.append( "%s,%s,%s" % (s.name, s.bidPx, s.bidPx + s.spread))
     m = ":".join(ret)
     print(m)
-    #producer.send_messages( topic, m )
 
 class MyPlant(argo.TickerPlant):
     def __init__(self):
@@ -116,10 +109,8 @@ class MyPlant(argo.TickerPlant):
             s.tick()
             tix.append( argo.Tick( i, s.bidPx, s.bidPx + s.spread, s.bidDirection, s.askDirection))
         for q,v in self.listeners.items():
-            #print "Ticking %s %s" % (q,v)
             q.begin_onTick( tix, _ex = self.evict(q))
         self.history = (self.history + [tix])[-300:]
-        #print "Boop"
         
 if __name__=='__main__':
     communicator = Ice.initialize(['--Ice.Config=tickerplant.properties'])
@@ -139,15 +130,11 @@ if __name__=='__main__':
 
     try:
         while True:
-            #print "Tick"
             plant.tick()
             time.sleep(1)
     except:
         pass
-    #adapter.close()
-    #adapter.shutdown()
     plant.running = False
     communicator.destroy()
-    #communicator.destroy()
     print("Shutting down")
     

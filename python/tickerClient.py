@@ -1,6 +1,7 @@
 import Ice
 
 from common import getUUID
+from datetime import datetime
 
 slice_dir = Ice.getSliceDir()
 Ice.loadSlice('-I %(slice_dir)s ../slice/Ticker.ice' % locals())
@@ -9,7 +10,7 @@ import argo
 
 class MyListener(argo.TickListener):
     def onTick(self, tix, current):
-        print("onTick %s" % len(tix))
+        print("onTick %s %s" % (len(tix), datetime.now().isoformat()))
 
 if __name__=='__main__':
     communicator = Ice.initialize(['--Ice.Config=tickerplant.properties'] )

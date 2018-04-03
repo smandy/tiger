@@ -8,6 +8,10 @@ struct WrappedVector {
     T *buf;
     int i;
     //operator std::vector<T>();
+
+    T front();
+    bool empty();
+    void popFront();
 };
 
 template<typename T>

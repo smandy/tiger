@@ -23,11 +23,6 @@ extern(C++) DAdapter *createInstance(size_t, char **, DListener *);
 extern(C++) void deleteInstance(DAdapter *);
 
 void main(string[] args) {
-  WrappedVector !(argo.Tick)s;
-  s.front();
-  s.empty();
-  s.popFront();
-
   writefln("Woot");
   DListener iface;
   // DAdapter* da = createInstance(cast(char*)args[1].ptr);

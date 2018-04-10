@@ -11,17 +11,18 @@ import argo
 class MyListener(argo.TickListener):
     def onTick(self, tix, current):
         print("onTick %s %s" % (len(tix), datetime.now().isoformat()))
+        print(tix)
 
 if __name__=='__main__':
     communicator = Ice.initialize(['--Ice.Config=tickerplant.properties'] )
     adapter = communicator.createObjectAdapterWithEndpoints( getUUID(), "tcp" )
     adapter.activate()
     myListener = MyListener()
-    prx = argo.TickListenerPrx.checkedCast( adapter.addWithUUID( myListener) )
+    prx = argo.TickListenerPrx.checkedCast(adapter.addWithUUID(myListener))
     plant = argo.TickerPlantPrx.checkedCast( communicator.stringToProxy('plant'))
     print("Have plant")
     print( plant.sayHello())
-    plant.subscribe( prx )
+    plant.subscribe(prx)
     print("Subscribed")
     communicator.waitForShutdown()
     

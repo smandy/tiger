@@ -22,11 +22,17 @@
     (set! (. iid properties) props)
     (Util/initialize iid)))
 
-(defn adapter []
-  (let [ comm (communicator) ]
-    (.createObjectAdapterWithEndpoints comm "tcp")))
 
-(adapter)
+(defn makeuuid [] (.toString (java.util.UUID/randomUUID)) )
+
+;; (defn adapter []
+;;   (let [ comm (communicator) ]
+;;     (.createObjectAdapterWithEndpoints comm (makeuuid) "tcp")))
+
+(defn adapter [comm]
+    (.createObjectAdapterWithEndpoints comm (makeuuid) "tcp"))
+
+(adapter (communicator))
 
 (let [prx (.stringToProxy (communicator) "plant")
       ticker (argo.TickerPlantPrx/checkedCast prx)
@@ -35,20 +41,22 @@
 
 (defn makeimpl [] (reify argo.TickListener
                     (onTick [this ticks current]
-                      (println "Got a tick woot")
+                      (printf "Got a tick woot %s\n" ticks)
                       )
                     ))
 
 (defn doit []
   (let [
-        adp (adapter)
-        prx (argo.TickListenerPrx/checkedCast (.addWithUUID adp (makeimpl)))
-        ] ) )
+        comm (communicator)
+        adp (adapter comm)
+        my_prx (argo.TickListenerPrx/checkedCast (.addWithUUID adp (makeimpl)))
+        prx (argo.TickerPlantPrx/checkedCast (.stringToProxy comm "plant"))
+        ]
+    (.activate adp)
+    (.subscribe prx my_prx)))
 
 (doit)
-
 (makeimpl)
-
 
 (let [ adp (adapter) ]
   adapter)

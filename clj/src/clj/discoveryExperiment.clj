@@ -2,15 +2,14 @@
 
 ; andy@raffles:/mnt/hdd/andy/repos/tiger/discovery$ ./Server --Ice.Config=config.server
 
-(import Ice.Util)
+(import com.zeroc.Ice.Util)
 (import Demo.Hello)
 (import Demo.HelloPrx)
-(import Demo.HelloPrxHelper)
 
 (def communicator
   (let [iid (new Ice.InitializationData)
         props (doto (Ice.Util/createProperties)
-                (.setProperty "Ice.Plugin.Discovery"  "IceLocatorDiscovery:IceDiscovery.PluginFactory")
+                (.setProperty "Ice.Plugin.IceDiscovery"  "IceLocatorDiscovery:IceDiscovery.PluginFactory")
                 (.setProperty "Ice.Trace.Network"  "2")
                 (.setProperty "Ice.Trace.Protocol"  "2")
 

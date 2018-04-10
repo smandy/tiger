@@ -38,7 +38,7 @@ object Experiment {
     val adapter = communicator.createObjectAdapter("SimpleJavaApp")
     val foo = new MyFoo()
     adapter.add( foo, Ice.Util.stringToIdentity("foo"))
-    log.info("Activate adapter")
+    log.info(er"Activate adapter")
     adapter.activate()
 
     log.info("Wait for shutdown")

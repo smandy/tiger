@@ -3,6 +3,7 @@
 
 #include <set>
 #include <thread>
+#include <atomic>
 
 template <typename T> struct TR;
 
@@ -11,7 +12,6 @@ struct TickReceiver : public argo::TickerPlant {
   Ice::ObjectAdapterPtr adapter;
   std::mutex m;
   using lock_type = std::lock_guard<std::mutex>;
-
   std::set<std::shared_ptr<argo::TickListenerPrx>> listeners;
 
   void join();
@@ -19,9 +19,11 @@ struct TickReceiver : public argo::TickerPlant {
 
   std::thread t;
 
+    std::atomic<bool> running;
+
   TickReceiver(Ice::CommunicatorPtr _comm, Ice::ObjectAdapterPtr _adapter)
       : comm(_comm), adapter(_adapter), m{}, t{[&]() {
-          while (true) {
+          while (running.load()) {
             {
               lock_type l{m};
               // std::cout << "Boop here we go have " << listeners.size()
@@ -96,7 +98,7 @@ void TickReceiver::join() {
   std::cout << "cpp joined" << std::endl;
 }
 
-void TickReceiver::stop() { comm->shutdown(); }
+void TickReceiver::stop() { running.store(false);comm->shutdown(); }
 
 TickReceiver *createInstance(size_t argc, char **argv) {
   std::cout << "Create instance" << std::endl;

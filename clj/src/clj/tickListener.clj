@@ -1,4 +1,4 @@
-(ns argo.icetest)
+(ns argo.icetest) 
 
 ; andy@raffles:/mnt/hdd/andy/repos/tiger/discovery$ ./Server --Ice.Config=config.server
 
@@ -7,7 +7,7 @@
 (import com.zeroc.Ice.InitializationData)
 
 (import argo.TickListenerPrx)
-(import argo.TickListener))
+(import argo.TickListener)
 
                 ;;(.setProperty "Ice.Default.EndpointSelection" "Ordered")
                 ;;(.setProperty "Ice.Warn.Connections" "0")

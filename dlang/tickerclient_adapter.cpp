@@ -6,6 +6,9 @@
 #include <string>
 #include "wrapped_string.h"
 #include "wrapped_sequence.h"
+#include <boost/date_time/posix_time/posix_time.hpp>
+
+using namespace boost::posix_time;
 
 using namespace std;
 using namespace Ice;
@@ -20,9 +23,15 @@ struct MyListener : public ::argo::TickListener {
     MyListener( DListener* _impl) : impl(_impl) {}
     
     void onTick(::argo::TickSeq(seq), const ::Ice::Current&) {
-        std::cout << "Ontick " << sizeof(argo::Tick) << std::endl;
+        {
+        ptime t = microsec_clock::universal_time();
+        std::cout << "Ontick " << to_iso_extended_string(t) << std::endl;
+        }
         impl->onTick( wrap(seq) );
-        std::cout << "Ontick completed" << std::endl;
+        {
+        ptime t = microsec_clock::universal_time();
+        std::cout << "Ontick completed" << to_iso_extended_string(t) << std::endl;
+        }
     }
     
     void onImage(::argo::TickImage, const ::Ice::Current&) {
@@ -30,11 +39,9 @@ struct MyListener : public ::argo::TickListener {
     }
 };
 
-
 struct DAdapter {
   CommunicatorPtr comm;
   ObjectAdapterPtr adapter;
-    //FooInterface* iface;
 
 public:
     DAdapter(int argc, char **argv, DListener *iface)

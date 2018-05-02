@@ -3,7 +3,6 @@
 #include <Ice/Identity.ice>
 
 module argo {
-
     enum TickDirection { ZERO, UP, DOWN};
     
     struct Tick {

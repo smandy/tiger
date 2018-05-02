@@ -4,7 +4,9 @@
 #include <set>
 #include <thread>
 #include <atomic>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
+using namespace boost::posix_time;
 template <typename T> struct TR;
 
 struct TickReceiver : public argo::TickerPlant {
@@ -38,7 +40,10 @@ struct TickReceiver : public argo::TickerPlant {
                         
                         };
                 auto fut = listener->onTickAsync(
-                    myTicks, []() { std::cout << "Bleep" << std::endl; },
+                    myTicks, []() {
+                        ptime t = microsec_clock::universal_time();
+                        std::cout << "Bleep " << to_iso_extended_string(t) << std::endl;
+                    },
                     [&](std::exception_ptr ex) {
                       try {
                         if (ex) {

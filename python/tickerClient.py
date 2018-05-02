@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import Ice
 
 from common import getUUID
@@ -10,8 +12,10 @@ import argo
 
 class MyListener(argo.TickListener):
     def onTick(self, tix, current):
-        print("onTick %s %s" % (len(tix), datetime.now().isoformat()))
-        print(tix)
+        print("onTick %s %s %s" % (len(tix), datetime.now().isoformat() ,
+                                [x.symbol for x in tix]
+        ))
+        #print(tix)
 
 if __name__=='__main__':
     communicator = Ice.initialize(['--Ice.Config=tickerplant.properties'] )

@@ -49,7 +49,7 @@ DAdapter *createInstance(char* str_proxy) {
 }
 
 void deleteInstance(DAdapter *d) {
-    std::cout << "elete instance instance " << std::endl;
+    std::cout << "Delete instance instance " << std::endl;
     d->destroy_communicator();
     delete d;
 }

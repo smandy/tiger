@@ -1,3 +1,4 @@
+
 import builders
 
 from os.path import expanduser as eu
@@ -62,8 +63,8 @@ env.Program( 'tickerclient.d',
                    ticker,
                    tick,
                    'pthread',
+                   'boost_date_time',
                    'stdc++'] )
-
 
 env.Program( 'tickserver.d',
              LIBS=['Ice++11',
@@ -73,6 +74,13 @@ env.Program( 'tickserver.d',
                    ticker,
                    tick,
                    'pthread',
+                   'boost_date_time',
                    'stdc++'] )
 
 
+cpp_tickserver_client = env.Program( 'cpp_tickserver_client.cpp',
+                           LIBS = ['Ice++11',
+                                   ticker,
+                                   'pthread',
+                                   'boost_date_time',
+                                   'stdc++'])

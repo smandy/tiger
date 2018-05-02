@@ -131,6 +131,8 @@ SDLViewer(::Ice::CommunicatorPtr _communicator, uint32_t _width,
 
   auto adapter = communicator->createObjectAdapterWithEndpoints("", "tcp");
   adapter->activate();
+
+  // Danger will robinson TODO - syntax has changed.
   auto myPrx = argo::TickListenerPrx::uncheckedCast(adapter->addWithUUID(this));
 
   auto tmpPrx = communicator->stringToProxy("plant");

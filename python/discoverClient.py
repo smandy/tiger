@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
-print "Woot"
+print("Woot")
 
 import Ice
 
 Ice.loadSlice('../slice/SimpleService.ice')
-import argoch
+import argo
 
 ccommunicator = Ice.initialize( [ '--Ice.Config=discoveryClient.properties'])
 servicePrx = argo.SimpleServicePrx.checkedCast( communicator.stringToProxy('instance@SimpleServiceImpl'))

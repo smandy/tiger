@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file was written by IceGrid GUI -->
+<icegrid>
+   <application name="SimpleDApp">
+      <node name="ritz">
+         <server id="SimpleDApp" activation="on-demand" deactivation-timeout="60" exe="/home/andy/repos/tiger/dlang/d_server">
+            <properties>
+               <property name="Ice.Admin.Endpoints" value="tcp -h ritz"/>
+               <property name="Ice.StdOut" value="/tmp/simpleDApp.txt"/>
+               <property name="Ice.StdErr" value="/tmp/simpleDApp.txt"/>
+            </properties>
+            <adapter name="SimpleDApp" endpoints="tcp -h ritz" id="SimpleDApp"/>
+         </server>
+      </node>
+   </application>
+</icegrid>

@@ -9,7 +9,8 @@
 (def communicator
   (let [iid (new Ice.InitializationData)
         props (doto (Ice.Util/createProperties)
-                (.setProperty "Ice.Plugin.IceDiscovery"  "IceLocatorDiscovery:IceDiscovery.PluginFactory")
+                (.setProperty "Ice.Plugin.IceDiscovery"  "IceLocatorDiscovery:com.zeroc.ice.IceDiscovery.PluginFactory")
+                
                 (.setProperty "Ice.Trace.Network"  "2")
                 (.setProperty "Ice.Trace.Protocol"  "2")
 

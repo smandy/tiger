@@ -1,27 +1,27 @@
 (ns argo.icetest)
 
-(import Ice.Util)
+(import com.zeroc.Ice.Current)
+(import com.zeroc.Ice.Util)
+(import com.zeroc.Ice.InitializationData)
 
 (import argo.Foo)
 (import argo.FooPrx)
-(import argo.FooPrxHelper)
 
 (def communicator
-  (let [iid (new Ice.InitializationData)
-        props (doto (Ice.Util/createProperties)
-          (.setProperty
-           "Ice.Plugin.IceLocatorDiscovery"  "IceLocatorDiscovery:IceLocatorDiscovery.PluginFactory")
-          (.setProperty "IceLocatorDiscovery.InstanceName" "tiger1")
+  (let [iid (new com.zeroc.Ice.InitializationData)
+        props (doto (com.zeroc.Ice.Util/createProperties)
+          (.setProperty "Ice.Plugin.IceLocatorDiscovery"  "com.zeroc.IceLocatorDiscovery.PluginFactory")
+          ;; (.setProperty "IceLocatorDiscovery.InstanceName" "tiger1")
           ;; (.setProperty "Ice.Trace.Network"  "2")
           ;; (.setProperty "Ice.Trace.Protocol" "3")
-          (.setProperty "Ice.Default.EndpointSelection" "Ordered")
+          ;;(.setProperty "Ice.Default.EndpointSelection" "Ordered")
           )]
      (set! (. iid properties) props)
-     (Ice.Util/initialize iid)))
+     (com.zeroc.Ice.Util/initialize iid)))
 
 (defn getFoo [communicator strPrx]
   (let [prx (.stringToProxy communicator strPrx )
-        ret (FooPrxHelper/checkedCast prx)]
+        ret (FooPrx/checkedCast prx)]
     ret))
 
 (defn foo [] (print "Woot"))
@@ -29,6 +29,7 @@
 (.doit (getFoo communicator "foo@SimpleCppApp" ))
 (.doit (getFoo communicator "foo@SimpleApp"    ))
 (.doit (getFoo communicator "foo@SimpleJavaApp"))
+(.doit (getFoo communicator "foo@SimpleDApp"))
 
 ;; (def x (getFoo communicator "foo@SimpleJavaApp") )
 
@@ -43,9 +44,3 @@
 (-> communicator
     (.stringToProxy "foo@SimpleApp")
     (.ice_ping))
-
-
-
-
-
-

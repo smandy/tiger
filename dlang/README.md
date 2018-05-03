@@ -20,7 +20,7 @@ cd ~/repos/tiger/dlang
 
 ./tickerclient --Ice.Config=tickerclient.config
 
-./cpp_tickserver_client --Ice.Config=tickerclient.configł
+./cpp_tickserver_client --Ice.Config=tickerclient.config
 
 (In python directory)
 

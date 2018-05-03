@@ -3,28 +3,37 @@ import Ice
 Ice.loadSlice('../slice/Foo.ice')
 import argo
 
-communicator = Ice.initialize( [ '--Ice.Config=locator.properties'])
+communicator = Ice.initialize( [ '--Ice.Config=discovery.properties'])
+
 cppPrx = communicator.stringToProxy('foo@SimpleCppApp')
 cppFoo = argo.FooPrx.checkedCast(cppPrx).ice_timeout(1000)
 
-print "Doit      -> %s" % cppFoo.doit()
-print "DoitAgain -> %s" % cppFoo.doitAgain()
+print("Doit      -> %s" % cppFoo.doit())
+print("DoitAgain -> %s" % cppFoo.doitAgain())
 
 pyPrx = communicator.stringToProxy('foo@SimpleApp')
 pyFoo = argo.FooPrx.checkedCast(pyPrx.ice_timeout(1000))
 
-print "Doit      -> %s" % pyFoo.doit()
-print "DoitAgain -> %s" % pyFoo.doitAgain()
+print("Doit      -> %s" % pyFoo.doit())
+print("DoitAgain -> %s" % pyFoo.doitAgain())
 
 scalaPrx = communicator.stringToProxy('foo@SimpleJavaApp')
 scalaFoo = argo.FooPrx.checkedCast(scalaPrx).ice_timeout(1000)
 
-print "Doit      -> %s" % scalaFoo.begin_doit()
-print "DoitAgain -> %s" % scalaFoo.begin_doitAgain()
-proxies = [ cppFoo, pyFoo, scalaFoo ]
+print("Doit      -> %s" % scalaFoo.begin_doit())
+print("DoitAgain -> %s" % scalaFoo.begin_doitAgain())
+
+
+dPrx = communicator.stringToProxy('foo@SimpleDApp')
+dFoo = argo.FooPrx.checkedCast(dPrx).ice_timeout(1000)
+
+print("Doit      -> %s" % dFoo.begin_doit())
+print("DoitAgain -> %s" % dFoo.begin_doitAgain())
+
+proxies = [ cppFoo, pyFoo, scalaFoo, dFoo ]
 
 for x in proxies:
-    print x.ice_getConnection().getInfo()
+    print(x.ice_getConnection().getInfo())
 
 # Phase 1 async invocations. Relatively cool
 invocations = []
@@ -32,7 +41,7 @@ invocations += [ (x.end_doit      , x.begin_doit() )      for x in proxies ]
 invocations += [ (x.end_doitAgain , x.begin_doitAgain() ) for x in proxies ]
 
 for getter, invocation in invocations:
-    print "%s -> %s" % (getter, getter(invocation))
+    print("%s -> %s" % (getter, getter(invocation)))
 
 from pprint import pprint as pp
 results = []
@@ -53,11 +62,11 @@ class Collector:
         """
         myId = self.counter
         def ret(*argy):
-            print "Woot"
+            print("Woot")
             del self.methods[myId]
             newArgs = argx + argy
             r2 = f( *newArgs )
-            print "Remain %s" % str(self.methods)
+            print("Remain %s" % str(self.methods))
             if not(self.methods):
                 self.onComplete()
             #print self.methods
@@ -84,14 +93,14 @@ class Collector:
 
 # Beware - all of these are called from an ice thread.
 def myExcept(*args):
-    print "Exception %s" % args
+    print("Exception %s" % args)
     
 def receive( prx, method, resp):
-    print "Woot %s %s %s" % (prx, method, resp)
+    print("Woot %s %s %s" % (prx, method, resp))
     results.append( (prx, method, resp) )
 
 def myComplete():
-    print "All Done - destroying communicator"
+    print("All Done - destroying communicator")
     pp(results)
     communicator.shutdown()
 

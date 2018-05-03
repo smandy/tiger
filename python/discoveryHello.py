@@ -6,9 +6,9 @@ import Demo
 communicator = Ice.initialize( [ '--Ice.Config=discovery.properties'])
 hello        = communicator.stringToProxy('hello')
 
-print "Before ping"
+print("Before ping")
 hello.ice_ping()
-print "After ping"
+print("After ping")
 hello = Demo.HelloPrx.checkedCast( hello)
-print hello.sayHello("Python")
+print(hello.sayHello("Python"))
 

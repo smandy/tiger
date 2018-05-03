@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
     auto listener = Ice::checkedCast<argo::TickListenerPrx>(ident);
     auto prx = Ice::checkedCast<argo::TickerPlantPrx>(communicator->stringToProxy("plant"));
     if (prx!= nullptr) {
-        prx->sayHello();
+        //prx->sayHello();
         prx->subscribe(listener);
     }
     adapter->activate();

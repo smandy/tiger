@@ -19,13 +19,10 @@
      (set! (. iid properties) props)
      (com.zeroc.Ice.Util/initialize iid)))
 
-(communicator)
-
 (defn getFoo [strPrx]
   (let [prx (.stringToProxy (communicator) strPrx )
         ret (FooPrx/checkedCast prx)]
     ret))
-
 
 ;; NB Don't mix icediscovery with locatoriscovery. They seem to conflict.
 ;; If you want to chat to the grid *only* use icelocatordiscovery
@@ -45,10 +42,6 @@
      (map square it)
      (filter #(> 50 %) it)
      (map #(format "Bla %s" %) it))
-
-(name :foo)
-(first "woot")
-(rest "woot")
 
 (def myFoo2 (getFoo "foo@SimpleCppApp"))
 (def res  (.begin_doitAgain myFoo2))

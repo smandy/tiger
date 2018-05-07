@@ -16,7 +16,7 @@ class MyFoo( argo.Foo):
     def doit(self, current):
         doLog("Python doit")
         #cb.ice_response("doit from python %s" % datetime.now())
-        return("doit from python %s" % datetime.now())
+        return("Hello from python !!!!!! %s" % datetime.now())
 
     def doitAgain(self, current):
         doLog("Python doitagain")

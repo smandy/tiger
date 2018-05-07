@@ -1,11 +1,11 @@
 <icegrid>
     <application name="SimpleDApp">
         <node name="ritz">
-            <server id="SimpleDApp" exe="/home/andy/repos/tiger/dlang/d_server" deactivation-timeout="60" activation="on-demand">
+            <server id="SimpleDApp" exe="/home/andy/repos/tiger/dlang/d_server" activation="on-demand">
               <!--<property name="Ice.Trace.Network" value="1"/> -->
-              <!-- <property name="Ice.Trace.Network" value="3" /> -->
-              <property name="Ice.Admin.Endpoints" value="tcp -h ritz" />
-              <!--<property name="Ice.Trace.Protocol" value="3" /> -->
+              <!--<property name="Ice.Trace.Network" value="3"/> -->
+              <!--<property name="Ice.Trace.Protocol" value="3"/> -->
+              <property name="Ice.Admin.Endpoints" value="tcp -h ritz"/>
               <property name="Ice.StdOut" value="/tmp/simpleDApp.txt" />
               <property name="Ice.StdErr" value="/tmp/simpleDApp.txt" />
               <property name="Ice.ServerIdleTime" value="5" />

@@ -3,7 +3,7 @@ import Ice
 Ice.loadSlice('../slice/Foo.ice')
 import argo
 
-communicator = Ice.initialize( [ '--Ice.Config=discovery.properties'])
+communicator = Ice.initialize( [ '--Ice.Config=locatordiscovery.properties'])
 
 cppPrx = communicator.stringToProxy('foo@SimpleCppApp')
 cppFoo = argo.FooPrx.checkedCast(cppPrx).ice_timeout(1000)

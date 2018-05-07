@@ -27,6 +27,7 @@ testMember = env.Object(source = 'testMember.cpp')
 env.Program('simpleCppApp.cpp',
             LIBS = ['Ice++11',
                     foo,
+                    'boost_date_time',
                     'pthread'])
 
 #env.Program('sdlViewer.cpp',

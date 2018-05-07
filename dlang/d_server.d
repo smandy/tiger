@@ -9,7 +9,7 @@ extern (C++) class FooInterface
     string doit()
     {
         writefln("doit()");
-        return "Hello from D";
+        return "Hello from D!!!!";
     }
 
     string doitAgain()

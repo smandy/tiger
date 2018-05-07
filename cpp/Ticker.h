@@ -76,13 +76,13 @@ enum class TickDirection : unsigned char
 
 struct Tick
 {
-    ::std::string symbol;
+    long long int symbol;
     double bidPx;
     double askPx;
     ::argo::TickDirection bidDirection;
     ::argo::TickDirection askDirection;
 
-    std::tuple<const ::std::string&, const double&, const double&, const ::argo::TickDirection&, const ::argo::TickDirection&> ice_tuple() const
+    std::tuple<const long long int&, const double&, const double&, const ::argo::TickDirection&, const ::argo::TickDirection&> ice_tuple() const
     {
         return std::tie(symbol, bidPx, askPx, bidDirection, askDirection);
     }
@@ -320,7 +320,7 @@ template<>
 struct StreamableTraits<::argo::Tick>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 19;
+    static const int minWireSize = 26;
     static const bool fixedLength = false;
 };
 
@@ -397,7 +397,7 @@ enum TickDirection
 
 struct Tick
 {
-    ::std::string symbol;
+    ::Ice::Long symbol;
     ::Ice::Double bidPx;
     ::Ice::Double askPx;
     ::argo::TickDirection bidDirection;
@@ -755,7 +755,7 @@ template<>
 struct StreamableTraits< ::argo::Tick>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryStruct;
-    static const int minWireSize = 19;
+    static const int minWireSize = 26;
     static const bool fixedLength = false;
 };
 

@@ -3,15 +3,18 @@
 <icegrid>
    <application name="SimpleJavaApp">
       <node name="ritz">
-         <server id="SimpleJavaApp" activation="on-demand" activation-timeout="1" deactivation-timeout="1" exe="java">
-            <option>-cp</option>
+         <server id="SimpleJavaApp" activation="on-demand" activation-timeout="5" deactivation-timeout="5" exe="java">
+           <option>-cp</option>
             <option>/home/andy/repos/tiger/java/icetest/target/icetest-0.1.0-SNAPSHOT-jar-with-dependencies.jar</option>
             <option>argo.tiger.Experiment</option>
             <properties>
                <property name="Ice.StdOut" value="/tmp/simpleJavaApp.txt"/>
                <property name="Ice.StdErr" value="/tmp/simpleJavaApp.txt"/>
               <property name="Ice.Admin.Endpoints" value="tcp -h ritz" />
-              <property name="Ice.ServerIdleTime" value="5" />
+              <!-- <property name="Ice.ServerIdleTime" value="5" /> -->
+
+              
+              <property name="IceMX.Metrics.Debug.GroupBy" value="id" />
                
             </properties>
             <!--<adapter name="SimpleJavaApp" id="SimpleJavaApp" endpoints="ws -h ritz" /> -->

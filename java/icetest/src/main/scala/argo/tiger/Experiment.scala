@@ -16,8 +16,8 @@ class MyFoo extends Foo {
   import MyFoo._
 
   override def doitAsync( __current: Current): CompletionStage[String] = {
-    log.info("Doit from scala")
-    CompletableFuture.completedFuture(s"Doit from scala ${new DateTime}")
+    log.info("Hello from scala")
+    CompletableFuture.completedFuture(s"Hello from scala!! ${new DateTime}")
   }
 
   override def doitAgainAsync(__current: Current): CompletionStage[String] = {
@@ -38,7 +38,7 @@ object Experiment {
     val adapter = communicator.createObjectAdapter("SimpleJavaApp")
     val foo = new MyFoo()
     adapter.add( foo, Ice.Util.stringToIdentity("foo"))
-    log.info(er"Activate adapter")
+    log.info("Activate adapter")
     adapter.activate()
 
     log.info("Wait for shutdown")

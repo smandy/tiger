@@ -4,14 +4,20 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <sstream>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
+using namespace boost::posix_time;
 using namespace std;
-
 
 class MyFoo : public argo::Foo {
     void doitAsync(::std::function<void(const ::std::string&)> cb, ::std::function<void(::std::exception_ptr)>, const ::Ice::Current&)  {
-        cb("Hello from ice");
-    };
+
+        std::ostringstream ss;
+        ptime t = microsec_clock::universal_time();
+        ss << "hello from C++!! " << to_iso_extended_string(t) << std::endl;
+        cb(ss.str());
+    }
 
     void doitAgainAsync(::std::function<void(const ::std::string&)> cb, ::std::function<void(::std::exception_ptr)>, const ::Ice::Current&) {
         cb("doit again from cpp");
@@ -42,5 +48,4 @@ int main(int argc, char *argv[]) {
   adapter->destroy();
 
   comm->destroy();
-
 }

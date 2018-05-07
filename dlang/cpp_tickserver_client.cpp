@@ -16,7 +16,7 @@ struct MyListener : public ::argo::TickListener {
         }
         for( auto& t : seq) {
             std::cout << t.symbol << "," << t.bidPx << "," << t.askPx << std::endl;
-        };
+        }
     }
     
     void onImage(::argo::TickImage, const ::Ice::Current&) {

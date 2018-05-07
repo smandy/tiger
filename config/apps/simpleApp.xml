@@ -9,8 +9,7 @@
            <property name="Ice.Admin.Endpoints" value="tcp -h ritz" />
            <property name="Ice.StdErr" value="/tmp/simpleApp.txt"/>
            <adapter name="SimpleApp"  endpoints="tcp -h ritz" id="SimpleApp"/>
-              <property name="Ice.ServerIdleTime" value="5" />
-           
+           <property name="Ice.ServerIdleTime" value="5" />
             <!--<adapter name="SimpleApp" endpoints="tcp -h raffles" id="SimpleApp"/> -->
             <!--<adapter name="SimpleApp" endpoints="ws -h raffles" id="SimpleApp"/> -->
          </server>

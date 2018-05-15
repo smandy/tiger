@@ -31,6 +31,12 @@
 (.doit (getFoo "foo@SimpleJavaApp"))
 (.doit (getFoo "foo@SimpleDApp"))
 
+(.add (getFoo "foo@SimpleCppApp") 2 3)
+(.add (getFoo "foo@SimpleApp") 4 5)
+(.add (getFoo "foo@SimpleJavaApp") 6 7)
+(.add (getFoo "foo@SimpleDApp") 10 32)
+
+
 (defn square [x] (* x x))
 
 (->> (range 1 100)

@@ -6,6 +6,11 @@ import core.stdc.stdlib : malloc, free;
 
 extern (C++) class FooInterface
 {
+    int add(int a, int b) {
+        writefln("%s + %s = %s", a,b, a+b);
+        return a + b;
+    };
+    
     string doit()
     {
         writefln("doit()");

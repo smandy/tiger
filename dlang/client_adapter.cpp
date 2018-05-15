@@ -16,14 +16,14 @@ struct DAdapter {
 public:
     WrappedString doit();
     WrappedString doitAgain();
+    int add(int a, int b);
 
     void destroy_communicator();
-    
-    DAdapter(const std::string &str_proxy) 
-        : comm {Ice::initialize() },
-          prx {Ice::uncheckedCast<::argo::FooPrx>(comm->stringToProxy(str_proxy))}
+    DAdapter(int argc, char *argv[]) 
+        : comm { Ice::initialize(argc, argv) },
+          prx { Ice::uncheckedCast<::argo::FooPrx>(comm->propertyToProxy("Foo"))}
     {
-        std::cout << "str_proxy " << str_proxy << std::endl;
+        //std::cout << "str_proxy " << str_proxy << std::endl;
         std::cout << "prx is " << prx << std::endl;
     }
 };
@@ -31,6 +31,11 @@ public:
 WrappedString DAdapter::doit() {
     return wrap(prx->doit());
 };
+
+int DAdapter::add(int a, int b) {
+    return a + b;
+};
+
 
 WrappedString DAdapter::doitAgain() {
     return wrap(prx->doitAgain());
@@ -41,11 +46,9 @@ void DAdapter::destroy_communicator() {
     comm->destroy();
 };
 
-DAdapter *createInstance(char* str_proxy) {
+DAdapter *createInstance(int argc, char *argv[]) {
     std::cout << "Create instance " << std::endl;
-    std::string s(str_proxy);
-    std::cout << "Prx is " << s << std::endl;
-    return new DAdapter(s);
+    return new DAdapter(argc, argv);
 }
 
 void deleteInstance(DAdapter *d) {

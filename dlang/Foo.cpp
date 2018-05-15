@@ -59,6 +59,7 @@ const ::std::string iceC_argo_Foo_ids[2] =
 };
 const ::std::string iceC_argo_Foo_ops[] =
 {
+    "add",
     "doit",
     "doitAgain",
     "ice_id",
@@ -68,6 +69,7 @@ const ::std::string iceC_argo_Foo_ops[] =
 };
 const ::std::string iceC_argo_Foo_doit_name = "doit";
 const ::std::string iceC_argo_Foo_doitAgain_name = "doitAgain";
+const ::std::string iceC_argo_Foo_add_name = "add";
 
 }
 
@@ -131,9 +133,30 @@ argo::Foo::_iceD_doitAgain(::IceInternal::Incoming& inS, const ::Ice::Current& c
 }
 
 bool
+argo::Foo::_iceD_add(::IceInternal::Incoming& inS, const ::Ice::Current& current)
+{
+    _iceCheckMode(::Ice::OperationMode::Normal, current.mode);
+    auto istr = inS.startReadParams();
+    int iceP_a;
+    int iceP_b;
+    istr->readAll(iceP_a, iceP_b);
+    inS.endReadParams();
+    auto inA = ::IceInternal::IncomingAsync::create(inS);
+    auto responseCB = [inA](int ret)
+    {
+        auto ostr = inA->startWriteParams();
+        ostr->writeAll(ret);
+        inA->endWriteParams();
+        inA->completed();
+    };
+    this->addAsync(iceP_a, iceP_b, responseCB, inA->exception(), current);
+    return false;
+}
+
+bool
 argo::Foo::_iceDispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair<const ::std::string*, const ::std::string*> r = ::std::equal_range(iceC_argo_Foo_ops, iceC_argo_Foo_ops + 6, current.operation);
+    ::std::pair<const ::std::string*, const ::std::string*> r = ::std::equal_range(iceC_argo_Foo_ops, iceC_argo_Foo_ops + 7, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -143,25 +166,29 @@ argo::Foo::_iceDispatch(::IceInternal::Incoming& in, const ::Ice::Current& curre
     {
         case 0:
         {
-            return _iceD_doit(in, current);
+            return _iceD_add(in, current);
         }
         case 1:
         {
-            return _iceD_doitAgain(in, current);
+            return _iceD_doit(in, current);
         }
         case 2:
         {
-            return _iceD_ice_id(in, current);
+            return _iceD_doitAgain(in, current);
         }
         case 3:
         {
-            return _iceD_ice_ids(in, current);
+            return _iceD_ice_id(in, current);
         }
         case 4:
         {
-            return _iceD_ice_isA(in, current);
+            return _iceD_ice_ids(in, current);
         }
         case 5:
+        {
+            return _iceD_ice_isA(in, current);
+        }
+        case 6:
         {
             return _iceD_ice_ping(in, current);
         }
@@ -191,6 +218,18 @@ argo::FooPrx::_iceI_doitAgain(const ::std::shared_ptr<::IceInternal::OutgoingAsy
         nullptr);
 }
 
+void
+argo::FooPrx::_iceI_add(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<int>>& outAsync, int iceP_a, int iceP_b, const ::Ice::Context& context)
+{
+    _checkTwowayOnly(iceC_argo_Foo_add_name);
+    outAsync->invoke(iceC_argo_Foo_add_name, ::Ice::OperationMode::Normal, ::Ice::FormatType::DefaultFormat, context,
+        [&](::Ice::OutputStream* ostr)
+        {
+            ostr->writeAll(iceP_a, iceP_b);
+        },
+        nullptr);
+}
+
 ::std::shared_ptr<::Ice::ObjectPrx>
 argo::FooPrx::_newInstance() const
 {
@@ -212,6 +251,8 @@ const ::std::string iceC_argo_Foo_doit_name = "doit";
 
 const ::std::string iceC_argo_Foo_doitAgain_name = "doitAgain";
 
+const ::std::string iceC_argo_Foo_add_name = "add";
+
 }
 
 argo::AMD_Foo_doit::~AMD_Foo_doit()
@@ -219,6 +260,10 @@ argo::AMD_Foo_doit::~AMD_Foo_doit()
 }
 
 argo::AMD_Foo_doitAgain::~AMD_Foo_doitAgain()
+{
+}
+
+argo::AMD_Foo_add::~AMD_Foo_add()
 {
 }
 
@@ -243,6 +288,20 @@ IceAsync::argo::AMD_Foo_doitAgain::AMD_Foo_doitAgain(::IceInternal::Incoming& in
 
 void
 IceAsync::argo::AMD_Foo_doitAgain::ice_response(const ::std::string& ret)
+{
+    ::Ice::OutputStream* ostr = startWriteParams();
+    ostr->write(ret);
+    endWriteParams();
+    completed();
+}
+
+IceAsync::argo::AMD_Foo_add::AMD_Foo_add(::IceInternal::Incoming& in) :
+    ::IceInternal::IncomingAsync(in)
+{
+}
+
+void
+IceAsync::argo::AMD_Foo_add::ice_response(::Ice::Int ret)
 {
     ::Ice::OutputStream* ostr = startWriteParams();
     ostr->write(ret);
@@ -347,6 +406,49 @@ IceProxy::argo::Foo::end_doitAgain(const ::Ice::AsyncResultPtr& result)
     return ret;
 }
 
+::Ice::AsyncResultPtr
+IceProxy::argo::Foo::_iceI_begin_add(::Ice::Int iceP_a, ::Ice::Int iceP_b, const ::Ice::Context& context, const ::IceInternal::CallbackBasePtr& del, const ::Ice::LocalObjectPtr& cookie, bool sync)
+{
+    _checkTwowayOnly(iceC_argo_Foo_add_name, sync);
+    ::IceInternal::OutgoingAsyncPtr result = new ::IceInternal::CallbackOutgoing(this, iceC_argo_Foo_add_name, del, cookie, sync);
+    try
+    {
+        result->prepare(iceC_argo_Foo_add_name, ::Ice::Normal, context);
+        ::Ice::OutputStream* ostr = result->startWriteParams(::Ice::DefaultFormat);
+        ostr->write(iceP_a);
+        ostr->write(iceP_b);
+        result->endWriteParams();
+        result->invoke(iceC_argo_Foo_add_name);
+    }
+    catch(const ::Ice::Exception& ex)
+    {
+        result->abort(ex);
+    }
+    return result;
+}
+
+::Ice::Int
+IceProxy::argo::Foo::end_add(const ::Ice::AsyncResultPtr& result)
+{
+    ::Ice::AsyncResult::_check(result, this, iceC_argo_Foo_add_name);
+    ::Ice::Int ret;
+    if(!result->_waitForResponse())
+    {
+        try
+        {
+            result->_throwUserException();
+        }
+        catch(const ::Ice::UserException& ex)
+        {
+            throw ::Ice::UnknownUserException(__FILE__, __LINE__, ex.ice_id());
+        }
+    }
+    ::Ice::InputStream* istr = result->_startReadParams();
+    istr->read(ret);
+    result->_endReadParams();
+    return ret;
+}
+
 ::IceProxy::Ice::Object*
 IceProxy::argo::Foo::_newInstance() const
 {
@@ -423,10 +525,25 @@ argo::Foo::_iceD_doitAgain(::IceInternal::Incoming& inS, const ::Ice::Current& c
     return false;
 }
 
+bool
+argo::Foo::_iceD_add(::IceInternal::Incoming& inS, const ::Ice::Current& current)
+{
+    _iceCheckMode(::Ice::Normal, current.mode);
+    ::Ice::InputStream* istr = inS.startReadParams();
+    ::Ice::Int iceP_a;
+    ::Ice::Int iceP_b;
+    istr->read(iceP_a);
+    istr->read(iceP_b);
+    inS.endReadParams();
+    this->add_async(new IceAsync::argo::AMD_Foo_add(inS), iceP_a, iceP_b, current);
+    return false;
+}
+
 namespace
 {
 const ::std::string iceC_argo_Foo_all[] =
 {
+    "add",
     "doit",
     "doitAgain",
     "ice_id",
@@ -440,7 +557,7 @@ const ::std::string iceC_argo_Foo_all[] =
 bool
 argo::Foo::_iceDispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair<const ::std::string*, const ::std::string*> r = ::std::equal_range(iceC_argo_Foo_all, iceC_argo_Foo_all + 6, current.operation);
+    ::std::pair<const ::std::string*, const ::std::string*> r = ::std::equal_range(iceC_argo_Foo_all, iceC_argo_Foo_all + 7, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -450,25 +567,29 @@ argo::Foo::_iceDispatch(::IceInternal::Incoming& in, const ::Ice::Current& curre
     {
         case 0:
         {
-            return _iceD_doit(in, current);
+            return _iceD_add(in, current);
         }
         case 1:
         {
-            return _iceD_doitAgain(in, current);
+            return _iceD_doit(in, current);
         }
         case 2:
         {
-            return _iceD_ice_id(in, current);
+            return _iceD_doitAgain(in, current);
         }
         case 3:
         {
-            return _iceD_ice_ids(in, current);
+            return _iceD_ice_id(in, current);
         }
         case 4:
         {
-            return _iceD_ice_isA(in, current);
+            return _iceD_ice_ids(in, current);
         }
         case 5:
+        {
+            return _iceD_ice_isA(in, current);
+        }
+        case 6:
         {
             return _iceD_ice_ping(in, current);
         }

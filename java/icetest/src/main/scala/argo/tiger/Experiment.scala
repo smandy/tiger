@@ -15,6 +15,10 @@ object MyFoo {
 class MyFoo extends Foo {
   import MyFoo._
 
+  override def addAsync( a : Int, b : Int, x : Current) : CompletionStage[Integer] = {
+    CompletableFuture.completedFuture( a + b )
+  }
+
   override def doitAsync( __current: Current): CompletionStage[String] = {
     log.info("Hello from scala")
     CompletableFuture.completedFuture(s"Hello from scala!! ${new DateTime}")

@@ -13,6 +13,9 @@ def doLog(s):
     sys.stdout.flush()
 
 class MyFoo( argo.Foo):
+    def add(self, a, b, current):
+        return a + b
+
     def doit(self, current):
         doLog("Python doit")
         #cb.ice_response("doit from python %s" % datetime.now())

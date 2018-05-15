@@ -6,7 +6,6 @@ module argo {
 
     ["amd"] string doitAgain();
 
-
-      ["amd", "ami"] int add(int a, int b);
+    ["amd", "ami"] int add(int a, int b);
   };
 };

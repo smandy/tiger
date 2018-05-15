@@ -83,6 +83,9 @@ public:
     virtual void doitAgainAsync(::std::function<void(const ::std::string&)>, ::std::function<void(::std::exception_ptr)>, const ::Ice::Current&) = 0;
     bool _iceD_doitAgain(::IceInternal::Incoming&, const ::Ice::Current&);
 
+    virtual void addAsync(int, int, ::std::function<void(int)>, ::std::function<void(::std::exception_ptr)>, const ::Ice::Current&) = 0;
+    bool _iceD_add(::IceInternal::Incoming&, const ::Ice::Current&);
+
     virtual bool _iceDispatch(::IceInternal::Incoming&, const ::Ice::Current&) override;
 };
 
@@ -140,6 +143,30 @@ public:
     }
 
     void _iceI_doitAgain(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<::std::string>>&, const ::Ice::Context&);
+
+    int add(int iceP_a, int iceP_b, const ::Ice::Context& context = Ice::noExplicitContext)
+    {
+        return _makePromiseOutgoing<int>(true, this, &argo::FooPrx::_iceI_add, iceP_a, iceP_b, context).get();
+    }
+
+    template<template<typename> class P = ::std::promise>
+    auto addAsync(int iceP_a, int iceP_b, const ::Ice::Context& context = Ice::noExplicitContext)
+        -> decltype(::std::declval<P<int>>().get_future())
+    {
+        return _makePromiseOutgoing<int, P>(false, this, &argo::FooPrx::_iceI_add, iceP_a, iceP_b, context);
+    }
+
+    ::std::function<void()>
+    addAsync(int iceP_a, int iceP_b,
+             ::std::function<void(int)> response,
+             ::std::function<void(::std::exception_ptr)> ex = nullptr,
+             ::std::function<void(bool)> sent = nullptr,
+             const ::Ice::Context& context = Ice::noExplicitContext)
+    {
+        return _makeLamdaOutgoing<int>(response, ex, sent, this, &argo::FooPrx::_iceI_add, iceP_a, iceP_b, context);
+    }
+
+    void _iceI_add(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<int>>&, int, int, const ::Ice::Context&);
 
     static const ::std::string& ice_staticId();
 
@@ -219,6 +246,17 @@ public:
 
 typedef ::IceUtil::Handle< ::argo::AMD_Foo_doitAgain> AMD_Foo_doitAgainPtr;
 
+class AMD_Foo_add : public virtual ::Ice::AMDCallback
+{
+public:
+
+    virtual ~AMD_Foo_add();
+
+    virtual void ice_response(::Ice::Int) = 0;
+};
+
+typedef ::IceUtil::Handle< ::argo::AMD_Foo_add> AMD_Foo_addPtr;
+
 }
 
 namespace IceAsync
@@ -245,6 +283,15 @@ public:
     virtual void ice_response(const ::std::string&);
 };
 
+class AMD_Foo_add : public ::argo::AMD_Foo_add, public ::IceInternal::IncomingAsync
+{
+public:
+
+    AMD_Foo_add(::IceInternal::Incoming&);
+
+    virtual void ice_response(::Ice::Int);
+};
+
 }
 
 }
@@ -257,6 +304,9 @@ typedef ::IceUtil::Handle< Callback_Foo_doit_Base> Callback_Foo_doitPtr;
 
 class Callback_Foo_doitAgain_Base : public virtual ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_Foo_doitAgain_Base> Callback_Foo_doitAgainPtr;
+
+class Callback_Foo_add_Base : public virtual ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_Foo_add_Base> Callback_Foo_addPtr;
 
 }
 
@@ -346,6 +396,44 @@ private:
 
 public:
 
+    ::Ice::Int add(::Ice::Int iceP_a, ::Ice::Int iceP_b, const ::Ice::Context& context = ::Ice::noExplicitContext)
+    {
+        return end_add(_iceI_begin_add(iceP_a, iceP_b, context, ::IceInternal::dummyCallback, 0, true));
+    }
+
+    ::Ice::AsyncResultPtr begin_add(::Ice::Int iceP_a, ::Ice::Int iceP_b, const ::Ice::Context& context = ::Ice::noExplicitContext)
+    {
+        return _iceI_begin_add(iceP_a, iceP_b, context, ::IceInternal::dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_add(::Ice::Int iceP_a, ::Ice::Int iceP_b, const ::Ice::CallbackPtr& del, const ::Ice::LocalObjectPtr& cookie = 0)
+    {
+        return _iceI_begin_add(iceP_a, iceP_b, ::Ice::noExplicitContext, del, cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_add(::Ice::Int iceP_a, ::Ice::Int iceP_b, const ::Ice::Context& context, const ::Ice::CallbackPtr& del, const ::Ice::LocalObjectPtr& cookie = 0)
+    {
+        return _iceI_begin_add(iceP_a, iceP_b, context, del, cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_add(::Ice::Int iceP_a, ::Ice::Int iceP_b, const ::argo::Callback_Foo_addPtr& del, const ::Ice::LocalObjectPtr& cookie = 0)
+    {
+        return _iceI_begin_add(iceP_a, iceP_b, ::Ice::noExplicitContext, del, cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_add(::Ice::Int iceP_a, ::Ice::Int iceP_b, const ::Ice::Context& context, const ::argo::Callback_Foo_addPtr& del, const ::Ice::LocalObjectPtr& cookie = 0)
+    {
+        return _iceI_begin_add(iceP_a, iceP_b, context, del, cookie);
+    }
+
+    ::Ice::Int end_add(const ::Ice::AsyncResultPtr&);
+
+private:
+
+    ::Ice::AsyncResultPtr _iceI_begin_add(::Ice::Int, ::Ice::Int, const ::Ice::Context&, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& cookie = 0, bool sync = false);
+
+public:
+
     static const ::std::string& ice_staticId();
 
 protected:
@@ -380,6 +468,9 @@ public:
 
     virtual void doitAgain_async(const ::argo::AMD_Foo_doitAgainPtr&, const ::Ice::Current& = ::Ice::emptyCurrent) = 0;
     bool _iceD_doitAgain(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void add_async(const ::argo::AMD_Foo_addPtr&, ::Ice::Int, ::Ice::Int, const ::Ice::Current& = ::Ice::emptyCurrent) = 0;
+    bool _iceD_add(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual bool _iceDispatch(::IceInternal::Incoming&, const ::Ice::Current&);
 
@@ -615,6 +706,110 @@ template<class T, typename CT> Callback_Foo_doitAgainPtr
 newCallback_Foo_doitAgain(T* instance, void (T::*cb)(const ::std::string&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_Foo_doitAgain<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_Foo_add : public Callback_Foo_add_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(::Ice::Int);
+
+    CallbackNC_Foo_add(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& result) const
+    {
+        ::argo::FooPrx proxy = ::argo::FooPrx::uncheckedCast(result->getProxy());
+        ::Ice::Int ret;
+        try
+        {
+            ret = proxy->end_add(result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::exception(result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(ret);
+        }
+    }
+
+private:
+
+    Response _response;
+};
+
+template<class T> Callback_Foo_addPtr
+newCallback_Foo_add(const IceUtil::Handle<T>& instance, void (T::*cb)(::Ice::Int), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_Foo_add<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_Foo_addPtr
+newCallback_Foo_add(T* instance, void (T::*cb)(::Ice::Int), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_Foo_add<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_Foo_add : public Callback_Foo_add_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(::Ice::Int, const CT&);
+
+    Callback_Foo_add(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& result) const
+    {
+        ::argo::FooPrx proxy = ::argo::FooPrx::uncheckedCast(result->getProxy());
+        ::Ice::Int ret;
+        try
+        {
+            ret = proxy->end_add(result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::exception(result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(ret, CT::dynamicCast(result->getCookie()));
+        }
+    }
+
+private:
+
+    Response _response;
+};
+
+template<class T, typename CT> Callback_Foo_addPtr
+newCallback_Foo_add(const IceUtil::Handle<T>& instance, void (T::*cb)(::Ice::Int, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_Foo_add<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_Foo_addPtr
+newCallback_Foo_add(T* instance, void (T::*cb)(::Ice::Int, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_Foo_add<T, CT>(instance, cb, excb, sentcb);
 }
 
 }

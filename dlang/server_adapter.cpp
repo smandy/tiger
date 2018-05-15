@@ -1,10 +1,10 @@
 #include "Foo.h"
 #include "Ice/Ice.h"
 #include "IceUtil/IceUtil.h"
+#include "wrapped_string.h"
 #include <iostream>
 #include <memory>
 #include <string>
-#include "wrapped_string.h"
 
 using namespace std;
 using namespace Ice;
@@ -12,6 +12,7 @@ using namespace Ice;
 struct FooInterface {
   WrappedString doit();
   WrappedString doitAgain();
+  int add(int a, int b);
 };
 
 class MyFoo : public argo::Foo {
@@ -20,12 +21,18 @@ class MyFoo : public argo::Foo {
 public:
   MyFoo(FooInterface *ptr) : impl(ptr) {}
 
+  void addAsync(int a, int b, std::function<void(int)> cb,
+                std::function<void(std::__exception_ptr::exception_ptr)>,
+                const Ice::Current &) {
+    cb(impl->add(a, b));
+  }
+
   void doitAsync(::std::function<void(const ::std::string &)> cb,
                  ::std::function<void(::std::exception_ptr)>,
                  const ::Ice::Current &) {
-      std::cout << "impl->doit " << std::string(impl->doit()) << std::endl;
+    std::cout << "impl->doit " << std::string(impl->doit()) << std::endl;
     cb(impl->doit());
-  };
+  }
 
   void doitAgainAsync(::std::function<void(const ::std::string &)> cb,
                       ::std::function<void(::std::exception_ptr)>,
@@ -37,7 +44,7 @@ public:
 struct DAdapter {
   CommunicatorPtr comm;
   ObjectAdapterPtr adapter;
-  FooInterface* iface;
+  FooInterface *iface;
 
 public:
   DAdapter(int argc, char **argv, FooInterface *iface)

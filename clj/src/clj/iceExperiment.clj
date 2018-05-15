@@ -34,9 +34,9 @@
 (defn square [x] (* x x))
 
 (->> (range 1 100)
-     (map square ,,,)
-     (filter #(> 50 %) ,,,)
-     (map #(format "Bla %s" %) ,,,))
+     (map square)
+     (filter #(> 50 %))
+     (map #(format "Bla %s" %)))
 
 (as-> (range 1 100) it
      (map square it)
@@ -50,8 +50,8 @@
 (.doitAgain (getFoo "foo@SimpleApp"))
 (.doitAgain (getFoo "foo@SimpleJavaApp"))
 (.doitAgain (getFoo "foo@SimpleDApp"))
-(.doitAgain (getFoo "foo@SimpleCppApp")) 
+(.doitAgain (getFoo "foo@SimpleCppApp"))    
 
-(-> communicator
+(-> (communicator)
     (.stringToProxy "foo@SimpleApp")
     (.ice_ping))

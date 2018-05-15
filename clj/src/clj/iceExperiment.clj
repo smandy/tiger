@@ -31,11 +31,10 @@
 (.doit (getFoo "foo@SimpleJavaApp"))
 (.doit (getFoo "foo@SimpleDApp"))
 
-(.add (getFoo "foo@SimpleCppApp") 2 3)
-(.add (getFoo "foo@SimpleApp") 4 5)
-(.add (getFoo "foo@SimpleJavaApp") 6 7)
+(.add (getFoo "foo@SimpleCppApp") 20 30)
+(.add (getFoo "foo@SimpleApp") 1 2)
+(.add (getFoo "foo@SimpleJavaApp") 10 20)
 (.add (getFoo "foo@SimpleDApp") 10 32)
-
 
 (defn square [x] (* x x))
 

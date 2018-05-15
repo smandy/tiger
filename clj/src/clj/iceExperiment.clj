@@ -32,9 +32,9 @@
 (.doit (getFoo "foo@SimpleDApp"))
 
 (.add (getFoo "foo@SimpleCppApp") 20 30)
-(.add (getFoo "foo@SimpleApp") 1 2)
-(.add (getFoo "foo@SimpleJavaApp") 10 20)
-(.add (getFoo "foo@SimpleDApp") 10 32)
+(.add (getFoo "foo@SimpleApp") 3 5) 
+(.add (getFoo "foo@SimpleJavaApp") 10 20) 
+(.add (getFoo "foo@SimpleDApp") 10 50) 
 
 (defn square [x] (* x x))
 
@@ -55,7 +55,7 @@
 (.doitAgain (getFoo "foo@SimpleApp"))
 (.doitAgain (getFoo "foo@SimpleJavaApp"))
 (.doitAgain (getFoo "foo@SimpleDApp"))
-(.doitAgain (getFoo "foo@SimpleCppApp"))    
+(.doitAgain (getFoo "foo@SimpleCppApp"))
 
 (-> (communicator)
     (.stringToProxy "foo@SimpleApp")

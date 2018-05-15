@@ -5,5 +5,8 @@ module argo {
     ["amd"] string doit();
 
     ["amd"] string doitAgain();
+
+
+      ["amd", "ami"] int add(int a, int b);
   };
 };

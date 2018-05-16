@@ -50,20 +50,17 @@
   (let
       [ comm (communicator) ]
     (->> (list "App"
+               "App"
                "CppApp"
                "JavaApp"
                "DApp")
          (map #(format "foo@Simple%s" %))
          (pmap #(.stringToProxy comm %))
          (pmap #(FooPrx/uncheckedCast %))
-         (pmap #(.add % a b ))
-         )))
+         (pmap #(.add % a b)))))
 
-(multiadd 10 22)
-
+(multiadd 12 22)
 (betteradd 3 4)
-
-(multido (fn [x & args]
 
 (defn square [x] (* x x))
 
@@ -78,7 +75,7 @@
      (map #(format "Bla %s" %) it))
 
 (def myFoo2 (getFoo "foo@SimpleCppApp"))
-(def res  (.begin_doitAgain myFoo2))
+(def res (.begin_doitAgain myFoo2))
 (.end_doitAgain myFoo2 res)
 
 (.doitAgain (getFoo "foo@SimpleApp"))

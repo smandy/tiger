@@ -17,8 +17,6 @@ object ClientExperiment {
       (prx.doit(), prx.doitAgain(), prx.add(2, 3))
     }
     println(s"""results are ${results.mkString("[", "\n", "]")}""")
-
-    // Need destroy to shut down the client side functionality apparently
     println("Destroying")
     communicator.destroy()
     println("destroyed")
@@ -26,6 +24,10 @@ object ClientExperiment {
     //println("Have shutdown")
     //communicator.destroy()
     import scala.collection.JavaConverters._
-    val xxx = Thread.getAllStackTraces.keySet.asScala foreach println
+    for {
+      x <- Thread.getAllStackTraces.keySet.asScala
+    } {
+      println(x.getName)
+    }
   }
 }

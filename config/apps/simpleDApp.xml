@@ -8,7 +8,7 @@
               <property name="Ice.Admin.Endpoints" value="tcp -h ritz"/>
               <property name="Ice.StdOut" value="/tmp/simpleDApp.txt" />
               <property name="Ice.StdErr" value="/tmp/simpleDApp.txt" />
-              <property name="Ice.ServerIdleTime" value="5" />
+              <!-- property name="Ice.ServerIdleTime" value="5" /> -->
               <adapter name="SimpleDApp" id="SimpleDApp" endpoints="tcp -h ritz"/>
             </server>
         </node>

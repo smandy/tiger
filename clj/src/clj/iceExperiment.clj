@@ -24,8 +24,9 @@
         ret (FooPrx/checkedCast prx)]
     ret))
 
-;; NB Don't mix icediscovery with locatoriscovery. They seem to conflict.
-;; If you want to chat to the grid *only* use icelocatordiscovery
+;; NB Don't mix icediscovery with locatoriscovery.  They seem to
+;; conflict.  If you want to chat to the grid *only* use
+;; icelocatordiscovery
 (.doit (getFoo "foo@SimpleCppApp"))
 (.doit (getFoo "foo@SimpleApp"))
 (.doit (getFoo "foo@SimpleJavaApp"))
@@ -33,8 +34,36 @@
 
 (.add (getFoo "foo@SimpleCppApp") 20 30)
 (.add (getFoo "foo@SimpleApp") 3 5) 
-(.add (getFoo "foo@SimpleJavaApp") 10 20) 
-(.add (getFoo "foo@SimpleDApp") 10 50) 
+(.add (getFoo "foo@SimpleJavaApp") 10 20)
+(.add (getFoo "foo@SimpleDApp") 10 50)
+
+(defn multiadd [a b]
+  (->>  (list "App"
+             "CppApp"
+             "JavaApp"
+            "DApp")
+       (map #(format "foo@Simple%s" %))
+       (map getFoo)
+       (map #(.add % a b))))
+
+(defn betteradd [ a b ]
+  (let
+      [ comm (communicator) ]
+    (->> (list "App"
+               "CppApp"
+               "JavaApp"
+               "DApp")
+         (map #(format "foo@Simple%s" %))
+         (pmap #(.stringToProxy comm %))
+         (pmap #(FooPrx/uncheckedCast %))
+         (pmap #(.add % a b ))
+         )))
+
+(multiadd 10 22)
+
+(betteradd 3 4)
+
+(multido (fn [x & args]
 
 (defn square [x] (* x x))
 

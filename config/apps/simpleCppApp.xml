@@ -8,8 +8,7 @@
               <!--<property name="Ice.Trace.Protocol" value="3" /> -->
               <property name="Ice.StdOut" value="/tmp/simpleCppApp.txt" />
               <property name="Ice.StdErr" value="/tmp/simpleCppApp.txt" />
-              <property name="Ice.ServerIdleTime" value="5" />
-              
+              <!-- property name="Ice.ServerIdleTime" value="5" /> -->
               <adapter name="SimpleCppApp" id="SimpleCppApp" endpoints="tcp -h ritz"/>
             </server>
         </node>

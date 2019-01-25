@@ -12,8 +12,8 @@
         props (doto (com.zeroc.Ice.Util/createProperties)
           (.setProperty "Ice.Plugin.IceLocatorDiscovery"  "com.zeroc.IceLocatorDiscovery.PluginFactory")
           ;; (.setProperty "IceLocatorDiscovery.InstanceName" "tiger1")
-          ;; (.setProperty "Ice.Trace.Network"  "2")
-          ;; (.setProperty "Ice.Trace.Protocol" "3")
+          (.setProperty "Ice.Trace.Network"  "2")
+          (.setProperty "Ice.Trace.Protocol" "3")
           ;; (.setProperty "Ice.Default.EndpointSelection" "Ordered")
           )]
      (set! (. iid properties) props)
@@ -60,14 +60,14 @@
          (pmap #(.add % a b)))))
 
 (multiadd 12 22)
-(betteradd 3 4)
+(betteradd 20 32)
 
 (defn square [x] (* x x))
 
 (->> (range 1 100)
      (map square)
      (filter #(> 50 %))
-     (map #(format "Bla %s" %)))
+     (map #(format "Bla %s" %))
 
 (as-> (range 1 100) it
      (map square it)
@@ -75,7 +75,21 @@
      (map #(format "Bla %s" %) it))
 
 (def myFoo2 (getFoo "foo@SimpleCppApp"))
-(def res (.begin_doitAgain myFoo2))
+(def res (.doitAgainAsync myFoo2))
+
+;; Fun with futures
+(def futs (map #(.doitAgainAsync (getFoo %))
+               [ "foo@SimpleApp"
+                "foo@SimpleJavaApp"
+                "foo@SimpleDApp"
+                "foo@SimpleCppApp"]))
+(map #(.get %) futs)
+
+(.whenComplete res (reify java.util.function.BiConsumer (accept [this ret ex] (println "Got %s" ret ex))))
+(.getClass res)
+(.get res)
+
+(map #(println %) (seq (.getMethods (.getClass res))))
 (.end_doitAgain myFoo2 res)
 
 (.doitAgain (getFoo "foo@SimpleApp"))

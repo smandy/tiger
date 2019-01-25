@@ -2,6 +2,7 @@
 import time
 import Ice
 from datetime import  datetime
+import traceback
 
 slice_dir = Ice.getSliceDir()
 Ice.loadSlice('-I %(slice_dir)s ../slice/Ticker.ice' % locals())
@@ -33,6 +34,7 @@ class Stock:
         self.askDirection = argo.TickDirection.ZERO
 
     def tick(self):
+        #print("Tick")
         oldBid, oldAsk = self.bidPx, self.askPx
         self.bidPx += random.choice( [0.01, -0.01, 0.0])
         self.spread = randomSpread()
@@ -81,7 +83,7 @@ class MyPlant(argo.TickerPlant):
             
     def run(self):
         while self.running:
-            #print "Tick..."
+            print("Tick...%s %s" % (datetime.now(), len(self.listeners)))
             self.tick()
             time.sleep(0.5)
 
@@ -130,9 +132,11 @@ if __name__=='__main__':
 
     try:
         while True:
+            print("Tick %s" % datetime.now())
             plant.tick()
             time.sleep(1)
     except:
+        traceback.print_exc()
         pass
     plant.running = False
     communicator.destroy()

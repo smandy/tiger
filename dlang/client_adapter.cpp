@@ -52,7 +52,7 @@ DAdapter *createInstance(int argc, char *argv[]) {
 }
 
 void deleteInstance(DAdapter *d) {
-    std::cout << "Delete instance instance " << std::endl;
+    std::cout << "Delete instance " << std::endl;
     d->destroy_communicator();
     delete d;
 }

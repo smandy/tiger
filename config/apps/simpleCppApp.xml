@@ -1,6 +1,6 @@
 <icegrid>
     <application name="SimpleCppApp">
-        <node name="ritz">
+        <node name="node1">
             <server id="SimpleCppApp" exe="/home/andy/repos/tiger/cpp/simpleCppApp" activation="on-demand">
               <!--<property name="Ice.Trace.Network" value="1"/> -->
               <!-- <property name="Ice.Trace.Network" value="3" /> -->
@@ -10,6 +10,8 @@
               <property name="Ice.StdErr" value="/tmp/simpleCppApp.txt" />
               <!-- property name="Ice.ServerIdleTime" value="5" /> -->
               <adapter name="SimpleCppApp" id="SimpleCppApp" endpoints="tcp -h ritz"/>
+
+              <env>LD_LIBRARY_PATH=/usr/lib</env>
             </server>
         </node>
     </application>

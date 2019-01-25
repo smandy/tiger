@@ -24,6 +24,8 @@ cd ~/repos/tiger/dlang
 
 (In python directory)
 
+Sudo pip install zeroc-ice
+
 ./tickerPlant.py
 
 ./tickerClient.py

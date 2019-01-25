@@ -20,7 +20,7 @@ object Graph {
     val directedEdges: List[DirectedEdge] = simpleGraph
       .filter( x => !x.startsWith("#"))
       .toList
-      .map(x => x.split(" "))
+      .map( _.split(" "))
       .filter(_.length == 3)
       .map {
         case Array(a, ">", b) => DirectedEdge(Right, a, b)

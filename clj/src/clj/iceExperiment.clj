@@ -59,8 +59,8 @@
          (pmap #(FooPrx/uncheckedCast %))
          (pmap #(.add % a b)))))
 
-(multiadd 12 22)
-(betteradd 20 32)
+(multiadd 1232 1234)
+(betteradd 10 20)
 
 (defn square [x] (* x x))
 
@@ -89,7 +89,7 @@
 (.getClass res)
 (.get res)
 
-(map #(println %) (seq (.getMethods (.getClass res))))
+(map #(format "%s\\n" %) (take 5(seq (.getMethods (.getClass res)))))
 (.end_doitAgain myFoo2 res)
 
 (.doitAgain (getFoo "foo@SimpleApp"))

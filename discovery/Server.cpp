@@ -13,7 +13,7 @@ public:
         std::cout << oss.str() << std::endl;
         return oss.str();
     }
-};
+}
 
 int main(int argc, char *argv[] ) {
     auto communicator = Ice::initialize( argc, argv );

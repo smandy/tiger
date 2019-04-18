@@ -6,8 +6,8 @@ using namespace std;
 using namespace Demo;
 
 int main(int argc, char* argv[]) {
-    auto communicator = Ice::initialize( argc, argv);
-    HelloPrx hello = HelloPrx::uncheckedCast( communicator->stringToProxy("hello"));
+    auto comm = Ice::initialize(argc, argv);
+    HelloPrx hello = HelloPrx::uncheckedCast( comm->stringToProxy("hello"));
 
     if(!hello) {
         cerr << argv[0] << ": invalid reply" << endl;
@@ -19,8 +19,8 @@ int main(int argc, char* argv[]) {
         std::cout << "Received " << s << std::endl;
     }
     
-    communicator->shutdown();
-    communicator->destroy();
+    comm->shutdown();
+    comm->destroy();
     
     return EXIT_SUCCESS;
 }

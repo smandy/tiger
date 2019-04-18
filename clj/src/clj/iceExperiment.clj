@@ -10,7 +10,8 @@
 (defn communicator []
   (let [iid (new com.zeroc.Ice.InitializationData)
         props (doto (com.zeroc.Ice.Util/createProperties)
-          (.setProperty "Ice.Plugin.IceLocatorDiscovery"  "com.zeroc.IceLocatorDiscovery.PluginFactory")
+                (.setProperty "Ice.Plugin.IceLocatorDiscovery"
+                              "com.zeroc.IceLocatorDiscovery.PluginFactory")
           ;; (.setProperty "IceLocatorDiscovery.InstanceName" "tiger1")
           (.setProperty "Ice.Trace.Network"  "2")
           (.setProperty "Ice.Trace.Protocol" "3")
@@ -46,11 +47,10 @@
        (map getFoo)
        (map #(.add % a b))))
 
-(defn betteradd [ a b ]
+(defn betteradd [a b]
   (let
       [ comm (communicator) ]
     (->> (list "App"
-               "App"
                "CppApp"
                "JavaApp"
                "DApp")
@@ -67,7 +67,7 @@
 (->> (range 1 100)
      (map square)
      (filter #(> 50 %))
-     (map #(format "Bla %s" %))
+     (map #(format "Bla %s" %)))
 
 (as-> (range 1 100) it
      (map square it)
@@ -76,7 +76,7 @@
 
 (def myFoo2 (getFoo "foo@SimpleCppApp"))
 (def res (.doitAgainAsync myFoo2))
-
+(.get (.whenComplete res (reify java.util.function.BiConsumer (accept [this ret ex] (println "Got %s" ret ex)))))
 ;; Fun with futures
 (def futs (map #(.doitAgainAsync (getFoo %))
                [ "foo@SimpleApp"
@@ -85,9 +85,10 @@
                 "foo@SimpleCppApp"]))
 (map #(.get %) futs)
 
-(.whenComplete res (reify java.util.function.BiConsumer (accept [this ret ex] (println "Got %s" ret ex))))
-(.getClass res)
-(.get res)
+;; This is silly. Model sync using async primitives.
+
+;;(.getClass res)
+;;(.get res)
 
 (map #(format "%s\\n" %) (take 5(seq (.getMethods (.getClass res)))))
 (.end_doitAgain myFoo2 res)
@@ -99,4 +100,4 @@
 
 (-> (communicator)
     (.stringToProxy "foo@SimpleApp")
-    (.ice_ping))
+    (.ice_ping)) 

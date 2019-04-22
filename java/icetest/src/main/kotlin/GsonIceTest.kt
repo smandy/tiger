@@ -4,17 +4,7 @@ import Demo.TestObject
 import com.google.gson.Gson
 
 fun main() {
-/*
-    struct TestObject {
-        string hello;
-        int xs;
-
-        StringSeq strings;
-        IntStringMap ints;
-    };
-*/
-
-    val myJson = """
+    val myJson = """3
         {
              'hello' : 'there',
              'xs' : 10,

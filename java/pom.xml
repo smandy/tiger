@@ -7,6 +7,7 @@
   <version>0.1.0-SNAPSHOT</version>
   <modules>
     <module>icetest</module>
+      <module>kotlinexperiments</module>
   </modules>
   <packaging>pom</packaging>
 

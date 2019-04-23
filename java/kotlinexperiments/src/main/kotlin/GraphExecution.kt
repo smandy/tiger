@@ -4,13 +4,20 @@ class Graph {
     inner class Node(val name : String) {
         override fun toString() = "Node($name)"
 
-        val children : List<Node>
+        val children: List<Node>
             get() = edges
                     .filter { it.from.name == name }
                     .map { it.to }
 
-
-        fun canFind(other : String) : Boolean = other==name || children.any { it.canFind(other) }
+        fun canFind(other: String, depth: Int = 0): Int? =
+                if (other == name) {
+                    depth
+                } else {
+                    children
+                            .mapNotNull { it.canFind(other) }
+                            .min()
+                            ?.let { it + 1 }
+                }
     }
 
     inner class Edge(val from : Graph.Node, val to : Graph.Node)
@@ -48,6 +55,10 @@ fun main(args: Array<String>) {
     g.getOrCreateEdge("a", "b")
     g.getOrCreateEdge("b", "c")
     g.getOrCreateEdge("c", "d")
+    g.getOrCreateEdge("a", "c")
+    println( g.getNode("a").canFind("a"))
+    println( g.getNode("a").canFind("b"))
+    println( g.getNode("a").canFind("c"))
     println( g.getNode("a").canFind("d"))
     println( g.getNode("a").canFind("e"))
     println(g)

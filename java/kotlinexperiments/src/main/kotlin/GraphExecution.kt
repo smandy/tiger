@@ -1,8 +1,7 @@
 package foo
 
 class Graph {
-
-    inner class Node( val name : String) {
+    inner class Node(val name : String) {
         override fun toString() = "Node($name)"
 
         val children : List<Node>

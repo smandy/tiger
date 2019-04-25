@@ -34,7 +34,7 @@
 
 	  <protocArtifact>com.google.protobuf:protoc:3.7.1:exe:${os.detected.classifier}</protocArtifact>
 	  <pluginId>grpc-java</pluginId>
-	  <pluginArtifact>io.grpc:protoc-gen-grpc-java:0.9.0:exe:${os.detected.classifier}</pluginArtifact>
+	  <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.20.0:exe:${os.detected.classifier}</pluginArtifact>
 	    </configuration>
 	    <executions>
 	      <execution>
@@ -64,7 +64,6 @@
       <version>${grpc.version}</version>
     </dependency>
   </dependencies>
-
   <repositories>
     <repository>
       <id>mapr</id>
@@ -72,7 +71,6 @@
       <url>http://repository.mapr.com/nexus/content/groups/mapr-public/releases</url>
     </repository>
   </repositories>
-
   <pluginRepositories>
     <pluginRepository>
       <releases>
@@ -90,6 +88,4 @@
       <url>https://dl.bintray.com/sergei-ivanov/maven/</url>
     </pluginRepository>
   </pluginRepositories>
-
-
 </project>

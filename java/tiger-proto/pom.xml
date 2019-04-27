@@ -9,6 +9,7 @@
   </parent>
   <properties>
     <grpc.version>1.20.0</grpc.version>
+    <protoc.version>3.7.1</protoc.version>
   </properties>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>tiger-proto</artifactId>
@@ -31,10 +32,9 @@
 	          protobuf-java directly, you will be transitively depending on the
 	          protobuf-java version that grpc depends on.
 	      -->
-
-	  <protocArtifact>com.google.protobuf:protoc:3.7.1:exe:${os.detected.classifier}</protocArtifact>
+	  <protocArtifact>com.google.protobuf:protoc:${protoc.version}:exe:${os.detected.classifier}</protocArtifact>
 	  <pluginId>grpc-java</pluginId>
-	  <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.20.0:exe:${os.detected.classifier}</pluginArtifact>
+	  <pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}</pluginArtifact>
 	    </configuration>
 	    <executions>
 	      <execution>
@@ -64,15 +64,8 @@
       <version>${grpc.version}</version>
     </dependency>
   </dependencies>
-  <repositories>
-    <repository>
-      <id>mapr</id>
-      <name>Mapr</name>
-      <url>http://repository.mapr.com/nexus/content/groups/mapr-public/releases</url>
-    </repository>
-  </repositories>
   <pluginRepositories>
-    <pluginRepository>
+    <!--<pluginRepository>
       <releases>
 	    <updatePolicy>never</updatePolicy>
       </releases>
@@ -82,7 +75,7 @@
       <id>central</id>
       <name>Central Repository</name>
       <url>https://repo.maven.apache.org/maven2</url>
-    </pluginRepository>
+    </pluginRepository> -->
     <pluginRepository>
       <id>protoc-plugin</id>
       <url>https://dl.bintray.com/sergei-ivanov/maven/</url>

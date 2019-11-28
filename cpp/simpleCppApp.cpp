@@ -11,8 +11,6 @@ using namespace boost::posix_time;
 using namespace std;
 
 class MyFoo : public argo::Foo {
-
-
     void addAsync(int a, int b, ::std::function<void(int)> cb, ::std::function<void(::std::exception_ptr)>, const ::Ice::Current&) {
         std::cout << "Adding " << a << " and " << b  << std::endl;
         cb( a + b );

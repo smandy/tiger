@@ -17,7 +17,7 @@
     "dependencies": {
         "react": "16.2.0",
         "react-dom": "",
-        "gulp": "^3.9.0",
+        "gulp": "^4.0.2",
         "gulp-babel": "^6.1.2",
         "gulp-concat": "^2.5.2",
         "gulp-ext-replace": "^0.3.0",

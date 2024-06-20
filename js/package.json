@@ -10,15 +10,10 @@
         "swank-js": ">=0.0.1"
     },
     "dependencies": {
-<<<<<<< HEAD
         "bower": "^1.8.8",
-        "browser-sync": "^2.29.3",
-=======
-        "bower": "^1.4.1",
-        "browser-sync": "^2.27.10",
->>>>>>> origin/dependabot/npm_and_yarn/js/engine.io-and-browser-sync-and-socket.io-6.2.1
+        "browser-sync": "^3.0.2",
         "del": "^1.2.0",
-        "gulp": "^4.0.2",
+        "gulp": "^3.9.0",
         "gulp-concat": "^2.5.2",
         "gulp-ext-replace": "^0.2.0",
         "gulp-gzip": "1.1.0",
@@ -27,7 +22,7 @@
         "gulp-newer": "^0.5.0",
         "gulp-open": "^0.3.2",
         "gulp-uglify": "^1.2.0",
-        "http-proxy": "^1.18.1",
+        "http-proxy": "^1.11.1",
         "ice": "^3.6.0",
         "npm": "^2.11.1",
         "slice2js": "^3.6.0",
